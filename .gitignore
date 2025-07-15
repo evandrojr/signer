@@ -8,3 +8,6 @@ target/
 .idea
 *.iml
 
+chain-icp-brasil/src/scripts_keytool/success.log
+chain-icp-brasil/src/scripts_keytool/error.log
+chain-icp-brasil/src/scripts_keytool/novascadeias
