@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"log"
 	"os"
@@ -17,7 +18,8 @@ func main() {
 		log.Fatalf("Failed to open log file: %v", err)
 	}
 	defer logFile.Close()
-	log.SetOutput(logFile)
+	// Exibe log na tela e salva em arquivo
+	log.SetOutput(io.MultiWriter(os.Stdout, logFile))
 
 	log.Println("Starting certificate import process...")
 
@@ -39,30 +41,31 @@ func main() {
     }
     providerPath := filepath.Join(wd, "bcprov-jdk15on-1.65.jar")
 
-	failedCertificates := make(map[string]string)
-    // Insert all keys from the directory
-    insertNewKeys("./novascadeias", keystore, password, providerPath, failedCertificates)
+	failedImport := make(map[string]string)
+	validCertificates := make(map[string]string)
+	// Insere e valida certificados
+	insertNewKeys("./novascadeias", keystore, password, providerPath, failedImport, validCertificates)
 
-	// Final Validation
+	// Validação final
 	fmt.Println("Starting final validation...")
-	success, _, actualAliases := validateKeystore(keystore, password, "./novascadeias", providerPath)
-	if success {
-		log.Println("SUCCESS: All certificates were imported successfully.")
-		fmt.Println("SUCCESS: All certificates were imported successfully. See import.log for details.")
-	} else {
-		log.Println("VALIDATION FAILED: Not all certificates were imported.")
-		fmt.Println("VALIDATION FAILED: Not all certificates were imported. Check import.log for details.")
+	_, actualAliases, failedValidation := validateKeystore(keystore, password, validCertificates, providerPath)
+
+	// Resumo
+	fmt.Printf("\n--- Resumo da Importação ---\n")
+	fmt.Printf("Certificados válidos importados: %d\n", len(actualAliases))
+	fmt.Printf("Certificados com erro de importação: %d\n", len(failedImport))
+	fmt.Printf("Certificados com erro de validação: %d\n", len(failedValidation))
+
+	if len(failedImport) > 0 {
+		fmt.Printf("\n--- Erros de Importação ---\n")
+		for cert, reason := range failedImport {
+			fmt.Printf("Certificado: %s\nMotivo: %s\n", cert, reason)
+		}
 	}
-
-	successCount := len(actualAliases)
-	failureCount := len(failedCertificates)
-
-	fmt.Printf("\n--- Import Summary ---\nSuccessfully imported certificates: %d\nFailed to import certificates: %d\n", successCount, failureCount)
-	
-	if failureCount > 0 {
-		fmt.Printf("\n--- Details of Failed Certificates ---\n")
-		for cert, reason := range failedCertificates {
-			fmt.Printf("Certificate: %s\nReason: %s\n", cert, reason)
+	if len(failedValidation) > 0 {
+		fmt.Printf("\n--- Erros de Validação ---\n")
+		for cert, reason := range failedValidation {
+			fmt.Printf("Certificado: %s\nMotivo: %s\n", cert, reason)
 		}
 	}
 }
@@ -91,7 +94,7 @@ func readConfig(filename string) (map[string]string, error) {
 	return config, nil
 }
 
-func insertNewKeys(certsDir, keystore, password, providerPath string, failedCertificates map[string]string) {
+func insertNewKeys(certsDir, keystore, password, providerPath string, failedImport, validCertificates map[string]string) {
 	files, err := ioutil.ReadDir(certsDir)
 	if err != nil {
 		log.Printf("ERROR: Could not read directory %s: %v", certsDir, err)
@@ -100,65 +103,47 @@ func insertNewKeys(certsDir, keystore, password, providerPath string, failedCert
 
 	for _, file := range files {
 		if !file.IsDir() && strings.HasSuffix(file.Name(), ".crt") {
-			fmt.Printf("Processing certificate %s...\n", file.Name())
 			alias := strings.TrimSuffix(file.Name(), filepath.Ext(file.Name()))
 			certPath := filepath.Join(certsDir, file.Name())
 
-			// Validate the certificate before importing
+			fmt.Printf("\nProcessando certificado: %s\n", file.Name())
+
+			// Valida certificado
 			cmd := exec.Command("openssl", "x509", "-in", certPath, "-noout")
 			if err := cmd.Run(); err != nil {
-				log.Printf("SKIPPING: '%s' is not a valid X.509 certificate.\n", file.Name())
-				failedCertificates[file.Name()] = "Not a valid X.509 certificate"
+				msg := "Não é um certificado X.509 válido"
+				failedImport[file.Name()] = msg
+				fmt.Printf("Falha ao validar %s: %s\n", file.Name(), msg)
 				continue
 			}
 
+			// Importa certificado
 			cmd = exec.Command("keytool", "-importcert", "-keystore", keystore, "-storepass", password, "-file", certPath, "-alias", alias, "-storetype", "BKS", "-provider", "org.bouncycastle.jce.provider.BouncyCastleProvider", "-providerpath", providerPath, "-noprompt")
-			fmt.Println("Executing command:", cmd.String())
 			output, err := cmd.CombinedOutput()
 			if err != nil {
-				log.Printf("ERROR: Failed to import key for '%s'. Reason: %s\n", alias, string(output))
-				failedCertificates[file.Name()] = string(output)
+				failedImport[file.Name()] = string(output)
+				fmt.Printf("Falha ao importar %s: %s\n", file.Name(), string(output))
 			} else {
-				log.Printf("SUCCESS: Imported key for '%s' from '%s'\n", alias, certPath)
+				validCertificates[alias] = file.Name()
+				fmt.Printf("Certificado importado com sucesso: %s\n", file.Name())
 			}
 		}
 	}
 }
 
-func validateKeystore(keystore, password, certsDir, providerPath string) (bool, int, map[string]bool) {
+func validateKeystore(keystore, password string, validCertificates map[string]string, providerPath string) (bool, map[string]bool, map[string]string) {
 	log.Println("Starting keystore validation...")
 
-	// Get expected aliases from the import log
-	expectedAliases := make(map[string]bool)
-	logFile, err := os.Open("import.log")
-	if err != nil {
-		log.Printf("VALIDATION ERROR: Could not read log file: %v", err)
-		return false, 0, nil
-	}
-	defer logFile.Close()
-
-	scanner := bufio.NewScanner(logFile)
-	for scanner.Scan() {
-		line := scanner.Text()
-		if strings.Contains(line, "SUCCESS: Imported key for") {
-			parts := strings.Split(line, "'")
-			if len(parts) > 1 {
-				alias := parts[1]
-				expectedAliases[alias] = true
-			}
-		}
-	}
-
-	// Get actual aliases from the keystore
+	// Lista aliases do keystore
 	cmd := exec.Command("keytool", "-list", "-keystore", keystore, "-storepass", password, "-storetype", "BKS", "-provider", "org.bouncycastle.jce.provider.BouncyCastleProvider", "-providerpath", providerPath)
 	out, err := cmd.CombinedOutput()
 	if err != nil {
 		log.Printf("VALIDATION ERROR: Failed to list keys from keystore '%s': %s", keystore, string(out))
-		return false, 0, nil
+		return false, nil, nil
 	}
 
 	actualAliases := make(map[string]bool)
-	scanner = bufio.NewScanner(strings.NewReader(string(out)))
+	scanner := bufio.NewScanner(strings.NewReader(string(out)))
 	for scanner.Scan() {
 		line := scanner.Text()
 		if strings.Contains(line, "trustedCertEntry") {
@@ -170,20 +155,14 @@ func validateKeystore(keystore, password, certsDir, providerPath string) (bool, 
 		}
 	}
 
-	// Compare the two lists
-	missingCount := 0
-	for alias := range expectedAliases {
+	// Verifica certificados ausentes
+	failedValidation := make(map[string]string)
+	for alias, certName := range validCertificates {
 		if !actualAliases[alias] {
-			log.Printf("VALIDATION FAILED: Certificate with alias '%s' is missing from the keystore.\n", alias)
-			missingCount++
+			failedValidation[certName] = "Não está presente no keystore após importação"
 		}
 	}
 
-	if missingCount > 0 {
-		log.Printf("VALIDATION FAILED: %d certificates are missing.\n", missingCount)
-		return false, len(expectedAliases), actualAliases
-	}
-
-	log.Println("VALIDATION SUCCESS: All expected certificates are present in the keystore.")
-	return true, len(expectedAliases), actualAliases
+	success := len(failedValidation) == 0
+	return success, actualAliases, failedValidation
 }
