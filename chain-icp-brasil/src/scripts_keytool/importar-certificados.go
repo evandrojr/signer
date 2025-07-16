@@ -10,9 +10,12 @@ import (
 	"os/exec"
 	"path/filepath"
 	"strings"
+	"time"
 )
 
 func main() {
+	// Apaga o log no início
+	os.Remove("import.log")
 	logFile, err := os.OpenFile("import.log", os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0666)
 	if err != nil {
 		log.Fatalf("Failed to open log file: %v", err)
@@ -43,8 +46,7 @@ func main() {
 
 	failedImport := make(map[string]string)
 	validCertificates := make(map[string]string)
-	// Insere e valida certificados
-	insertNewKeys("./novascadeias", keystore, password, providerPath, failedImport, validCertificates)
+	totalAttempted := insertNewKeys("./novascadeias", keystore, password, providerPath, failedImport, validCertificates)
 
 	// Validação final
 	fmt.Println("Starting final validation...")
@@ -52,6 +54,7 @@ func main() {
 
 	// Resumo
 	fmt.Printf("\n--- Resumo da Importação ---\n")
+	fmt.Printf("Total de certificados que tentaram ser importados: %d\n", totalAttempted)
 	fmt.Printf("Certificados válidos importados: %d\n", len(actualAliases))
 	fmt.Printf("Certificados com erro de importação: %d\n", len(failedImport))
 	fmt.Printf("Certificados com erro de validação: %d\n", len(failedValidation))
@@ -94,15 +97,17 @@ func readConfig(filename string) (map[string]string, error) {
 	return config, nil
 }
 
-func insertNewKeys(certsDir, keystore, password, providerPath string, failedImport, validCertificates map[string]string) {
+func insertNewKeys(certsDir, keystore, password, providerPath string, failedImport, validCertificates map[string]string) int {
 	files, err := ioutil.ReadDir(certsDir)
 	if err != nil {
 		log.Printf("ERROR: Could not read directory %s: %v", certsDir, err)
-		return
+		return 0
 	}
 
+	totalAttempted := 0
 	for _, file := range files {
 		if !file.IsDir() && strings.HasSuffix(file.Name(), ".crt") {
+			totalAttempted++
 			alias := strings.TrimSuffix(file.Name(), filepath.Ext(file.Name()))
 			certPath := filepath.Join(certsDir, file.Name())
 
@@ -112,6 +117,39 @@ func insertNewKeys(certsDir, keystore, password, providerPath string, failedImpo
 			cmd := exec.Command("openssl", "x509", "-in", certPath, "-noout")
 			if err := cmd.Run(); err != nil {
 				msg := "Não é um certificado X.509 válido"
+				failedImport[file.Name()] = msg
+				fmt.Printf("Falha ao validar %s: %s\n", file.Name(), msg)
+				continue
+			}
+
+			// Valida data de validade
+			cmd = exec.Command("openssl", "x509", "-in", certPath, "-enddate", "-noout")
+			out, err := cmd.Output()
+			if err != nil {
+				msg := "Erro ao obter data de validade do certificado"
+				failedImport[file.Name()] = msg
+				fmt.Printf("Falha ao validar %s: %s\n", file.Name(), msg)
+				continue
+			}
+			endDateLine := strings.TrimSpace(string(out))
+			if strings.HasPrefix(endDateLine, "notAfter=") {
+				endDateStr := strings.TrimPrefix(endDateLine, "notAfter=")
+				layout := "Jan 2 15:04:05 2006 MST"
+				certEndDate, err := time.Parse(layout, endDateStr)
+				if err != nil {
+					msg := "Formato de data de validade inválido"
+					failedImport[file.Name()] = msg
+					fmt.Printf("Falha ao validar %s: %s\n", file.Name(), msg)
+					continue
+				}
+				if certEndDate.Before(time.Now()) {
+					msg := "Certificado expirado"
+					failedImport[file.Name()] = msg
+					fmt.Printf("Falha ao validar %s: %s\n", file.Name(), msg)
+					continue
+				}
+			} else {
+				msg := "Não foi possível obter data de validade do certificado"
 				failedImport[file.Name()] = msg
 				fmt.Printf("Falha ao validar %s: %s\n", file.Name(), msg)
 				continue
@@ -129,6 +167,7 @@ func insertNewKeys(certsDir, keystore, password, providerPath string, failedImpo
 			}
 		}
 	}
+	return totalAttempted
 }
 
 func validateKeystore(keystore, password string, validCertificates map[string]string, providerPath string) (bool, map[string]bool, map[string]string) {
