@@ -39,18 +39,31 @@ func main() {
     }
     providerPath := filepath.Join(wd, "bcprov-jdk15on-1.65.jar")
 
+	failedCertificates := make(map[string]string)
     // Insert all keys from the directory
-    insertNewKeys("./novascadeias", keystore, password, providerPath)
+    insertNewKeys("./novascadeias", keystore, password, providerPath, failedCertificates)
 
 	// Final Validation
 	fmt.Println("Starting final validation...")
-	success := validateKeystore(keystore, password, "./novascadeias", providerPath)
+	success, _, actualAliases := validateKeystore(keystore, password, "./novascadeias", providerPath)
 	if success {
 		log.Println("SUCCESS: All certificates were imported successfully.")
 		fmt.Println("SUCCESS: All certificates were imported successfully. See import.log for details.")
 	} else {
 		log.Println("VALIDATION FAILED: Not all certificates were imported.")
 		fmt.Println("VALIDATION FAILED: Not all certificates were imported. Check import.log for details.")
+	}
+
+	successCount := len(actualAliases)
+	failureCount := len(failedCertificates)
+
+	fmt.Printf("\n--- Import Summary ---\nSuccessfully imported certificates: %d\nFailed to import certificates: %d\n", successCount, failureCount)
+	
+	if failureCount > 0 {
+		fmt.Printf("\n--- Details of Failed Certificates ---\n")
+		for cert, reason := range failedCertificates {
+			fmt.Printf("Certificate: %s\nReason: %s\n", cert, reason)
+		}
 	}
 }
 
@@ -78,7 +91,7 @@ func readConfig(filename string) (map[string]string, error) {
 	return config, nil
 }
 
-func insertNewKeys(certsDir, keystore, password, providerPath string) {
+func insertNewKeys(certsDir, keystore, password, providerPath string, failedCertificates map[string]string) {
 	files, err := ioutil.ReadDir(certsDir)
 	if err != nil {
 		log.Printf("ERROR: Could not read directory %s: %v", certsDir, err)
@@ -94,7 +107,8 @@ func insertNewKeys(certsDir, keystore, password, providerPath string) {
 			// Validate the certificate before importing
 			cmd := exec.Command("openssl", "x509", "-in", certPath, "-noout")
 			if err := cmd.Run(); err != nil {
-				log.Printf("SKIPPING: '%s' is not a valid X.509 certificate.", file.Name())
+				log.Printf("SKIPPING: '%s' is not a valid X.509 certificate.\n", file.Name())
+				failedCertificates[file.Name()] = "Not a valid X.509 certificate"
 				continue
 			}
 
@@ -103,6 +117,7 @@ func insertNewKeys(certsDir, keystore, password, providerPath string) {
 			output, err := cmd.CombinedOutput()
 			if err != nil {
 				log.Printf("ERROR: Failed to import key for '%s'. Reason: %s\n", alias, string(output))
+				failedCertificates[file.Name()] = string(output)
 			} else {
 				log.Printf("SUCCESS: Imported key for '%s' from '%s'\n", alias, certPath)
 			}
@@ -110,7 +125,7 @@ func insertNewKeys(certsDir, keystore, password, providerPath string) {
 	}
 }
 
-func validateKeystore(keystore, password, certsDir, providerPath string) bool {
+func validateKeystore(keystore, password, certsDir, providerPath string) (bool, int, map[string]bool) {
 	log.Println("Starting keystore validation...")
 
 	// Get expected aliases from the import log
@@ -118,7 +133,7 @@ func validateKeystore(keystore, password, certsDir, providerPath string) bool {
 	logFile, err := os.Open("import.log")
 	if err != nil {
 		log.Printf("VALIDATION ERROR: Could not read log file: %v", err)
-		return false
+		return false, 0, nil
 	}
 	defer logFile.Close()
 
@@ -139,7 +154,7 @@ func validateKeystore(keystore, password, certsDir, providerPath string) bool {
 	out, err := cmd.CombinedOutput()
 	if err != nil {
 		log.Printf("VALIDATION ERROR: Failed to list keys from keystore '%s': %s", keystore, string(out))
-		return false
+		return false, 0, nil
 	}
 
 	actualAliases := make(map[string]bool)
@@ -159,16 +174,16 @@ func validateKeystore(keystore, password, certsDir, providerPath string) bool {
 	missingCount := 0
 	for alias := range expectedAliases {
 		if !actualAliases[alias] {
-			log.Printf("VALIDATION FAILED: Certificate with alias '%s' is missing from the keystore.", alias)
+			log.Printf("VALIDATION FAILED: Certificate with alias '%s' is missing from the keystore.\n", alias)
 			missingCount++
 		}
 	}
 
 	if missingCount > 0 {
-		log.Printf("VALIDATION FAILED: %d certificates are missing.", missingCount)
-		return false
+		log.Printf("VALIDATION FAILED: %d certificates are missing.\n", missingCount)
+		return false, len(expectedAliases), actualAliases
 	}
 
 	log.Println("VALIDATION SUCCESS: All expected certificates are present in the keystore.")
-	return true
+	return true, len(expectedAliases), actualAliases
 }
