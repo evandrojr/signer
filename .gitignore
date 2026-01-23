@@ -1,4 +1,5 @@
 target/
+serpro-signer/
 .project
 .classpath
 .settings/
