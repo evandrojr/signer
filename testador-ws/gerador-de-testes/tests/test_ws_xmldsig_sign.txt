@@ -1,0 +1,31 @@
+
+Message:
+{"command": "signxmldsig", "algorithm":"SHA1withRSA", "type": "file" }
+{"command": "signxmldsig", "algorithm":"SHA256withRSA", "type": "file" }
+{"command": "signxmldsig", "algorithm":"SHA1withRSA",  "type": "xml", "referenceId": "ID2102001125020567964200034455001000609728101422719301", "listOfInputData":["\r\n\r\n<evento xmlns=\"http://www.portalfiscal.inf.br/nfe\" versao=\"1.00\">\r\n  <infEvento Id=\"ID2102001125020567964200034455001000609728101422719301\">\r\n   <cOrgao>91</cOrgao>\r\n   <tpAmb>1</tpAmb>\r\n   <CNPJ>27369472000172</CNPJ>\r\n   <chNFe>11250205679642000344550010006097281014227193</chNFe>\r\n   <dhEvento>2025-03-27T15:20:00-04:00</dhEvento>\r\n   <tpEvento>210200</tpEvento>\r\n   <nSeqEvento>1</nSeqEvento>\r\n   <verEvento>1.00<!-- Comment 1 --></verEvento>\r\n   <detEvento versao=\"1.00\">\r\n     <descEvento>Confirmacao da Operacao</descEvento>\r\n   </detEvento>\r\n  </infEvento>\r\n</evento>\r\n\r\n\r\n\r\n"]}
+{"command": "signxmldsig", "algorithm":"SHA256withRSA",  "type": "xml", "referenceId": "ID2102001125020567964200034455001000609728101422719301", "listOfInputData":["\r\n\r\n<evento xmlns=\"http://www.portalfiscal.inf.br/nfe\" versao=\"1.00\">\r\n  <infEvento Id=\"ID2102001125020567964200034455001000609728101422719301\">\r\n   <cOrgao>91</cOrgao>\r\n   <tpAmb>1</tpAmb>\r\n   <CNPJ>27369472000172</CNPJ>\r\n   <chNFe>11250205679642000344550010006097281014227193</chNFe>\r\n   <dhEvento>2025-03-27T15:20:00-04:00</dhEvento>\r\n   <tpEvento>210200</tpEvento>\r\n   <nSeqEvento>1</nSeqEvento>\r\n   <verEvento>1.00<!-- Comment 1 --></verEvento>\r\n   <detEvento versao=\"1.00\">\r\n     <descEvento>Confirmacao da Operacao</descEvento>\r\n   </detEvento>\r\n  </infEvento>\r\n</evento>\r\n\r\n\r\n\r\n"]}
+{"command": "signxmldsig", "type": "file", "referenceId": "ID2102001125020567964200034455001000609728101422719301"}
+{"command": "signxmldsig", "type": "xmlBase64", "referenceId": "ID2102001125020567964200034455001000609728101422719301", "listOfInputData":["DQoNCjxldmVudG8geG1sbnM9Imh0dHA6Ly93d3cucG9ydGFsZmlzY2FsLmluZi5ici9uZmUiIHZlcnNhbz0iMS4wMCI+DQogIDxpbmZFdmVudG8gSWQ9IklEMjEwMjAwMTEyNTAyMDU2Nzk2NDIwMDAzNDQ1NTAwMTAwMDYwOTcyODEwMTQyMjcxOTMwMSI+DQogICA8Y09yZ2FvPjkxPC9jT3JnYW8+DQogICA8dHBBbWI+MTwvdHBBbWI+DQogICA8Q05QSj4yNzM2OTQ3MjAwMDE3MjwvQ05QSj4NCiAgIDxjaE5GZT4xMTI1MDIwNTY3OTY0MjAwMDM0NDU1MDAxMDAwNjA5NzI4MTAxNDIyNzE5MzwvY2hORmU+DQogICA8ZGhFdmVudG8+MjAyNS0wMy0yN1QxNToyMDowMC0wNDowMDwvZGhFdmVudG8+DQogICA8dHBFdmVudG8+MjEwMjAwPC90cEV2ZW50bz4NCiAgIDxuU2VxRXZlbnRvPjE8L25TZXFFdmVudG8+DQogICA8dmVyRXZlbnRvPjEuMDA8IS0tIENvbW1lbnQgMSAtLT48L3ZlckV2ZW50bz4NCiAgIDxkZXRFdmVudG8gdmVyc2FvPSIxLjAwIj4NCiAgICAgPGRlc2NFdmVudG8+Q29uZmlybWFjYW8gZGEgT3BlcmFjYW88L2Rlc2NFdmVudG8+DQogICA8L2RldEV2ZW50bz4NCiAgPC9pbmZFdmVudG8+DQo8L2V2ZW50bz4NCg0KDQoNCg=="]}
+
+Parâmetros:
+	type:
+		- file: assina um arquivo XML local
+		- xml: assina um XML em texto puro
+		- xmlBase64: contéudo de um XML em base64
+
+    referenceId:
+        - informado: será assinado apenas a tag com atributo id
+        - não informado: será assinado o documento inteiro
+
+	listOfInputData:
+		- De acordo com o type
+		- {Para "file" não informar}
+	
+	outputDataType:
+	  - file : gera um arquivo localmente (somente para o Type file) 
+	  - xml : devolve a assinatura em formato texto representando o xml
+	  - base64 :  devolve a assinatura em formato base64 (byte[]) representando o xml
+	
+	algorithm:
+	  - "SHA1withRSA" 
+	  - "SHA256withRSA"

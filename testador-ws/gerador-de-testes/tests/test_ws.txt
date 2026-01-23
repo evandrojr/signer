@@ -1,0 +1,16 @@
+https://github.com/mhgolkar/Weasel
+
+https://addons.mozilla.org/pt-BR/firefox/addon/websocket-weasel/
+
+
+Conection Url:
+wss://assinador-desktop.serpro.gov.br:65166/signer/
+
+Message:
+
+Lista os comandos:
+{"command": "list"}
+
+
+Retorna versão do Assinador
+{"command": "version"} 
