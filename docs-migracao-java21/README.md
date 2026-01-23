@@ -52,7 +52,6 @@ Este diretório contém toda a documentação relacionada à migração do Demoi
 ### 📝 [relato-problema-usuario.md](./relato-problema-usuario.md)
 **Contexto original do problema**
 - Relato do usuário (Sinesp Assinador)
-- Bug reportado por Ronald Carvalho
 - Histórico da questão
 
 ---
@@ -167,7 +166,6 @@ Total: ████░░░░░░░░░░░░░░░░░░░░�
 ## 📞 Contato
 
 - **Comunidade Demoiselle**: Issues no GitHub
-- **Ronald Carvalho (SERPRO)**: Contato técnico
 - **Documentação Oficial**: https://www.frameworkdemoiselle.gov.br
 
 ---
