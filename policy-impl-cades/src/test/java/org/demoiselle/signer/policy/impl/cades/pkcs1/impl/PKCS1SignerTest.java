@@ -1,29 +1,51 @@
 package org.demoiselle.signer.policy.impl.cades.pkcs1.impl;
 
 import static org.junit.Assert.assertTrue;
+import org.demoiselle.signer.core.keystore.loader.implementation.PKCS11ProviderHelper;
 
 import java.io.ByteArrayInputStream;
+import org.demoiselle.signer.core.keystore.loader.implementation.PKCS11ProviderHelper;
 import java.io.File;
+import org.demoiselle.signer.core.keystore.loader.implementation.PKCS11ProviderHelper;
 import java.io.FileInputStream;
+import org.demoiselle.signer.core.keystore.loader.implementation.PKCS11ProviderHelper;
 import java.io.FileOutputStream;
+import org.demoiselle.signer.core.keystore.loader.implementation.PKCS11ProviderHelper;
 import java.io.IOException;
+import org.demoiselle.signer.core.keystore.loader.implementation.PKCS11ProviderHelper;
 import java.io.InputStream;
+import org.demoiselle.signer.core.keystore.loader.implementation.PKCS11ProviderHelper;
 import java.security.KeyStore;
+import org.demoiselle.signer.core.keystore.loader.implementation.PKCS11ProviderHelper;
 import java.security.KeyStore.Builder;
+import org.demoiselle.signer.core.keystore.loader.implementation.PKCS11ProviderHelper;
 import java.security.KeyStoreException;
+import org.demoiselle.signer.core.keystore.loader.implementation.PKCS11ProviderHelper;
 import java.security.NoSuchAlgorithmException;
+import org.demoiselle.signer.core.keystore.loader.implementation.PKCS11ProviderHelper;
 import java.security.PrivateKey;
+import org.demoiselle.signer.core.keystore.loader.implementation.PKCS11ProviderHelper;
 import java.security.Provider;
+import org.demoiselle.signer.core.keystore.loader.implementation.PKCS11ProviderHelper;
 import java.security.Security;
+import org.demoiselle.signer.core.keystore.loader.implementation.PKCS11ProviderHelper;
 import java.security.UnrecoverableKeyException;
+import org.demoiselle.signer.core.keystore.loader.implementation.PKCS11ProviderHelper;
 import java.util.Enumeration;
+import org.demoiselle.signer.core.keystore.loader.implementation.PKCS11ProviderHelper;
 
 import org.apache.commons.codec.binary.Base64;
+import org.demoiselle.signer.core.keystore.loader.implementation.PKCS11ProviderHelper;
 import org.demoiselle.signer.core.keystore.loader.KeyStoreLoader;
+import org.demoiselle.signer.core.keystore.loader.implementation.PKCS11ProviderHelper;
 import org.demoiselle.signer.core.keystore.loader.factory.KeyStoreLoaderFactory;
+import org.demoiselle.signer.core.keystore.loader.implementation.PKCS11ProviderHelper;
 import org.demoiselle.signer.core.keystore.loader.implementation.MSKeyStoreLoader;
+import org.demoiselle.signer.core.keystore.loader.implementation.PKCS11ProviderHelper;
 import org.demoiselle.signer.policy.impl.cades.SignerAlgorithmEnum;
+import org.demoiselle.signer.core.keystore.loader.implementation.PKCS11ProviderHelper;
 import org.junit.Test;
+import org.demoiselle.signer.core.keystore.loader.implementation.PKCS11ProviderHelper;
 
 public class PKCS1SignerTest {
 
@@ -119,7 +141,7 @@ public class PKCS1SignerTest {
 
 			StringBuilder buf = new StringBuilder();
 			buf.append("library = ").append(pkcs11LibraryPath).append("\nname = Provedor\n");
-			Provider p = new sun.security.pkcs11.SunPKCS11(new ByteArrayInputStream(buf.toString().getBytes()));
+			Provider p = org.demoiselle.signer.core.keystore.loader.implementation.PKCS11ProviderHelper.createProvider(buf.toString());
 			Security.addProvider(p);
 			// ATENÇÃO ALTERAR "SENHA" ABAIXO
 			Builder builder = KeyStore.Builder.newInstance("PKCS11", p,

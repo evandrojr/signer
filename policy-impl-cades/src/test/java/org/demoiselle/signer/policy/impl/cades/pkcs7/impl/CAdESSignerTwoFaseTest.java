@@ -38,26 +38,45 @@
 package org.demoiselle.signer.policy.impl.cades.pkcs7.impl;
 
 import org.apache.commons.codec.binary.Base64;
+import org.demoiselle.signer.core.keystore.loader.implementation.PKCS11ProviderHelper;
 import org.bouncycastle.cms.CMSSignedData;
+import org.demoiselle.signer.core.keystore.loader.implementation.PKCS11ProviderHelper;
 import org.demoiselle.signer.core.keystore.loader.KeyStoreLoader;
+import org.demoiselle.signer.core.keystore.loader.implementation.PKCS11ProviderHelper;
 import org.demoiselle.signer.core.keystore.loader.factory.KeyStoreLoaderFactory;
+import org.demoiselle.signer.core.keystore.loader.implementation.PKCS11ProviderHelper;
 import org.demoiselle.signer.core.keystore.loader.implementation.MSKeyStoreLoader;
+import org.demoiselle.signer.core.keystore.loader.implementation.PKCS11ProviderHelper;
 import org.demoiselle.signer.core.repository.ConfigurationRepo;
+import org.demoiselle.signer.core.keystore.loader.implementation.PKCS11ProviderHelper;
 import org.demoiselle.signer.cryptography.DigestAlgorithmEnum;
+import org.demoiselle.signer.core.keystore.loader.implementation.PKCS11ProviderHelper;
 import org.demoiselle.signer.policy.engine.factory.PolicyFactory;
+import org.demoiselle.signer.core.keystore.loader.implementation.PKCS11ProviderHelper;
 import org.demoiselle.signer.policy.impl.cades.SignerAlgorithmEnum;
+import org.demoiselle.signer.core.keystore.loader.implementation.PKCS11ProviderHelper;
 import org.demoiselle.signer.policy.impl.cades.factory.PKCS7Factory;
+import org.demoiselle.signer.core.keystore.loader.implementation.PKCS11ProviderHelper;
 import org.demoiselle.signer.policy.impl.cades.pkcs7.PKCS7Signer;
+import org.demoiselle.signer.core.keystore.loader.implementation.PKCS11ProviderHelper;
 import org.demoiselle.signer.timestamp.configuration.TimeStampConfig;
+import org.demoiselle.signer.core.keystore.loader.implementation.PKCS11ProviderHelper;
 import org.junit.Test;
+import org.demoiselle.signer.core.keystore.loader.implementation.PKCS11ProviderHelper;
 
 import java.io.*;
+import org.demoiselle.signer.core.keystore.loader.implementation.PKCS11ProviderHelper;
 import java.security.*;
+import org.demoiselle.signer.core.keystore.loader.implementation.PKCS11ProviderHelper;
 import java.security.KeyStore.Builder;
+import org.demoiselle.signer.core.keystore.loader.implementation.PKCS11ProviderHelper;
 import java.security.cert.Certificate;
+import org.demoiselle.signer.core.keystore.loader.implementation.PKCS11ProviderHelper;
 import java.util.Enumeration;
+import org.demoiselle.signer.core.keystore.loader.implementation.PKCS11ProviderHelper;
 
 import static org.junit.Assert.assertTrue;
+import org.demoiselle.signer.core.keystore.loader.implementation.PKCS11ProviderHelper;
 
 
 /**
@@ -432,7 +451,7 @@ public class CAdESSignerTwoFaseTest {
 
 			StringBuilder buf = new StringBuilder();
 			buf.append("library = ").append(pkcs11LibraryPath).append("\nname = Provedor\n");
-			Provider p = new sun.security.pkcs11.SunPKCS11(new ByteArrayInputStream(buf.toString().getBytes()));
+			Provider p = org.demoiselle.signer.core.keystore.loader.implementation.PKCS11ProviderHelper.createProvider(buf.toString());
 			Security.addProvider(p);
 			// ATENÇÃO ALTERAR "SENHA" ABAIXO
 			Builder builder = KeyStore.Builder.newInstance("PKCS11", p, new KeyStore.PasswordProtection("senha".toCharArray()));
