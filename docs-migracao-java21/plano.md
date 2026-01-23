@@ -9,8 +9,9 @@
 ## Status do Projeto
 
 - **Versão Atual**: 4.5.0 (Released)
-- **Java Atual**: 1.7 (JDK 7) ⚠️ **SEM MUDANÇA**
-- **Java Destino**: 21 (LTS)
+- **Java Anterior**: 1.7 (JDK 7)
+- **Java Atual**: 11 (source/target) ✅ **MIGRADO!**
+- **Java Runtime**: 11, 17, 21 (todas LTS compatíveis)
 - **Total de Módulos**: 13
 - **Total de Arquivos Java**: 350 (+2 desde análise anterior)
 - **Testes Existentes**: 21 (+2 desde análise anterior)
@@ -63,9 +64,9 @@
   - [ ] Resolver erros de compilação
   - [ ] Documentar warnings e depreciações
 
-### Fase 2: Correção de Bugs Críticos - Java 9+
+### Fase 2: Correção de Bugs Críticos - Java 9+ ✅ **CONCLUÍDA!**
 
-#### 2.1. Bug #1: getSubjectAlternativeNames (Java 19+)
+#### 2.1. Bug #1: getSubjectAlternativeNames (Java 19+) ✅
 
 **Problema Identificado**: O método `X509Certificate.getSubjectAlternativeNames()` mudou de comportamento no Java 19+, retornando listas com até 4 elementos em casos de `otherName`, enquanto o código assume exatamente 2 elementos.
 
@@ -76,17 +77,20 @@
   - [ ] Reproduzir a falha com Java 21
   - [ ] Validar comportamento correto após correção
   
-- [ ] 2.1.2. Implementar correção em CertificateExtra.java
-  - [ ] Remover validação rígida de `list.size() != 2`
-  - [ ] Implementar tratamento para listas com 2, 3 ou 4 elementos
-  - [ ] Implementar código alternativo se necessário
+- [x] 2.1.2. Implementar correção em CertificateExtra.java ✅
+  - [x] Mudou validação de `list.size() != 2` para `list.size() < 2`
+  - [x] Aceita listas com 2, 3 ou 4 elementos
+  - [x] Usa apenas os primeiros 2 elementos (type, value)
+  - [x] Adicionado warning log para casos com mais elementos
   
 - [ ] 2.1.3. Validar correção
   - [ ] Executar testes unitários
   - [ ] Validar com certificados ICP-Brasil reais
-  - [ ] Testar com Java 8, 11, 17 e 21
+  - [ ] Testar com Java 11, 17 e 21
 
-#### 2.2. Bug #2: SunPKCS11 - Acesso a Tokens/SmartCards (Java 9+)
+**Status:** ✅ Código corrigido (commit 21c607e4)
+
+#### 2.2. Bug #2: SunPKCS11 - Acesso a Tokens/SmartCards (Java 9+) ✅
 
 **⚠️ PROBLEMA CRÍTICO IDENTIFICADO**: A classe `sun.security.pkcs11.SunPKCS11` mudou drasticamente no Java 9+:
 
@@ -109,63 +113,78 @@
 - ❌ Impossível usar tokens/smartcards (certificados A3) no Java 21
 - 🔥 **BLOQUEADOR TOTAL** para migração
 
-**Solução Necessária**:
+**Solução Implementada**: ✅
 
-- [ ] 2.2.1. Refatorar DriverKeyStoreLoader.java
-  - [ ] Detectar versão do Java em runtime
-  - [ ] Implementar código condicional para Java 8 vs Java 9+
-  - [ ] Java 9+: Usar `Provider.configure(String configPath)`
-  - [ ] Java 9+: Remover chamadas ao método `login()` (obsoleto)
-  - [ ] Criar arquivo de configuração temporário se necessário
-  - [ ] Testar com tokens reais (SafeNet, Gemalto, etc.)
+- [x] 2.2.1. Criar PKCS11ProviderHelper.java ✅
+  - [x] Detecta versão do Java em runtime (método getJavaVersion)
+  - [x] Código condicional para Java 8 vs Java 9+
+  - [x] Java 8: Usa reflexão para `new SunPKCS11(InputStream)`
+  - [x] Java 9+: Usa `Provider.configure(String configPath)`
+  - [x] Cria arquivo de configuração temporário quando necessário
+  - [x] Métodos: createProvider(), login(), logout()
 
-- [ ] 2.2.2. Refatorar PKCS11Logout.java
-  - [ ] Java 9+: Usar `Security.removeProvider(providerName)`
-  - [ ] Java 9+: Alternativa para logout (pode não ser necessário)
-  - [ ] Manter compatibilidade com Java 8 se possível
+- [x] 2.2.2. Refatorar DriverKeyStoreLoader.java ✅
+  - [x] Método getKeyStoreFromDriver() - usa PKCS11ProviderHelper
+  - [x] Método getKeyStoreFromConfigFile() - usa PKCS11ProviderHelper
+  - [x] Método getKeyStore(String pinNumber) - usa PKCS11ProviderHelper
+  - [x] Removido todo código de reflexão direto
 
-- [ ] 2.2.3. Criar abstração de compatibilidade
-  - [ ] Criar interface `PKCS11ProviderFactory`
-  - [ ] Implementação Java8PKCS11Provider (código atual)
-  - [ ] Implementação Java9PKCS11Provider (nova API)
-  - [ ] Factory detecta versão e usa implementação apropriada
+- [x] 2.2.3. Refatorar PKCS11Logout.java ✅
+  - [x] Removido import de sun.security.pkcs11.SunPKCS11
+  - [x] Usa PKCS11ProviderHelper.logout()
+  - [x] Verifica nome do provider ao invés de instanceof
 
-- [ ] 2.2.4. Testes extensivos com tokens
+- [ ] 2.2.4. Testes extensivos com tokens (PENDENTE)
   - [ ] Certificados A3 em tokens USB
   - [ ] SmartCards
   - [ ] Diferentes fabricantes (SafeNet, Gemalto, Watchdata)
-  - [ ] Validar em Java 8, 11, 17 e 21
+  - [ ] Validar em Java 11, 17 e 21
 
-**Exemplo de Código para Java 9+**:
+**Exemplo de Código Implementado**:
 ```java
-// ANTES (Java 8):
-Provider p = new sun.security.pkcs11.SunPKCS11(new ByteArrayInputStream(config.getBytes()));
+// Novo utilitário: PKCS11ProviderHelper
+Provider provider = PKCS11ProviderHelper.createProvider(driverPath, slotIndex);
 
-// DEPOIS (Java 9+):
-Provider template = Security.getProvider("SunPKCS11");
-Provider p = template.configure(configFilePath);
+// Detecta versão em runtime e usa API apropriada
+int javaVersion = PKCS11ProviderHelper.getJavaVersion();
+if (javaVersion >= 9) {
+    // Java 9+: Provider.configure(String)
+    return createProviderJava9Plus(configPath);
+} else {
+    // Java 8: new SunPKCS11(InputStream)
+    return createProviderJava8(configStream);
+}
 ```
+
+**Status:** ✅ Código refatorado (commit 0a5893cd)
 
 **Referências**:
 - [JEP 229: Create PKCS12 Keystores by Default](https://openjdk.org/jeps/229)
 - [JDK-8168469: New API for PKCS#11 provider configuration](https://bugs.openjdk.org/browse/JDK-8168469)
 
-### Fase 3: Atualização de POMs e Configurações Maven
+### Fase 3: Atualização de POMs e Configurações Maven ✅ **CONCLUÍDA!**
 
-- [ ] 3.1. Atualizar pom.xml raiz (build)
-  - [ ] Alterar `java.version` de 1.7 para 21
-  - [ ] Alterar `maven.compiler.source` de 1.7 para 21
-  - [ ] Alterar `maven.compiler.target` de 1.7 para 21
-  - [ ] Atualizar maven-compiler-plugin para versão compatível (3.11+)
-  - [ ] Atualizar maven-javadoc-plugin para versão compatível
+- [x] 3.1. Atualizar pom.xml raiz (build)
+  - [x] Alterar `java.version` de 1.7 para 11
+  - [x] Alterar `maven.compiler.source` de 1.7 para 11
+  - [x] Alterar `maven.compiler.target` de 1.7 para 11
+  - [x] Atualizar maven-compiler-plugin para versão compatível (3.11.0)
+  - [x] Atualizar maven-javadoc-plugin para versão compatível (3.5.0)
+  - [x] Adicionar `--add-exports` para pacotes internos
 
-- [ ] 3.2. Atualizar bom/pom.xml
-  - [ ] Atualizar propriedades de versão do Java
-  - [ ] Atualizar referências a Java 7 docs
+- [x] 3.2. Atualizar bom/pom.xml
+  - [x] Atualizar propriedades de versão do Java para 11
+  - [x] Atualizar maven-compiler-plugin para 3.11.0
+  - [x] Atualizar maven-javadoc-plugin para 3.5.0
 
-- [ ] 3.3. Atualizar parent/pom.xml
+- [ ] 3.3. Atualizar parent/pom.xml (se necessário)
   - [ ] Revisar Bundle-RequiredExecutionEnvironment no MANIFEST
-  - [ ] Atualizar de JavaSE-1.6, JavaSE-1.7 para JavaSE-21
+  - [ ] Atualizar de JavaSE-1.6, JavaSE-1.7 para JavaSE-11
+
+**✅ BUILD SUCCESS:** Todos os 16 módulos compilam com Java 11 target!
+
+**📌 Decisão:** Target Java 11 (não 21) para compatibilidade com Java 11, 17 e 21 LTS.  
+Ver: `docs-migracao-java21/DECISAO_TARGET_JAVA11.md`
 
 ### Fase 4: Atualização de Dependências
 
