@@ -65,6 +65,7 @@ import org.demoiselle.signer.policy.impl.xades.util.DocumentUtils;
 import org.demoiselle.signer.policy.impl.xades.xml.impl.Constants;
 import org.demoiselle.signer.policy.impl.xades.xml.impl.XMLSignedAttributes;
 import org.demoiselle.signer.policy.impl.xades.xml.impl.XMLUnsignedAttributes;
+import org.demoiselle.signer.core.keystore.loader.implementation.PKCS11ProviderHelper;
 import org.w3c.dom.Document;
 
 public class XMLSigner2StepsTest {
@@ -238,7 +239,7 @@ public class XMLSigner2StepsTest {
 
 			StringBuilder buf = new StringBuilder();
 			buf.append("library = ").append(pkcs11LibraryPath).append("\nname = Provedor\n");
-			Provider p = new sun.security.pkcs11.SunPKCS11(new ByteArrayInputStream(buf.toString().getBytes()));
+			Provider p = PKCS11ProviderHelper.createProvider(buf.toString());
 			Security.addProvider(p);
 			// ATENÇÃO ALTERAR "SENHA" ABAIXO
 			Builder builder = KeyStore.Builder.newInstance("PKCS11", p,

@@ -60,6 +60,8 @@ import java.security.cert.Certificate;
 import java.util.Calendar;
 import java.util.Enumeration;
 
+import org.demoiselle.signer.core.keystore.loader.implementation.PKCS11ProviderHelper;
+
 import static org.junit.Assert.assertTrue;
 
 @SuppressWarnings("unused")
@@ -275,7 +277,7 @@ public class PDFSignerTest {
 
 			StringBuilder buf = new StringBuilder();
 			buf.append("library = ").append(pkcs11LibraryPath).append("\nname = Provedor\n");
-			Provider p = new sun.security.pkcs11.SunPKCS11(new ByteArrayInputStream(buf.toString().getBytes()));
+			Provider p = PKCS11ProviderHelper.createProvider(buf.toString());
 			Security.addProvider(p);
 			// ATENÇÃO ALTERAR "SENHA" ABAIXO
 			Builder builder = KeyStore.Builder.newInstance("PKCS11", p, new KeyStore.PasswordProtection("senha".toCharArray()));
