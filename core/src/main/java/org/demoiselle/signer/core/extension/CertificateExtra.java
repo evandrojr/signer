@@ -80,9 +80,11 @@ public class CertificateExtra {
 				return;
 			}
 			for (List<?> list : certificate.getSubjectAlternativeNames()) {
-				if (list.size() != 2) {
-					logger.error(coreMessagesBundle.getString("error.extra.size.incorret"));
-					throw new Exception(coreMessagesBundle.getString("error.extra.size.incorret"));
+				// Java 19+ may return lists with 2, 3, or 4 elements for otherName entries
+				// We only need the first two elements (type and value)
+				if (list.size() < 2) {
+					logger.warn("SubjectAlternativeName entry with unexpected size: {}. Skipping.", list.size());
+					continue; // Skip malformed entries
 				}
 
 				Object e1, e2;
