@@ -43,21 +43,38 @@ import java.security.Security;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import sun.security.pkcs11.SunPKCS11;
-
-@SuppressWarnings("restriction")
+/**
+ * Utility class to perform logout from PKCS#11 providers.
+ * 
+ * This class is compatible with both Java 8 and Java 9+ by using
+ * PKCS11ProviderHelper to handle version-specific logout operations.
+ */
 public class PKCS11Logout {
 
 	private static final Logger logger = LoggerFactory.getLogger(PKCS11Logout.class);
 
+	/**
+	 * Performs logout on all PKCS#11 providers.
+	 * 
+	 * In Java 8, calls the logout() method on each SunPKCS11 provider.
+	 * In Java 9+, removes all PKCS#11 providers from Security.
+	 * 
+	 * @return true if logout was successful, false otherwise
+	 */
 	public boolean doLogout() {
 		try {
-			for (Provider provider : Security.getProviders())
-				if (provider instanceof SunPKCS11)
-					((SunPKCS11) provider).logout();
+			for (Provider provider : Security.getProviders()) {
+				// Check if this is a PKCS11 provider
+				if (provider.getName().startsWith("SunPKCS11")) {
+					boolean result = PKCS11ProviderHelper.logout(provider);
+					if (!result) {
+						logger.warn("Failed to logout from provider: {}", provider.getName());
+					}
+				}
+			}
 			return true;
 		} catch (Throwable error) {
-			logger.error(error.getMessage());
+			logger.error("Error during logout: {}", error.getMessage());
 			return false;
 		}
 	}

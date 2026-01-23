@@ -37,25 +37,14 @@
 
 package org.demoiselle.signer.core.keystore.loader.implementation;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.security.KeyStore;
 import java.security.KeyStore.Builder;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
 import java.security.Provider;
 import java.security.Security;
-import java.security.cert.CertificateException;
 import java.util.Formatter;
 import java.util.Map;
 import java.util.Set;
 
-import javax.security.auth.Subject;
 import javax.security.auth.callback.CallbackHandler;
 
 import org.demoiselle.signer.core.keystore.loader.DriverNotAvailableException;
@@ -123,31 +112,24 @@ public class DriverKeyStoreLoader implements KeyStoreLoader {
 		formatter = new Formatter();
 
 		String pkcs11ConfigSettings = formatter.format(PKCS11_CONTENT_CONFIG_FILE, driverName, driverPath).toString();
-		byte[] pkcs11ConfigBytes = pkcs11ConfigSettings.getBytes();
-		ByteArrayInputStream confStream = new ByteArrayInputStream(pkcs11ConfigBytes);
 
 		try {
-			Constructor<?> construtor = Class.forName("sun.security.pkcs11.SunPKCS11")
-					.getConstructor(new Class[] { InputStream.class });
-			Provider pkcs11Provider = (Provider) construtor.newInstance(new Object[] { confStream });
+			// Use PKCS11ProviderHelper for Java 8/9+ compatibility
+			Provider pkcs11Provider = PKCS11ProviderHelper.createProvider(pkcs11ConfigSettings);
 			Security.addProvider(pkcs11Provider);
-			confStream.close();
-			Method login = Class.forName("sun.security.pkcs11.SunPKCS11").getMethod("login",
-					new Class[] { Subject.class, CallbackHandler.class });
-			login.invoke(Security.getProvider(pkcs11Provider.getName()), new Object[] { null, this.callback });
+			
+			// Perform login (handled differently in Java 8 vs Java 9+)
+			PKCS11ProviderHelper.login(pkcs11Provider, null, this.callback);
+			
 			keyStore = KeyStore.getInstance(PKCS11_KEYSTORE_TYPE, pkcs11Provider.getName());
 			keyStore.load(null, null);
 
-		} catch (IOException | ClassNotFoundException | IllegalAccessException | IllegalArgumentException
-				| InstantiationException | NoSuchMethodException | SecurityException | InvocationTargetException
-				| KeyStoreException | NoSuchAlgorithmException | NoSuchProviderException | CertificateException ex) {
-			if (ex.getCause().toString().equals("javax.security.auth.login.FailedLoginException")) {
+		} catch (Exception ex) {
+			if (ex.getCause() != null && ex.getCause().toString().equals("javax.security.auth.login.FailedLoginException")) {
 				throw new InvalidPinException(coreMessagesBundle.getString("error.pin.invalid"), ex);
 			}
 
-			if (ex.getCause().toString().equals("javax.security.auth.login.LoginException")) {
-				// TODO https://github.com/demoiselle/signer/pull/126 // if (ex.getCause()
-				// instanceof javax.security.auth.login.LoginException) {
+			if (ex.getCause() != null && ex.getCause().toString().equals("javax.security.auth.login.LoginException")) {
 				throw new InvalidPinException(coreMessagesBundle.getString("error.pin.invalid"), ex);
 			} else {
 				throw new PKCS11NotFoundException(coreMessagesBundle.getString("error.load.module.pcks11"), ex);
@@ -167,24 +149,22 @@ public class DriverKeyStoreLoader implements KeyStoreLoader {
 		KeyStore keyStore = null;
 
 		try {
-			Constructor<?> construtor = Class.forName("sun.security.pkcs11.SunPKCS11")
-					.getConstructor(new Class[] { String.class });
-			Provider pkcs11Provider = (Provider) construtor.newInstance(new Object[] { configFile });
+			// Use PKCS11ProviderHelper for Java 8/9+ compatibility
+			Provider pkcs11Provider = PKCS11ProviderHelper.createProviderFromFile(configFile);
 			Security.addProvider(pkcs11Provider);
-			Method login = Class.forName("sun.security.pkcs11.SunPKCS11").getMethod("login",
-					new Class[] { Subject.class, CallbackHandler.class });
-			login.invoke(Security.getProvider(pkcs11Provider.getName()), new Object[] { null, this.callback });
+			
+			// Perform login (handled differently in Java 8 vs Java 9+)
+			PKCS11ProviderHelper.login(pkcs11Provider, null, this.callback);
+			
 			keyStore = KeyStore.getInstance(PKCS11_KEYSTORE_TYPE, pkcs11Provider.getName());
 			keyStore.load(null, null);
 
-		} catch (IOException | ClassNotFoundException | IllegalAccessException | IllegalArgumentException
-				| InstantiationException | NoSuchMethodException | SecurityException | InvocationTargetException
-				| KeyStoreException | NoSuchAlgorithmException | NoSuchProviderException | CertificateException ex) {
-			if (ex.getCause().toString().equals("javax.security.auth.login.FailedLoginException")) {
+		} catch (Exception ex) {
+			if (ex.getCause() != null && ex.getCause().toString().equals("javax.security.auth.login.FailedLoginException")) {
 				throw new InvalidPinException(coreMessagesBundle.getString("error.pin.invalid"), ex);
 			}
 
-			if (ex.getCause().toString().equals("javax.security.auth.login.LoginException")) {
+			if (ex.getCause() != null && ex.getCause().toString().equals("javax.security.auth.login.LoginException")) {
 				throw new InvalidPinException(coreMessagesBundle.getString("error.pin.invalid"), ex);
 			} else {
 				throw new PKCS11NotFoundException(coreMessagesBundle.getString("error.load.module.pcks11"), ex);
@@ -245,8 +225,11 @@ public class DriverKeyStoreLoader implements KeyStoreLoader {
 				String pkcs11LibraryPath = entry.getValue();
 				StringBuilder buf = new StringBuilder();
 				buf.append("library = ").append(pkcs11LibraryPath).append("\nname = Provedor\n");
-				Provider p = new sun.security.pkcs11.SunPKCS11(new ByteArrayInputStream(buf.toString().getBytes()));
+				
+				// Use PKCS11ProviderHelper for Java 8/9+ compatibility
+				Provider p = PKCS11ProviderHelper.createProvider(buf.toString());
 				Security.addProvider(p);
+				
 				Builder builder = KeyStore.Builder.newInstance("PKCS11", p,
 						new KeyStore.PasswordProtection(pinNumber.toCharArray()));
 				ks = builder.getKeyStore();
