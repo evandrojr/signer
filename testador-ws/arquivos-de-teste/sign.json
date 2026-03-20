@@ -1,0 +1,11 @@
+[
+  {
+    "id": "75",
+    "fileName": "test_ws_sign.txt",
+    "messageContent": {
+      "algorithm": "SHA256withRSA",
+      "command": "sign",
+      "type": "file"
+    }
+  }
+]

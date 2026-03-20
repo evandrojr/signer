@@ -1,0 +1,12 @@
+[
+  {
+    "id": "1",
+    "fileName": "test_ws_nfe_sign.txt",
+    "messageContent": {
+      "algorithm": "SHA1withRSA",
+      "command": "signxmldsig",
+      "type": "file",
+      "referenceId": "ID2102001125090101647300022055001000539462104857183901"
+    }
+  }
+]

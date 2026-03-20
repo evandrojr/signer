@@ -1,0 +1,42 @@
+https://addons.mozilla.org/pt-BR/firefox/addon/websocket-weasel/
+
+Conection Url:
+wss://assinador-desktop.serpro.gov.br:65166/signer/
+
+
+Message:
+
+{"command": "preparesign","type": "text", "listOfInputData":["teste1"]}
+{"command": "preparesign","type": "text", "listOfInputData":["teste1"], "attached": "true"}
+{"command": "preparesign","type": "text", "listOfInputData":["teste1"], "signaturePolicy": "AD_RT_CADES_2_3"}
+{"command": "preparesign","type": "text", "listOfInputData":["teste1","teste2"], "signaturePolicy": "AD_RT_CADES_2_3"}
+{"command": "preparesign","type": "hash", "listOfInputData":["cL35UO6xkjJbz2nn+l465BIduzF0b1dEfBEq02SR5x+lvz+dxYvRNYqbT4+h54CaYQ0Wx5xD1+J7hGGUUENmlg=="]}
+{"command": "preparesign","type": "hash", "listOfInputData":["i19O8wXZgrnPHHNIEXa9+elCbv7PuQnoX25a+LzfLThcLc2YR53KM3EmeSJGYwhrM84rFUShcH6MsZmHV427ew==","i19O8wXZgrnPHHNIEXa9+elCbv7PuQnoX25a+LzfLThcLc2YR53KM3EmeSJGYwhrM84rFUShcH6MsZmHV427ew=="]}
+{"command": "preparesign","type": "base64", "listOfInputData": ["Y29udGXDumRvIGF0YWNoYWRvLgo="]}
+{"command": "preparesign","type": "base64", "listOfInputData": ["Y29udGXDumRvIGF0YWNoYWRvLgo="], "attached": "true"}
+{"command": "preparesign","type": "base64", "listOfInputData":["Y29udGXDumRvIGF0YWNoYWRvLgo=","Y29udGXDumRvIGF0YWNoYWRvLgo="]}
+
+
+
+preparesign
+
+
+
+Parâmetro:
+	type: 
+		- text: texto puro
+		- hash: hash em base64
+		- base64: contéudo em base64
+	
+	listOfInputData:
+		- De acordo com o type
+		
+	textEncoding:
+		Valido para type do tipo Text. (ex: UTF-8,ISO-8859-1) 
+	
+	attached =
+		- true  (anexa o conte�do � assinatura)
+		- false
+
+	signaturePolicy = pol�tica de Assinatura ex: AD_RT_CADES_2_3;
+	

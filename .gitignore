@@ -1,5 +1,6 @@
 target/
 serpro-signer/
+certs-hom/
 .project
 .classpath
 .settings/
