@@ -54,9 +54,12 @@ import org.bouncycastle.cert.X509v1CertificateBuilder;
 import org.bouncycastle.operator.OperatorCreationException;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
 import org.demoiselle.signer.core.util.Base64Utils;
-import sun.security.provider.X509Factory;
-
+// Replaced use of internal sun.security.provider.X509Factory with constants
+// Use explicit PEM boundaries instead of X509Factory
 public class CreateCA {
+
+	private static final String BEGIN_CERT = "-----BEGIN CERTIFICATE-----";
+	private static final String END_CERT = "-----END CERTIFICATE-----";
 
 	// http://stackoverflow.com/questions/18633273/correctly-creating-a-new-certificate-with-an-intermediate-certificate-using-boun
 	// http://stackoverflow.com/questions/31618568/how-can-i-create-a-ca-root-certificate-with-bouncy-castle
@@ -84,9 +87,9 @@ public class CreateCA {
 
 		StringBuffer s = new StringBuffer();
 
-		s.append(X509Factory.BEGIN_CERT + "\n");
+		s.append(BEGIN_CERT + "\n");
 		s.append(Base64Utils.base64Encode(certHolder.getEncoded()) + "\n");
-		s.append(X509Factory.END_CERT);
+		s.append(END_CERT);
 
 		saveFile(s.toString().getBytes());
 

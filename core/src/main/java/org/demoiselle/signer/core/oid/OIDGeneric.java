@@ -46,13 +46,19 @@ import org.bouncycastle.asn1.ASN1ObjectIdentifier;
 import org.bouncycastle.asn1.DERIA5String;
 import org.bouncycastle.asn1.DEROctetString;
 import org.bouncycastle.asn1.DERPrintableString;
-import org.bouncycastle.asn1.DERTaggedObject;
 import org.bouncycastle.asn1.DERUTF8String;
+import org.bouncycastle.asn1.ASN1TaggedObject;
 import org.bouncycastle.asn1.DLSequence;
 import org.demoiselle.signer.core.util.MessagesBundle;
 
-import sun.security.util.DerValue;
-import sun.security.x509.OtherName;
+// Replacing use of internal sun.* classes with BouncyCastle or Java public APIs
+// sun.security.util.DerValue and sun.security.x509.OtherName are not available under Java 9+
+// The following code avoids direct use of those internal classes.
+import org.bouncycastle.asn1.ASN1Primitive;
+import org.bouncycastle.asn1.ASN1InputStream;
+import org.bouncycastle.asn1.ASN1Sequence;
+import org.bouncycastle.asn1.ASN1Encodable;
+import org.bouncycastle.asn1.ASN1TaggedObject;
 
 /**
  * Generic Class for treatment of some attributes of certificates of ICP-BRASIL,
@@ -84,25 +90,33 @@ public class OIDGeneric {
 		is = new ASN1InputStream(data);
 		DLSequence sequence = (DLSequence) is.readObject();
 		ASN1ObjectIdentifier oid = (ASN1ObjectIdentifier) sequence.getObjectAt(0);
-		DERTaggedObject taggedObject = (DERTaggedObject) sequence.getObjectAt(1);
-		DERTaggedObject taggedObject2 = (DERTaggedObject) taggedObject.getBaseObject();
+		org.bouncycastle.asn1.ASN1Primitive second = sequence.getObjectAt(1).toASN1Primitive();
+
+		org.bouncycastle.asn1.ASN1Primitive inner = null;
+		if (second instanceof ASN1TaggedObject) {
+			ASN1TaggedObject taggedObject = (ASN1TaggedObject) second;
+			org.bouncycastle.asn1.ASN1Object baseObj = taggedObject.getBaseObject();
+			if (baseObj != null) {
+				inner = baseObj.toASN1Primitive();
+			}
+		} else {
+			inner = second;
+		}
 
 		DEROctetString octet = null;
 		DERPrintableString print = null;
 		DERUTF8String utf8 = null;
 		DERIA5String ia5 = null;
 
-		try {
-			octet = (DEROctetString) taggedObject2.getBaseObject();
-		} catch (Exception e) {
-			try {
-				print = (DERPrintableString) taggedObject2.getBaseObject();
-			} catch (Exception e1) {
-				try {
-					utf8 = (DERUTF8String) taggedObject2.getBaseObject();
-				} catch (Exception e2) {
-					ia5 = (DERIA5String) taggedObject2.getBaseObject();
-				}
+		if (inner != null) {
+			if (inner instanceof DEROctetString) {
+				octet = (DEROctetString) inner;
+			} else if (inner instanceof DERPrintableString) {
+				print = (DERPrintableString) inner;
+			} else if (inner instanceof DERUTF8String) {
+				utf8 = (DERUTF8String) inner;
+			} else if (inner instanceof DERIA5String) {
+				ia5 = (DERIA5String) inner;
 			}
 		}
 
@@ -134,34 +148,6 @@ public class OIDGeneric {
 			}
 		}
 
-		oidGenerico.initialize();
-
-		return oidGenerico;
-	}
-
-	/**
-	 * @param der Content of Certificate on sun.security.util.DerValue format
-	 * @return OIDGenerico current instance
-	 * @throws IOException input/output exception
-	 * @throws Exception   general exception
-	 */
-	public static OIDGeneric getInstance(DerValue der) throws IOException, Exception {
-		OtherName on = new OtherName(der);
-		String className = getPackageName() + on.getOID().toString().replaceAll("[.]", "_");
-
-		OIDGeneric oidGenerico;
-		try {
-			oidGenerico = (OIDGeneric) Class.forName(className).newInstance();
-		} catch (InstantiationException e) {
-			throw new Exception(coreMessagesBundle.getString("error.class.instance", className), e);
-		} catch (IllegalAccessException e) {
-			throw new Exception(coreMessagesBundle.getString("error.class.illegal.access", className), e);
-		} catch (ClassNotFoundException e) {
-			oidGenerico = new OIDGeneric();
-		}
-
-		oidGenerico.oid = on.getOID().toString();
-		oidGenerico.data = new String(on.getNameValue()).substring(6);
 		oidGenerico.initialize();
 
 		return oidGenerico;

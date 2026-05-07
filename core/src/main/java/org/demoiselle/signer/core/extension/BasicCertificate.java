@@ -529,8 +529,16 @@ public class BasicCertificate {
 			if (sequence == null || sequence.size() == 0) {
 				return null;
 			}
-			DERTaggedObject taggedObject = (DERTaggedObject) sequence.getObjectAt(0);
-			DEROctetString oct = (DEROctetString) taggedObject.getBaseObject();
+			org.bouncycastle.asn1.ASN1Primitive obj = sequence.getObjectAt(0).toASN1Primitive();
+			org.bouncycastle.asn1.ASN1Primitive inner = obj;
+			if (obj instanceof org.bouncycastle.asn1.ASN1TaggedObject) {
+				org.bouncycastle.asn1.ASN1TaggedObject tagged = (org.bouncycastle.asn1.ASN1TaggedObject) obj;
+				org.bouncycastle.asn1.ASN1Object baseObj = tagged.getBaseObject();
+				if (baseObj != null) {
+					inner = baseObj.toASN1Primitive();
+				}
+			}
+			DEROctetString oct = (DEROctetString) inner;
 			return toString(oct.getOctets());
 		} catch (Exception error) {
 			logger.error(error.getMessage());

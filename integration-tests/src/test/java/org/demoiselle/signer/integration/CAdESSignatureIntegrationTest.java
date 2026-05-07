@@ -18,7 +18,7 @@ import org.junit.Test;
 import org.junit.BeforeClass;
 
 /**
- * Testes de integração para assinatura CAdES - Java 11+
+ * Testes de integração para assinatura CAdES - Java 21+
  * 
  * Valida funcionalidade completa da biblioteca após migração
  * 
@@ -234,7 +234,7 @@ public class CAdESSignatureIntegrationTest {
             majorVersion = Integer.parseInt(javaVersion.split("\\.")[0]);
         }
         
-        assertTrue("Java version deve ser >= 11", majorVersion >= 11);
+        assertTrue("Java version deve ser >= 21", majorVersion >= 21);
         System.out.println("✅ Versão compatível: Java " + majorVersion);
     }
     
@@ -264,7 +264,7 @@ public class CAdESSignatureIntegrationTest {
             "-keystore", ksFile.getAbsolutePath(),
             "-storepass", "changeit",
             "-keypass", "changeit",
-            "-dname", "CN=Test User Java 11, OU=Integration Tests, O=Demoiselle Signer, L=Brasilia, ST=DF, C=BR"
+            "-dname", "CN=Test User Java 21, OU=Integration Tests, O=Demoiselle Signer, L=Brasilia, ST=DF, C=BR"
         );
         
         Process process = pb.start();

@@ -51,8 +51,6 @@ import org.demoiselle.signer.cryptography.CryptographyException;
 import org.demoiselle.signer.cryptography.SymmetricAlgorithmEnum;
 import org.demoiselle.signer.cryptography.util.MessagesBundle;
 
-import com.sun.crypto.provider.SunJCE;
-
 /**
  * FIXME maybe it is better as a value object
  * Standard implementation for the @link Cryptography interface
@@ -65,7 +63,7 @@ public class CriyptographyImpl implements Cryptography {
 	private Integer size;
 
 	// FIXME is it needed? this is the default one?
-	private Provider provider = new SunJCE();
+	private Provider provider = Security.getProvider("SUN");
 
 	private Key key;
 	private Cipher cipher;

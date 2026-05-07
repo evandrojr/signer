@@ -110,9 +110,9 @@
 	<properties>
 		<license.header>./licence-lgpl</license.header>
 		<project.alias>signer</project.alias>
-		<java.version>11</java.version>
-		<maven.compiler.source>11</maven.compiler.source>
-		<maven.compiler.target>11</maven.compiler.target>
+		<java.version>21</java.version>
+		<maven.compiler.source>21</maven.compiler.source>
+		<maven.compiler.target>21</maven.compiler.target>
 		<project.scm.id>github</project.scm.id>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<github.global.server>github</github.global.server>
@@ -127,18 +127,25 @@
 				<version>3.11.0</version>
 				<configuration>
 					<showDeprecation>true</showDeprecation>
-					<source>11</source>
-					<target>11</target>
+					<fork>true</fork>
+					<source>21</source>
+					<target>21</target>
 					<encoding>UTF-8</encoding>
 					<compilerArgs>
+						<arg>--add-modules</arg>
+						<arg>jdk.crypto.cryptoki</arg>
+						<arg>--add-modules</arg>
+						<arg>jdk.crypto.cryptography</arg>
 						<arg>--add-exports</arg>
-						<arg>java.base/sun.security.util=ALL-UNNAMED</arg>
+						<arg>jdk.crypto.cryptoki/sun.security.pkcs11.wrapper=ALL-UNNAMED</arg>
+						<arg>--add-exports</arg>
+						<arg>jdk.crypto.cryptoki/sun.security.pkcs11=ALL-UNNAMED</arg>
 						<arg>--add-exports</arg>
 						<arg>java.base/sun.security.x509=ALL-UNNAMED</arg>
 						<arg>--add-exports</arg>
-						<arg>java.base/sun.security.pkcs11=ALL-UNNAMED</arg>
+						<arg>java.base/sun.security.util=ALL-UNNAMED</arg>
 						<arg>--add-exports</arg>
-						<arg>java.base/com.sun.crypto.provider=ALL-UNNAMED</arg>
+						<arg>jdk.crypto.cryptography/com.sun.crypto.provider=ALL-UNNAMED</arg>
 					</compilerArgs>
 				</configuration>
 			</plugin>
@@ -179,10 +186,12 @@
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>3.0.1</version>
 				<configuration>
-					<source>1.7</source>
+					<source>21</source>
 					<links>
-						<link>https://docs.oracle.com/javase/7/docs/api/</link>
+						<link>https://docs.oracle.com/en/java/javase/21/docs/api/</link>
 					</links>
+					<!-- Disable javadoc generation in CI/compile to avoid access errors to internal packages -->
+					<skip>true</skip>
 				</configuration>
 				<executions>
 					<execution>
