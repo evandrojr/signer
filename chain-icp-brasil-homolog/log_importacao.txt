@@ -1,0 +1,211 @@
+Link encontrado: https://repositoriohom.serpro.gov.br/cadeias/accaixaint.p7b
+Link encontrado: https://repositoriohom.serpro.gov.br/cadeias/accmb4h1.p7b
+Link encontrado: https://repositoriohom.serpro.gov.br/cadeias/acmre.p7b
+Link encontrado: https://repositoriohom.serpro.gov.br/cadeias/acpr4h3.p7b
+Link encontrado: https://repositoriohom.serpro.gov.br/cadeias/acprv6hom.p7b
+Link encontrado: https://repositoriohom.serpro.gov.br/cadeias/acserprorfbv6hom.p7b
+Link encontrado: https://repositoriohom.serpro.gov.br/cadeias/acserprohomv2.p7b
+Link encontrado: https://repositoriohom.serpro.gov.br/cadeias/acsebraerfbh2.p7b
+Link encontrado: https://repositoriohom.serpro.gov.br/cadeias/alternativeh2.p7b
+Link encontrado: https://repositoriohom.serpro.gov.br/cadeias/brasilcertech2.p7b
+Link encontrado: https://repositoriohom.serpro.gov.br/cadeias/certfyh2.p7b
+Link encontrado: https://repositoriohom.serpro.gov.br/cadeias/infocomexh2.p7b
+Link encontrado: https://repositoriohom.serpro.gov.br/cadeias/inviah2.p7b
+Link encontrado: https://repositoriohom.serpro.gov.br/cadeias/masterid.p7b
+Link encontrado: https://repositoriohom.serpro.gov.br/cadeias/primecerth2.p7b
+Link encontrado: https://repositoriohom.serpro.gov.br/cadeias/procertih2.p7b
+Link encontrado: https://repositoriohom.serpro.gov.br/cadeias/safeidbrasilh2.p7b
+Link encontrado: https://repositoriohom.serpro.gov.br/cadeias/sdih2.p7b
+Link encontrado: https://repositoriohom.serpro.gov.br/cadeias/sefazceh2.p7b
+Link encontrado: https://repositoriohom.serpro.gov.br/cadeias/serproacf5h1.p7b
+Link encontrado: https://repositoriohom.serpro.gov.br/cadeias/serproacfhomv6.p7b
+Link encontrado: https://repositoriohom.serpro.gov.br/cadeias/serproacfsslh1.p7b
+Link encontrado: https://repositoriohom.serpro.gov.br/cadeias/serproacfsslhomv2.p7b
+Link encontrado: https://repositoriohom.serpro.gov.br/cadeias/serprorfbh1.p7b
+Link encontrado: https://repositoriohom.serpro.gov.br/cadeias/serprojus5h2.p7b
+Link encontrado: https://repositoriohom.serpro.gov.br/cadeias/serprorfbhomv6.p7b
+Link encontrado: https://repositoriohom.serpro.gov.br/cadeias/serprorfbsslh1.p7b
+Link encontrado: https://repositoriohom.serpro.gov.br/cadeias/serprorfbsslhomv2.p7b
+Link encontrado: https://repositoriohom.serpro.gov.br/cadeias/serprosslh1.p7b
+Link encontrado: https://repositoriohom.serpro.gov.br/cadeias/sirius.p7b
+Link encontrado: https://repositoriohom.serpro.gov.br/cadeias/zapsign.p7b
+[OK] Download: https://repositoriohom.serpro.gov.br/cadeias/accaixaint.p7b -> novosp7bs/accaixaint.p7b
+[OK] Convertido via OpenSSL: novosp7bs/accaixaint.p7b -> novascadeias/accaixaint_1.crt
+[OK] Convertido via OpenSSL: novosp7bs/accaixaint.p7b -> novascadeias/accaixaint_2.crt
+
+Nenhum erro de conversão p7b encontrado.
+[OK] Download: https://repositoriohom.serpro.gov.br/cadeias/accmb4h1.p7b -> novosp7bs/accmb4h1.p7b
+[OK] Convertido via OpenSSL: novosp7bs/accmb4h1.p7b -> novascadeias/accmb4h1_1.crt
+[OK] Convertido via OpenSSL: novosp7bs/accmb4h1.p7b -> novascadeias/accmb4h1_2.crt
+[OK] Convertido via OpenSSL: novosp7bs/accmb4h1.p7b -> novascadeias/accmb4h1_3.crt
+
+Nenhum erro de conversão p7b encontrado.
+[OK] Download: https://repositoriohom.serpro.gov.br/cadeias/acmre.p7b -> novosp7bs/acmre.p7b
+[OK] Convertido via OpenSSL: novosp7bs/acmre.p7b -> novascadeias/acmre_1.crt
+[OK] Convertido via OpenSSL: novosp7bs/acmre.p7b -> novascadeias/acmre_2.crt
+
+Nenhum erro de conversão p7b encontrado.
+[OK] Download: https://repositoriohom.serpro.gov.br/cadeias/acpr4h3.p7b -> novosp7bs/acpr4h3.p7b
+[OK] Convertido via OpenSSL: novosp7bs/acpr4h3.p7b -> novascadeias/acpr4h3_1.crt
+[OK] Convertido via OpenSSL: novosp7bs/acpr4h3.p7b -> novascadeias/acpr4h3_2.crt
+[OK] Convertido via OpenSSL: novosp7bs/acpr4h3.p7b -> novascadeias/acpr4h3_3.crt
+
+Nenhum erro de conversão p7b encontrado.
+[OK] Download: https://repositoriohom.serpro.gov.br/cadeias/acprv6hom.p7b -> novosp7bs/acprv6hom.p7b
+[OK] Convertido via OpenSSL: novosp7bs/acprv6hom.p7b -> novascadeias/acprv6hom_1.crt
+[OK] Convertido via OpenSSL: novosp7bs/acprv6hom.p7b -> novascadeias/acprv6hom_2.crt
+[OK] Convertido via OpenSSL: novosp7bs/acprv6hom.p7b -> novascadeias/acprv6hom_3.crt
+
+Nenhum erro de conversão p7b encontrado.
+[OK] Download: https://repositoriohom.serpro.gov.br/cadeias/acserprorfbv6hom.p7b -> novosp7bs/acserprorfbv6hom.p7b
+[OK] Convertido via OpenSSL: novosp7bs/acserprorfbv6hom.p7b -> novascadeias/acserprorfbv6hom_1.crt
+[OK] Convertido via OpenSSL: novosp7bs/acserprorfbv6hom.p7b -> novascadeias/acserprorfbv6hom_2.crt
+[OK] Convertido via OpenSSL: novosp7bs/acserprorfbv6hom.p7b -> novascadeias/acserprorfbv6hom_3.crt
+
+Nenhum erro de conversão p7b encontrado.
+[OK] Download: https://repositoriohom.serpro.gov.br/cadeias/acserprohomv2.p7b -> novosp7bs/acserprohomv2.p7b
+[OK] Convertido via OpenSSL: novosp7bs/acserprohomv2.p7b -> novascadeias/acserprohomv2_1.crt
+[OK] Convertido via OpenSSL: novosp7bs/acserprohomv2.p7b -> novascadeias/acserprohomv2_2.crt
+
+Nenhum erro de conversão p7b encontrado.
+[OK] Download: https://repositoriohom.serpro.gov.br/cadeias/acsebraerfbh2.p7b -> novosp7bs/acsebraerfbh2.p7b
+[OK] Convertido via OpenSSL: novosp7bs/acsebraerfbh2.p7b -> novascadeias/acsebraerfbh2_1.crt
+[OK] Convertido via OpenSSL: novosp7bs/acsebraerfbh2.p7b -> novascadeias/acsebraerfbh2_2.crt
+[OK] Convertido via OpenSSL: novosp7bs/acsebraerfbh2.p7b -> novascadeias/acsebraerfbh2_3.crt
+
+Nenhum erro de conversão p7b encontrado.
+[OK] Download: https://repositoriohom.serpro.gov.br/cadeias/alternativeh2.p7b -> novosp7bs/alternativeh2.p7b
+[OK] Convertido via OpenSSL: novosp7bs/alternativeh2.p7b -> novascadeias/alternativeh2_1.crt
+[OK] Convertido via OpenSSL: novosp7bs/alternativeh2.p7b -> novascadeias/alternativeh2_2.crt
+[OK] Convertido via OpenSSL: novosp7bs/alternativeh2.p7b -> novascadeias/alternativeh2_3.crt
+
+Nenhum erro de conversão p7b encontrado.
+[OK] Download: https://repositoriohom.serpro.gov.br/cadeias/brasilcertech2.p7b -> novosp7bs/brasilcertech2.p7b
+[OK] Convertido via OpenSSL: novosp7bs/brasilcertech2.p7b -> novascadeias/brasilcertech2_1.crt
+[OK] Convertido via OpenSSL: novosp7bs/brasilcertech2.p7b -> novascadeias/brasilcertech2_2.crt
+[OK] Convertido via OpenSSL: novosp7bs/brasilcertech2.p7b -> novascadeias/brasilcertech2_3.crt
+
+Nenhum erro de conversão p7b encontrado.
+[OK] Download: https://repositoriohom.serpro.gov.br/cadeias/certfyh2.p7b -> novosp7bs/certfyh2.p7b
+[OK] Convertido via OpenSSL: novosp7bs/certfyh2.p7b -> novascadeias/certfyh2_1.crt
+[OK] Convertido via OpenSSL: novosp7bs/certfyh2.p7b -> novascadeias/certfyh2_2.crt
+[OK] Convertido via OpenSSL: novosp7bs/certfyh2.p7b -> novascadeias/certfyh2_3.crt
+
+Nenhum erro de conversão p7b encontrado.
+[OK] Download: https://repositoriohom.serpro.gov.br/cadeias/infocomexh2.p7b -> novosp7bs/infocomexh2.p7b
+[OK] Convertido via OpenSSL: novosp7bs/infocomexh2.p7b -> novascadeias/infocomexh2_1.crt
+[OK] Convertido via OpenSSL: novosp7bs/infocomexh2.p7b -> novascadeias/infocomexh2_2.crt
+[OK] Convertido via OpenSSL: novosp7bs/infocomexh2.p7b -> novascadeias/infocomexh2_3.crt
+
+Nenhum erro de conversão p7b encontrado.
+[OK] Download: https://repositoriohom.serpro.gov.br/cadeias/inviah2.p7b -> novosp7bs/inviah2.p7b
+[OK] Convertido via OpenSSL: novosp7bs/inviah2.p7b -> novascadeias/inviah2_1.crt
+[OK] Convertido via OpenSSL: novosp7bs/inviah2.p7b -> novascadeias/inviah2_2.crt
+[OK] Convertido via OpenSSL: novosp7bs/inviah2.p7b -> novascadeias/inviah2_3.crt
+
+Nenhum erro de conversão p7b encontrado.
+[OK] Download: https://repositoriohom.serpro.gov.br/cadeias/masterid.p7b -> novosp7bs/masterid.p7b
+[OK] Convertido via OpenSSL: novosp7bs/masterid.p7b -> novascadeias/masterid_1.crt
+[OK] Convertido via OpenSSL: novosp7bs/masterid.p7b -> novascadeias/masterid_2.crt
+[OK] Convertido via OpenSSL: novosp7bs/masterid.p7b -> novascadeias/masterid_3.crt
+
+Nenhum erro de conversão p7b encontrado.
+[OK] Download: https://repositoriohom.serpro.gov.br/cadeias/primecerth2.p7b -> novosp7bs/primecerth2.p7b
+[OK] Convertido via OpenSSL: novosp7bs/primecerth2.p7b -> novascadeias/primecerth2_1.crt
+[OK] Convertido via OpenSSL: novosp7bs/primecerth2.p7b -> novascadeias/primecerth2_2.crt
+[OK] Convertido via OpenSSL: novosp7bs/primecerth2.p7b -> novascadeias/primecerth2_3.crt
+
+Nenhum erro de conversão p7b encontrado.
+[OK] Download: https://repositoriohom.serpro.gov.br/cadeias/procertih2.p7b -> novosp7bs/procertih2.p7b
+[OK] Convertido via OpenSSL: novosp7bs/procertih2.p7b -> novascadeias/procertih2_1.crt
+[OK] Convertido via OpenSSL: novosp7bs/procertih2.p7b -> novascadeias/procertih2_2.crt
+[OK] Convertido via OpenSSL: novosp7bs/procertih2.p7b -> novascadeias/procertih2_3.crt
+
+Nenhum erro de conversão p7b encontrado.
+[OK] Download: https://repositoriohom.serpro.gov.br/cadeias/safeidbrasilh2.p7b -> novosp7bs/safeidbrasilh2.p7b
+[OK] Convertido via OpenSSL: novosp7bs/safeidbrasilh2.p7b -> novascadeias/safeidbrasilh2_1.crt
+[OK] Convertido via OpenSSL: novosp7bs/safeidbrasilh2.p7b -> novascadeias/safeidbrasilh2_2.crt
+[OK] Convertido via OpenSSL: novosp7bs/safeidbrasilh2.p7b -> novascadeias/safeidbrasilh2_3.crt
+
+Nenhum erro de conversão p7b encontrado.
+[OK] Download: https://repositoriohom.serpro.gov.br/cadeias/sdih2.p7b -> novosp7bs/sdih2.p7b
+[OK] Convertido via OpenSSL: novosp7bs/sdih2.p7b -> novascadeias/sdih2_1.crt
+[OK] Convertido via OpenSSL: novosp7bs/sdih2.p7b -> novascadeias/sdih2_2.crt
+[OK] Convertido via OpenSSL: novosp7bs/sdih2.p7b -> novascadeias/sdih2_3.crt
+
+Nenhum erro de conversão p7b encontrado.
+[OK] Download: https://repositoriohom.serpro.gov.br/cadeias/sefazceh2.p7b -> novosp7bs/sefazceh2.p7b
+[OK] Convertido via OpenSSL: novosp7bs/sefazceh2.p7b -> novascadeias/sefazceh2_1.crt
+[OK] Convertido via OpenSSL: novosp7bs/sefazceh2.p7b -> novascadeias/sefazceh2_2.crt
+[OK] Convertido via OpenSSL: novosp7bs/sefazceh2.p7b -> novascadeias/sefazceh2_3.crt
+
+Nenhum erro de conversão p7b encontrado.
+[OK] Download: https://repositoriohom.serpro.gov.br/cadeias/serproacf5h1.p7b -> novosp7bs/serproacf5h1.p7b
+[OK] Convertido via OpenSSL: novosp7bs/serproacf5h1.p7b -> novascadeias/serproacf5h1_1.crt
+[OK] Convertido via OpenSSL: novosp7bs/serproacf5h1.p7b -> novascadeias/serproacf5h1_2.crt
+[OK] Convertido via OpenSSL: novosp7bs/serproacf5h1.p7b -> novascadeias/serproacf5h1_3.crt
+
+Nenhum erro de conversão p7b encontrado.
+[OK] Download: https://repositoriohom.serpro.gov.br/cadeias/serproacfhomv6.p7b -> novosp7bs/serproacfhomv6.p7b
+[OK] Convertido via OpenSSL: novosp7bs/serproacfhomv6.p7b -> novascadeias/serproacfhomv6_1.crt
+[OK] Convertido via OpenSSL: novosp7bs/serproacfhomv6.p7b -> novascadeias/serproacfhomv6_2.crt
+[OK] Convertido via OpenSSL: novosp7bs/serproacfhomv6.p7b -> novascadeias/serproacfhomv6_3.crt
+
+Nenhum erro de conversão p7b encontrado.
+[OK] Download: https://repositoriohom.serpro.gov.br/cadeias/serproacfsslh1.p7b -> novosp7bs/serproacfsslh1.p7b
+[OK] Convertido via OpenSSL: novosp7bs/serproacfsslh1.p7b -> novascadeias/serproacfsslh1_1.crt
+[OK] Convertido via OpenSSL: novosp7bs/serproacfsslh1.p7b -> novascadeias/serproacfsslh1_2.crt
+[OK] Convertido via OpenSSL: novosp7bs/serproacfsslh1.p7b -> novascadeias/serproacfsslh1_3.crt
+
+Nenhum erro de conversão p7b encontrado.
+[OK] Download: https://repositoriohom.serpro.gov.br/cadeias/serproacfsslhomv2.p7b -> novosp7bs/serproacfsslhomv2.p7b
+[OK] Convertido via OpenSSL: novosp7bs/serproacfsslhomv2.p7b -> novascadeias/serproacfsslhomv2_1.crt
+[OK] Convertido via OpenSSL: novosp7bs/serproacfsslhomv2.p7b -> novascadeias/serproacfsslhomv2_2.crt
+[OK] Convertido via OpenSSL: novosp7bs/serproacfsslhomv2.p7b -> novascadeias/serproacfsslhomv2_3.crt
+
+Nenhum erro de conversão p7b encontrado.
+[OK] Download: https://repositoriohom.serpro.gov.br/cadeias/serprorfbh1.p7b -> novosp7bs/serprorfbh1.p7b
+[OK] Convertido via OpenSSL: novosp7bs/serprorfbh1.p7b -> novascadeias/serprorfbh1_1.crt
+[OK] Convertido via OpenSSL: novosp7bs/serprorfbh1.p7b -> novascadeias/serprorfbh1_2.crt
+[OK] Convertido via OpenSSL: novosp7bs/serprorfbh1.p7b -> novascadeias/serprorfbh1_3.crt
+
+Nenhum erro de conversão p7b encontrado.
+[OK] Download: https://repositoriohom.serpro.gov.br/cadeias/serprojus5h2.p7b -> novosp7bs/serprojus5h2.p7b
+[OK] Convertido via OpenSSL: novosp7bs/serprojus5h2.p7b -> novascadeias/serprojus5h2_1.crt
+[OK] Convertido via OpenSSL: novosp7bs/serprojus5h2.p7b -> novascadeias/serprojus5h2_2.crt
+[OK] Convertido via OpenSSL: novosp7bs/serprojus5h2.p7b -> novascadeias/serprojus5h2_3.crt
+
+Nenhum erro de conversão p7b encontrado.
+[OK] Download: https://repositoriohom.serpro.gov.br/cadeias/serprorfbhomv6.p7b -> novosp7bs/serprorfbhomv6.p7b
+[OK] Convertido via OpenSSL: novosp7bs/serprorfbhomv6.p7b -> novascadeias/serprorfbhomv6_1.crt
+[OK] Convertido via OpenSSL: novosp7bs/serprorfbhomv6.p7b -> novascadeias/serprorfbhomv6_2.crt
+[OK] Convertido via OpenSSL: novosp7bs/serprorfbhomv6.p7b -> novascadeias/serprorfbhomv6_3.crt
+
+Nenhum erro de conversão p7b encontrado.
+[OK] Download: https://repositoriohom.serpro.gov.br/cadeias/serprorfbsslh1.p7b -> novosp7bs/serprorfbsslh1.p7b
+[OK] Convertido via OpenSSL: novosp7bs/serprorfbsslh1.p7b -> novascadeias/serprorfbsslh1_1.crt
+[OK] Convertido via OpenSSL: novosp7bs/serprorfbsslh1.p7b -> novascadeias/serprorfbsslh1_2.crt
+[OK] Convertido via OpenSSL: novosp7bs/serprorfbsslh1.p7b -> novascadeias/serprorfbsslh1_3.crt
+
+Nenhum erro de conversão p7b encontrado.
+[OK] Download: https://repositoriohom.serpro.gov.br/cadeias/serprorfbsslhomv2.p7b -> novosp7bs/serprorfbsslhomv2.p7b
+[OK] Convertido via OpenSSL: novosp7bs/serprorfbsslhomv2.p7b -> novascadeias/serprorfbsslhomv2_1.crt
+[OK] Convertido via OpenSSL: novosp7bs/serprorfbsslhomv2.p7b -> novascadeias/serprorfbsslhomv2_2.crt
+[OK] Convertido via OpenSSL: novosp7bs/serprorfbsslhomv2.p7b -> novascadeias/serprorfbsslhomv2_3.crt
+
+Nenhum erro de conversão p7b encontrado.
+[OK] Download: https://repositoriohom.serpro.gov.br/cadeias/serprosslh1.p7b -> novosp7bs/serprosslh1.p7b
+[OK] Extraído manualmente: novosp7bs/serprosslh1.p7b -> novascadeias/serprosslh1_1.crt
+[OK] Extraído manualmente: novosp7bs/serprosslh1.p7b -> novascadeias/serprosslh1_2.crt
+[OK] Download: https://repositoriohom.serpro.gov.br/cadeias/sirius.p7b -> novosp7bs/sirius.p7b
+[OK] Convertido via OpenSSL: novosp7bs/sirius.p7b -> novascadeias/sirius_1.crt
+[OK] Convertido via OpenSSL: novosp7bs/sirius.p7b -> novascadeias/sirius_2.crt
+[OK] Convertido via OpenSSL: novosp7bs/sirius.p7b -> novascadeias/sirius_3.crt
+
+Nenhum erro de conversão p7b encontrado.
+[OK] Download: https://repositoriohom.serpro.gov.br/cadeias/zapsign.p7b -> novosp7bs/zapsign.p7b
+[OK] Convertido via OpenSSL: novosp7bs/zapsign.p7b -> novascadeias/zapsign_1.crt
+[OK] Convertido via OpenSSL: novosp7bs/zapsign.p7b -> novascadeias/zapsign_2.crt
+[OK] Convertido via OpenSSL: novosp7bs/zapsign.p7b -> novascadeias/zapsign_3.crt
+
+Nenhum erro de conversão p7b encontrado.

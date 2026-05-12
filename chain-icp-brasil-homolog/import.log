@@ -1,0 +1,283 @@
+2025/07/16 14:19:23 Starting certificate import process...
+2025/07/16 14:19:23 Removed old keystore 'cadeiasicpbrasil-HOMOLOGACAO.bks'.
+2025/07/16 14:19:23 
+Processando certificado: accaixaint_1.crt
+2025/07/16 14:19:23 Certificado importado com sucesso: accaixaint_1.crt
+2025/07/16 14:19:23 
+Processando certificado: accaixaint_2.crt
+2025/07/16 14:19:24 Certificado importado com sucesso: accaixaint_2.crt
+2025/07/16 14:19:24 
+Processando certificado: accmb4h1_1.crt
+2025/07/16 14:19:24 Certificado importado com sucesso: accmb4h1_1.crt
+2025/07/16 14:19:24 
+Processando certificado: accmb4h1_2.crt
+2025/07/16 14:19:25 Certificado importado com sucesso: accmb4h1_2.crt
+2025/07/16 14:19:25 
+Processando certificado: accmb4h1_3.crt
+2025/07/16 14:19:25 Certificado importado com sucesso: accmb4h1_3.crt
+2025/07/16 14:19:25 
+Processando certificado: acmre_1.crt
+2025/07/16 14:19:26 Falha ao importar acmre_1.crt: erro de keytool: java.lang.Exception: A entrada não é um certificado X.509
+2025/07/16 14:19:26 
+Processando certificado: acmre_2.crt
+2025/07/16 14:19:27 Falha ao importar acmre_2.crt: erro de keytool: java.lang.Exception: A entrada não é um certificado X.509
+2025/07/16 14:19:27 
+Processando certificado: acpr4h3_1.crt
+2025/07/16 14:19:27 Certificado importado com sucesso: acpr4h3_1.crt
+2025/07/16 14:19:27 
+Processando certificado: acpr4h3_2.crt
+2025/07/16 14:19:28 Certificado importado com sucesso: acpr4h3_2.crt
+2025/07/16 14:19:28 
+Processando certificado: acpr4h3_3.crt
+2025/07/16 14:19:28 Certificado importado com sucesso: acpr4h3_3.crt
+2025/07/16 14:19:28 
+Processando certificado: acprv6hom_1.crt
+2025/07/16 14:19:29 Certificado importado com sucesso: acprv6hom_1.crt
+2025/07/16 14:19:29 
+Processando certificado: acprv6hom_2.crt
+2025/07/16 14:19:30 Certificado importado com sucesso: acprv6hom_2.crt
+2025/07/16 14:19:30 
+Processando certificado: acprv6hom_3.crt
+2025/07/16 14:19:30 Certificado importado com sucesso: acprv6hom_3.crt
+2025/07/16 14:19:30 
+Processando certificado: acsebraerfbh2_1.crt
+2025/07/16 14:19:31 Certificado importado com sucesso: acsebraerfbh2_1.crt
+2025/07/16 14:19:31 
+Processando certificado: acsebraerfbh2_2.crt
+2025/07/16 14:19:31 Certificado importado com sucesso: acsebraerfbh2_2.crt
+2025/07/16 14:19:31 
+Processando certificado: acsebraerfbh2_3.crt
+2025/07/16 14:19:32 Certificado importado com sucesso: acsebraerfbh2_3.crt
+2025/07/16 14:19:32 
+Processando certificado: acserprohomv2_1.crt
+2025/07/16 14:19:32 Certificado importado com sucesso: acserprohomv2_1.crt
+2025/07/16 14:19:32 
+Processando certificado: acserprohomv2_2.crt
+2025/07/16 14:19:33 Certificado importado com sucesso: acserprohomv2_2.crt
+2025/07/16 14:19:33 
+Processando certificado: acserprorfbv6hom_1.crt
+2025/07/16 14:19:34 Certificado importado com sucesso: acserprorfbv6hom_1.crt
+2025/07/16 14:19:34 
+Processando certificado: acserprorfbv6hom_2.crt
+2025/07/16 14:19:34 Certificado importado com sucesso: acserprorfbv6hom_2.crt
+2025/07/16 14:19:34 
+Processando certificado: acserprorfbv6hom_3.crt
+2025/07/16 14:19:35 Certificado importado com sucesso: acserprorfbv6hom_3.crt
+2025/07/16 14:19:35 
+Processando certificado: alternativeh2_1.crt
+2025/07/16 14:19:36 Certificado importado com sucesso: alternativeh2_1.crt
+2025/07/16 14:19:36 
+Processando certificado: alternativeh2_2.crt
+2025/07/16 14:19:36 Certificado importado com sucesso: alternativeh2_2.crt
+2025/07/16 14:19:36 
+Processando certificado: alternativeh2_3.crt
+2025/07/16 14:19:37 Certificado importado com sucesso: alternativeh2_3.crt
+2025/07/16 14:19:37 
+Processando certificado: brasilcertech2_1.crt
+2025/07/16 14:19:38 Certificado importado com sucesso: brasilcertech2_1.crt
+2025/07/16 14:19:38 
+Processando certificado: brasilcertech2_2.crt
+2025/07/16 14:19:38 Certificado importado com sucesso: brasilcertech2_2.crt
+2025/07/16 14:19:38 
+Processando certificado: brasilcertech2_3.crt
+2025/07/16 14:19:39 Certificado importado com sucesso: brasilcertech2_3.crt
+2025/07/16 14:19:39 
+Processando certificado: certfyh2_1.crt
+2025/07/16 14:19:39 Certificado importado com sucesso: certfyh2_1.crt
+2025/07/16 14:19:39 
+Processando certificado: certfyh2_2.crt
+2025/07/16 14:19:40 Certificado importado com sucesso: certfyh2_2.crt
+2025/07/16 14:19:40 
+Processando certificado: certfyh2_3.crt
+2025/07/16 14:19:41 Certificado importado com sucesso: certfyh2_3.crt
+2025/07/16 14:19:41 
+Processando certificado: infocomexh2_1.crt
+2025/07/16 14:19:42 Certificado importado com sucesso: infocomexh2_1.crt
+2025/07/16 14:19:42 
+Processando certificado: infocomexh2_2.crt
+2025/07/16 14:19:42 Certificado importado com sucesso: infocomexh2_2.crt
+2025/07/16 14:19:42 
+Processando certificado: infocomexh2_3.crt
+2025/07/16 14:19:43 Certificado importado com sucesso: infocomexh2_3.crt
+2025/07/16 14:19:43 
+Processando certificado: inviah2_1.crt
+2025/07/16 14:19:43 Certificado importado com sucesso: inviah2_1.crt
+2025/07/16 14:19:43 
+Processando certificado: inviah2_2.crt
+2025/07/16 14:19:44 Certificado importado com sucesso: inviah2_2.crt
+2025/07/16 14:19:44 
+Processando certificado: inviah2_3.crt
+2025/07/16 14:19:45 Certificado importado com sucesso: inviah2_3.crt
+2025/07/16 14:19:45 
+Processando certificado: masterid_1.crt
+2025/07/16 14:19:45 Certificado importado com sucesso: masterid_1.crt
+2025/07/16 14:19:45 
+Processando certificado: masterid_2.crt
+2025/07/16 14:19:46 Certificado importado com sucesso: masterid_2.crt
+2025/07/16 14:19:46 
+Processando certificado: masterid_3.crt
+2025/07/16 14:19:47 Certificado importado com sucesso: masterid_3.crt
+2025/07/16 14:19:47 
+Processando certificado: primecerth2_1.crt
+2025/07/16 14:19:48 Certificado importado com sucesso: primecerth2_1.crt
+2025/07/16 14:19:48 
+Processando certificado: primecerth2_2.crt
+2025/07/16 14:19:48 Certificado importado com sucesso: primecerth2_2.crt
+2025/07/16 14:19:48 
+Processando certificado: primecerth2_3.crt
+2025/07/16 14:19:49 Certificado importado com sucesso: primecerth2_3.crt
+2025/07/16 14:19:49 
+Processando certificado: procertih2_1.crt
+2025/07/16 14:19:49 Certificado importado com sucesso: procertih2_1.crt
+2025/07/16 14:19:49 
+Processando certificado: procertih2_2.crt
+2025/07/16 14:19:50 Certificado importado com sucesso: procertih2_2.crt
+2025/07/16 14:19:50 
+Processando certificado: procertih2_3.crt
+2025/07/16 14:19:50 Certificado importado com sucesso: procertih2_3.crt
+2025/07/16 14:19:50 
+Processando certificado: safeidbrasilh2_1.crt
+2025/07/16 14:19:51 Certificado importado com sucesso: safeidbrasilh2_1.crt
+2025/07/16 14:19:51 
+Processando certificado: safeidbrasilh2_2.crt
+2025/07/16 14:19:52 Certificado importado com sucesso: safeidbrasilh2_2.crt
+2025/07/16 14:19:52 
+Processando certificado: safeidbrasilh2_3.crt
+2025/07/16 14:19:52 Certificado importado com sucesso: safeidbrasilh2_3.crt
+2025/07/16 14:19:52 
+Processando certificado: sdih2_1.crt
+2025/07/16 14:19:53 Certificado importado com sucesso: sdih2_1.crt
+2025/07/16 14:19:53 
+Processando certificado: sdih2_2.crt
+2025/07/16 14:19:54 Certificado importado com sucesso: sdih2_2.crt
+2025/07/16 14:19:54 
+Processando certificado: sdih2_3.crt
+2025/07/16 14:19:54 Certificado importado com sucesso: sdih2_3.crt
+2025/07/16 14:19:54 
+Processando certificado: sefazceh2_1.crt
+2025/07/16 14:19:55 Certificado importado com sucesso: sefazceh2_1.crt
+2025/07/16 14:19:55 
+Processando certificado: sefazceh2_2.crt
+2025/07/16 14:19:56 Certificado importado com sucesso: sefazceh2_2.crt
+2025/07/16 14:19:56 
+Processando certificado: sefazceh2_3.crt
+2025/07/16 14:19:56 Certificado importado com sucesso: sefazceh2_3.crt
+2025/07/16 14:19:56 
+Processando certificado: serproacf5h1_1.crt
+2025/07/16 14:19:57 Certificado importado com sucesso: serproacf5h1_1.crt
+2025/07/16 14:19:57 
+Processando certificado: serproacf5h1_2.crt
+2025/07/16 14:19:58 Certificado importado com sucesso: serproacf5h1_2.crt
+2025/07/16 14:19:58 
+Processando certificado: serproacf5h1_3.crt
+2025/07/16 14:19:58 Certificado importado com sucesso: serproacf5h1_3.crt
+2025/07/16 14:19:58 
+Processando certificado: serproacfhomv6_1.crt
+2025/07/16 14:19:59 Certificado importado com sucesso: serproacfhomv6_1.crt
+2025/07/16 14:19:59 
+Processando certificado: serproacfhomv6_2.crt
+2025/07/16 14:19:59 Certificado importado com sucesso: serproacfhomv6_2.crt
+2025/07/16 14:19:59 
+Processando certificado: serproacfhomv6_3.crt
+2025/07/16 14:20:00 Certificado importado com sucesso: serproacfhomv6_3.crt
+2025/07/16 14:20:00 
+Processando certificado: serproacfsslh1_1.crt
+2025/07/16 14:20:01 Certificado importado com sucesso: serproacfsslh1_1.crt
+2025/07/16 14:20:01 
+Processando certificado: serproacfsslh1_2.crt
+2025/07/16 14:20:02 Certificado importado com sucesso: serproacfsslh1_2.crt
+2025/07/16 14:20:02 
+Processando certificado: serproacfsslh1_3.crt
+2025/07/16 14:20:02 Certificado importado com sucesso: serproacfsslh1_3.crt
+2025/07/16 14:20:02 
+Processando certificado: serproacfsslhomv2_1.crt
+2025/07/16 14:20:03 Certificado importado com sucesso: serproacfsslhomv2_1.crt
+2025/07/16 14:20:03 
+Processando certificado: serproacfsslhomv2_2.crt
+2025/07/16 14:20:03 Certificado importado com sucesso: serproacfsslhomv2_2.crt
+2025/07/16 14:20:03 
+Processando certificado: serproacfsslhomv2_3.crt
+2025/07/16 14:20:04 Certificado importado com sucesso: serproacfsslhomv2_3.crt
+2025/07/16 14:20:04 
+Processando certificado: serprojus5h2_1.crt
+2025/07/16 14:20:05 Certificado importado com sucesso: serprojus5h2_1.crt
+2025/07/16 14:20:05 
+Processando certificado: serprojus5h2_2.crt
+2025/07/16 14:20:05 Certificado importado com sucesso: serprojus5h2_2.crt
+2025/07/16 14:20:05 
+Processando certificado: serprojus5h2_3.crt
+2025/07/16 14:20:06 Certificado importado com sucesso: serprojus5h2_3.crt
+2025/07/16 14:20:06 
+Processando certificado: serprorfbh1_1.crt
+2025/07/16 14:20:06 Certificado importado com sucesso: serprorfbh1_1.crt
+2025/07/16 14:20:06 
+Processando certificado: serprorfbh1_2.crt
+2025/07/16 14:20:07 Certificado importado com sucesso: serprorfbh1_2.crt
+2025/07/16 14:20:07 
+Processando certificado: serprorfbh1_3.crt
+2025/07/16 14:20:07 Certificado importado com sucesso: serprorfbh1_3.crt
+2025/07/16 14:20:07 
+Processando certificado: serprorfbhomv6_1.crt
+2025/07/16 14:20:08 Certificado importado com sucesso: serprorfbhomv6_1.crt
+2025/07/16 14:20:08 
+Processando certificado: serprorfbhomv6_2.crt
+2025/07/16 14:20:09 Certificado importado com sucesso: serprorfbhomv6_2.crt
+2025/07/16 14:20:09 
+Processando certificado: serprorfbhomv6_3.crt
+2025/07/16 14:20:09 Certificado importado com sucesso: serprorfbhomv6_3.crt
+2025/07/16 14:20:09 
+Processando certificado: serprorfbsslh1_1.crt
+2025/07/16 14:20:10 Certificado importado com sucesso: serprorfbsslh1_1.crt
+2025/07/16 14:20:10 
+Processando certificado: serprorfbsslh1_2.crt
+2025/07/16 14:20:11 Certificado importado com sucesso: serprorfbsslh1_2.crt
+2025/07/16 14:20:11 
+Processando certificado: serprorfbsslh1_3.crt
+2025/07/16 14:20:11 Certificado importado com sucesso: serprorfbsslh1_3.crt
+2025/07/16 14:20:11 
+Processando certificado: serprorfbsslhomv2_1.crt
+2025/07/16 14:20:12 Certificado importado com sucesso: serprorfbsslhomv2_1.crt
+2025/07/16 14:20:12 
+Processando certificado: serprorfbsslhomv2_2.crt
+2025/07/16 14:20:13 Certificado importado com sucesso: serprorfbsslhomv2_2.crt
+2025/07/16 14:20:13 
+Processando certificado: serprorfbsslhomv2_3.crt
+2025/07/16 14:20:14 Certificado importado com sucesso: serprorfbsslhomv2_3.crt
+2025/07/16 14:20:14 
+Processando certificado: serprosslh1_1.crt
+2025/07/16 14:20:14 Certificado importado com sucesso: serprosslh1_1.crt
+2025/07/16 14:20:14 
+Processando certificado: serprosslh1_2.crt
+2025/07/16 14:20:15 Certificado importado com sucesso: serprosslh1_2.crt
+2025/07/16 14:20:15 
+Processando certificado: sirius_1.crt
+2025/07/16 14:20:15 Certificado importado com sucesso: sirius_1.crt
+2025/07/16 14:20:15 
+Processando certificado: sirius_2.crt
+2025/07/16 14:20:16 Certificado importado com sucesso: sirius_2.crt
+2025/07/16 14:20:16 
+Processando certificado: sirius_3.crt
+2025/07/16 14:20:17 Certificado importado com sucesso: sirius_3.crt
+2025/07/16 14:20:17 
+Processando certificado: zapsign_1.crt
+2025/07/16 14:20:17 Certificado importado com sucesso: zapsign_1.crt
+2025/07/16 14:20:17 
+Processando certificado: zapsign_2.crt
+2025/07/16 14:20:18 Certificado importado com sucesso: zapsign_2.crt
+2025/07/16 14:20:18 
+Processando certificado: zapsign_3.crt
+2025/07/16 14:20:19 Certificado importado com sucesso: zapsign_3.crt
+2025/07/16 14:20:19 Starting keystore validation...
+2025/07/16 14:20:19 
+--- Resumo da Importação ---
+2025/07/16 14:20:19 
+--- Erros de Importação ---
+2025/07/16 14:20:19 Certificado: acmre_1.crt | Motivo: erro de keytool: java.lang.Exception: A entrada não é um certificado X.509
+2025/07/16 14:20:19 Certificado: acmre_2.crt | Motivo: erro de keytool: java.lang.Exception: A entrada não é um certificado X.509
+2025/07/16 14:20:19 
+--- TOTAIS FINAIS ---
+2025/07/16 14:20:19 Total de certificados que tentaram ser importados: 89
+2025/07/16 14:20:19 Certificados válidos importados: 87
+2025/07/16 14:20:19 Certificados com erro de importação: 2
+2025/07/16 14:20:19 Certificados com erro de validação: 0
+2025/07/16 14:20:19 --- FIM DO RESUMO ---

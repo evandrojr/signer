@@ -1,0 +1,1138 @@
+2025/07/16 11:50:15 Starting certificate import process...
+2025/07/16 11:50:15 Removed old keystore 'cadeiasicpbrasil.bks'.
+2025/07/16 11:50:15 
+Processando certificado: AC CertiSign.crt
+2025/07/16 11:50:15 Falha ao validar AC CertiSign.crt: Certificado expirado
+2025/07/16 11:50:15 
+Processando certificado: AC-A-DIGIFORTE-RFB.crt
+2025/07/16 11:50:16 Certificado importado com sucesso: AC-A-DIGIFORTE-RFB.crt
+2025/07/16 11:50:16 
+Processando certificado: AC-ACD-v5.crt
+2025/07/16 11:50:16 Certificado importado com sucesso: AC-ACD-v5.crt
+2025/07/16 11:50:16 
+Processando certificado: AC-CERTISIGN-ICP-BRASIL-SSL-G2.crt
+2025/07/16 11:50:17 Certificado importado com sucesso: AC-CERTISIGN-ICP-BRASIL-SSL-G2.crt
+2025/07/16 11:50:17 
+Processando certificado: AC-Certisign-ICP-Brasil-SSL-EV-G3.crt
+2025/07/16 11:50:17 Certificado importado com sucesso: AC-Certisign-ICP-Brasil-SSL-EV-G3.crt
+2025/07/16 11:50:17 
+Processando certificado: AC-Certisign-ICP-Brasil-SSL-EV-G4.crt
+2025/07/16 11:50:18 Certificado importado com sucesso: AC-Certisign-ICP-Brasil-SSL-EV-G4.crt
+2025/07/16 11:50:18 
+Processando certificado: AC-DIGITAL-MAIS.crt
+2025/07/16 11:50:19 Certificado importado com sucesso: AC-DIGITAL-MAIS.crt
+2025/07/16 11:50:19 
+Processando certificado: AC-INFOCO-DIGITAL-v5.crt
+2025/07/16 11:50:19 Certificado importado com sucesso: AC-INFOCO-DIGITAL-v5.crt
+2025/07/16 11:50:19 
+Processando certificado: AC-MRE-V1.crt
+2025/07/16 11:50:20 Falha ao importar AC-MRE-V1.crt: erro de keytool: java.lang.Exception: A entrada não é um certificado X.509
+2025/07/16 11:50:20 
+Processando certificado: AC-PRIME-v5.crt
+2025/07/16 11:50:21 Certificado importado com sucesso: AC-PRIME-v5.crt
+2025/07/16 11:50:21 
+Processando certificado: AC-PRODESP-RFB-v1.crt
+2025/07/16 11:50:21 Certificado importado com sucesso: AC-PRODESP-RFB-v1.crt
+2025/07/16 11:50:21 
+Processando certificado: AC-PRODESP-SP-SSL.crt
+2025/07/16 11:50:22 Certificado importado com sucesso: AC-PRODESP-SP-SSL.crt
+2025/07/16 11:50:22 
+Processando certificado: AC-PRODESP-SP.crt
+2025/07/16 11:50:22 Certificado importado com sucesso: AC-PRODESP-SP.crt
+2025/07/16 11:50:22 
+Processando certificado: AC-QUALITYCERT-v5.crt
+2025/07/16 11:50:23 Certificado importado com sucesso: AC-QUALITYCERT-v5.crt
+2025/07/16 11:50:23 
+Processando certificado: AC-REDEBRASILv5.crt
+2025/07/16 11:50:24 Certificado importado com sucesso: AC-REDEBRASILv5.crt
+2025/07/16 11:50:24 
+Processando certificado: AC-SERPRO-SSLv1-v10.crt
+2025/07/16 11:50:24 Certificado importado com sucesso: AC-SERPRO-SSLv1-v10.crt
+2025/07/16 11:50:24 
+Processando certificado: AC-SOLUTI-CS-EV.crt
+2025/07/16 11:50:25 Certificado importado com sucesso: AC-SOLUTI-CS-EV.crt
+2025/07/16 11:50:25 
+Processando certificado: AC-SOLUTI-SSL-EV-G2.crt
+2025/07/16 11:50:25 Certificado importado com sucesso: AC-SOLUTI-SSL-EV-G2.crt
+2025/07/16 11:50:25 
+Processando certificado: AC-SOLUTI-SSL-EV-G3.crt
+2025/07/16 11:50:26 Certificado importado com sucesso: AC-SOLUTI-SSL-EV-G3.crt
+2025/07/16 11:50:26 
+Processando certificado: AC-SOLUTI-SSL-EV-G4.crt
+2025/07/16 11:50:27 Certificado importado com sucesso: AC-SOLUTI-SSL-EV-G4.crt
+2025/07/16 11:50:27 
+Processando certificado: AC-SOLUTI-v5-G2.crt
+2025/07/16 11:50:27 Certificado importado com sucesso: AC-SOLUTI-v5-G2.crt
+2025/07/16 11:50:27 
+Processando certificado: AC-SyngularID.crt
+2025/07/16 11:50:28 Certificado importado com sucesso: AC-SyngularID.crt
+2025/07/16 11:50:28 
+Processando certificado: AC-VALID-SSL-EV.crt
+2025/07/16 11:50:28 Certificado importado com sucesso: AC-VALID-SSL-EV.crt
+2025/07/16 11:50:28 
+Processando certificado: ACIMESP1n.crt
+2025/07/16 11:50:28 Falha ao validar ACIMESP1n.crt: Certificado expirado
+2025/07/16 11:50:28 
+Processando certificado: ACIMPRENSAOFICIALRFBSSL.crt
+2025/07/16 11:50:29 Certificado importado com sucesso: ACIMPRENSAOFICIALRFBSSL.crt
+2025/07/16 11:50:29 
+Processando certificado: ACImprensaOficial_18072011.crt
+2025/07/16 11:50:29 Falha ao validar ACImprensaOficial_18072011.crt: Certificado expirado
+2025/07/16 11:50:29 
+Processando certificado: ACSyngularIDMultipla0.crt
+2025/07/16 11:50:30 Certificado importado com sucesso: ACSyngularIDMultipla0.crt
+2025/07/16 11:50:30 
+Processando certificado: AC_A_R_A_CERTIFICACAO_DIGITAL_v5.crt
+2025/07/16 11:50:30 Certificado importado com sucesso: AC_A_R_A_CERTIFICACAO_DIGITAL_v5.crt
+2025/07/16 11:50:30 
+Processando certificado: AC_BR_RFB_G2.crt
+2025/07/16 11:50:30 Falha ao validar AC_BR_RFB_G2.crt: Certificado expirado
+2025/07/16 11:50:30 
+Processando certificado: AC_BR_RFB_G3.crt
+2025/07/16 11:50:30 Falha ao validar AC_BR_RFB_G3.crt: Certificado expirado
+2025/07/16 11:50:30 
+Processando certificado: AC_BR_RFB_G4.crt
+2025/07/16 11:50:31 Certificado importado com sucesso: AC_BR_RFB_G4.crt
+2025/07/16 11:50:31 
+Processando certificado: AC_BoaVista.crt
+2025/07/16 11:50:31 Falha ao validar AC_BoaVista.crt: Certificado expirado
+2025/07/16 11:50:31 
+Processando certificado: AC_BoaVista_Certificadora.crt
+2025/07/16 11:50:31 Falha ao validar AC_BoaVista_Certificadora.crt: Certificado expirado
+2025/07/16 11:50:31 
+Processando certificado: AC_Boa_Vista_RFB.crt
+2025/07/16 11:50:31 Falha ao validar AC_Boa_Vista_RFB.crt: Certificado expirado
+2025/07/16 11:50:31 
+Processando certificado: AC_CACB_CD.crt
+2025/07/16 11:50:31 Certificado importado com sucesso: AC_CACB_CD.crt
+2025/07/16 11:50:31 
+Processando certificado: AC_CACB_RFB.crt
+2025/07/16 11:50:31 Falha ao validar AC_CACB_RFB.crt: Certificado expirado
+2025/07/16 11:50:31 
+Processando certificado: AC_CACB_RFB_G2.crt
+2025/07/16 11:50:32 Certificado importado com sucesso: AC_CACB_RFB_G2.crt
+2025/07/16 11:50:32 
+Processando certificado: AC_CAIXA_PF_1v2.crt
+2025/07/16 11:50:32 Falha ao validar AC_CAIXA_PF_1v2.crt: Certificado expirado
+2025/07/16 11:50:32 
+Processando certificado: AC_CAIXA_PJ-SSL_v2.crt
+2025/07/16 11:50:32 Falha ao validar AC_CAIXA_PJ-SSL_v2.crt: Certificado expirado
+2025/07/16 11:50:32 
+Processando certificado: AC_CAIXA_PJ_1v2.crt
+2025/07/16 11:50:32 Falha ao validar AC_CAIXA_PJ_1v2.crt: Certificado expirado
+2025/07/16 11:50:32 
+Processando certificado: AC_CAIXA_v2.crt
+2025/07/16 11:50:32 Falha ao validar AC_CAIXA_v2.crt: Certificado expirado
+2025/07/16 11:50:32 
+Processando certificado: AC_CCN_COMPANHIA_CERTIFICADORA_NACIONAL_v5.crt
+2025/07/16 11:50:33 Certificado importado com sucesso: AC_CCN_COMPANHIA_CERTIFICADORA_NACIONAL_v5.crt
+2025/07/16 11:50:33 
+Processando certificado: AC_CERTBANK_v5.crt
+2025/07/16 11:50:33 Certificado importado com sucesso: AC_CERTBANK_v5.crt
+2025/07/16 11:50:33 
+Processando certificado: AC_CERTDATA_BRASIL.crt
+2025/07/16 11:50:34 Certificado importado com sucesso: AC_CERTDATA_BRASIL.crt
+2025/07/16 11:50:34 
+Processando certificado: AC_CERTIFICA_ANAPOLIS_v5_G2.crt
+2025/07/16 11:50:34 Certificado importado com sucesso: AC_CERTIFICA_ANAPOLIS_v5_G2.crt
+2025/07/16 11:50:34 
+Processando certificado: AC_CERTIFICA_MINAS_v5.crt
+2025/07/16 11:50:35 Certificado importado com sucesso: AC_CERTIFICA_MINAS_v5.crt
+2025/07/16 11:50:35 
+Processando certificado: AC_CERTIPE_CD.crt
+2025/07/16 11:50:35 Certificado importado com sucesso: AC_CERTIPE_CD.crt
+2025/07/16 11:50:35 
+Processando certificado: AC_CERTISIGN-JUS_CODESIGNING_G6.crt
+2025/07/16 11:50:36 Certificado importado com sucesso: AC_CERTISIGN-JUS_CODESIGNING_G6.crt
+2025/07/16 11:50:36 
+Processando certificado: AC_CERTISIGN-JUS_G5.crt
+2025/07/16 11:50:36 Certificado importado com sucesso: AC_CERTISIGN-JUS_G5.crt
+2025/07/16 11:50:36 
+Processando certificado: AC_CERTISIGN-JUS_SSL_G6.crt
+2025/07/16 11:50:37 Certificado importado com sucesso: AC_CERTISIGN-JUS_SSL_G6.crt
+2025/07/16 11:50:37 
+Processando certificado: AC_CERTMAIS_CD.crt
+2025/07/16 11:50:37 Certificado importado com sucesso: AC_CERTMAIS_CD.crt
+2025/07/16 11:50:37 
+Processando certificado: AC_CNDL_RFB.crt
+2025/07/16 11:50:37 Falha ao validar AC_CNDL_RFB.crt: Certificado expirado
+2025/07/16 11:50:37 
+Processando certificado: AC_CNDL_RFB_v2.crt
+2025/07/16 11:50:37 Falha ao validar AC_CNDL_RFB_v2.crt: Certificado expirado
+2025/07/16 11:50:37 
+Processando certificado: AC_CNDL_RFB_v3.crt
+2025/07/16 11:50:38 Certificado importado com sucesso: AC_CNDL_RFB_v3.crt
+2025/07/16 11:50:38 
+Processando certificado: AC_CONSULTI_BRASIL_RFB.crt
+2025/07/16 11:50:39 Certificado importado com sucesso: AC_CONSULTI_BRASIL_RFB.crt
+2025/07/16 11:50:39 
+Processando certificado: AC_CONSULTI_RFB.crt
+2025/07/16 11:50:39 Certificado importado com sucesso: AC_CONSULTI_RFB.crt
+2025/07/16 11:50:39 
+Processando certificado: AC_Caixa.crt
+2025/07/16 11:50:39 Falha ao validar AC_Caixa.crt: Certificado expirado
+2025/07/16 11:50:39 
+Processando certificado: AC_Caixa_JUS_v1.crt
+2025/07/16 11:50:39 Falha ao validar AC_Caixa_JUS_v1.crt: Certificado expirado
+2025/07/16 11:50:39 
+Processando certificado: AC_Caixa_JUS_v2.crt
+2025/07/16 11:50:39 Falha ao validar AC_Caixa_JUS_v2.crt: Certificado expirado
+2025/07/16 11:50:39 
+Processando certificado: AC_Caixa_PF-1_v1.crt
+2025/07/16 11:50:39 Falha ao validar AC_Caixa_PF-1_v1.crt: Certificado expirado
+2025/07/16 11:50:39 
+Processando certificado: AC_Caixa_PF_v1.crt
+2025/07/16 11:50:39 Falha ao validar AC_Caixa_PF_v1.crt: Certificado expirado
+2025/07/16 11:50:39 
+Processando certificado: AC_Caixa_PF_v2.crt
+2025/07/16 11:50:39 Falha ao validar AC_Caixa_PF_v2.crt: Certificado expirado
+2025/07/16 11:50:39 
+Processando certificado: AC_Caixa_PJ-1_v1.crt
+2025/07/16 11:50:39 Falha ao validar AC_Caixa_PJ-1_v1.crt: Certificado expirado
+2025/07/16 11:50:39 
+Processando certificado: AC_Caixa_PJ_v1.crt
+2025/07/16 11:50:39 Falha ao validar AC_Caixa_PJ_v1.crt: Certificado expirado
+2025/07/16 11:50:39 
+Processando certificado: AC_Caixa_PJ_v2.crt
+2025/07/16 11:50:39 Falha ao validar AC_Caixa_PJ_v2.crt: Certificado expirado
+2025/07/16 11:50:39 
+Processando certificado: AC_Caixa_SPB.crt
+2025/07/16 11:50:39 Falha ao validar AC_Caixa_SPB.crt: Certificado expirado
+2025/07/16 11:50:39 
+Processando certificado: AC_Caixa_v1.crt
+2025/07/16 11:50:39 Falha ao validar AC_Caixa_v1.crt: Certificado expirado
+2025/07/16 11:50:39 
+Processando certificado: AC_CertiSign_JUS.crt
+2025/07/16 11:50:39 Falha ao validar AC_CertiSign_JUS.crt: Certificado expirado
+2025/07/16 11:50:39 
+Processando certificado: AC_CertiSign_V3.crt
+2025/07/16 11:50:39 Falha ao validar AC_CertiSign_V3.crt: Certificado expirado
+2025/07/16 11:50:39 
+Processando certificado: AC_Certifica_Anapolis_v5.crt
+2025/07/16 11:50:40 Certificado importado com sucesso: AC_Certifica_Anapolis_v5.crt
+2025/07/16 11:50:40 
+Processando certificado: AC_Certisign_G3.crt
+2025/07/16 11:50:40 Falha ao validar AC_Certisign_G3.crt: Certificado expirado
+2025/07/16 11:50:40 
+Processando certificado: AC_Certisign_G6.crt
+2025/07/16 11:50:40 Falha ao validar AC_Certisign_G6.crt: Certificado expirado
+2025/07/16 11:50:40 
+Processando certificado: AC_Certisign_G7.crt
+2025/07/16 11:50:41 Certificado importado com sucesso: AC_Certisign_G7.crt
+2025/07/16 11:50:41 
+Processando certificado: AC_Certisign_G8.crt
+2025/07/16 11:50:41 Certificado importado com sucesso: AC_Certisign_G8.crt
+2025/07/16 11:50:41 
+Processando certificado: AC_Certisign_JUS_G2.crt
+2025/07/16 11:50:41 Falha ao validar AC_Certisign_JUS_G2.crt: Certificado expirado
+2025/07/16 11:50:41 
+Processando certificado: AC_Certisign_JUS_G3.crt
+2025/07/16 11:50:41 Falha ao validar AC_Certisign_JUS_G3.crt: Certificado expirado
+2025/07/16 11:50:41 
+Processando certificado: AC_Certisign_JUS_G6.crt
+2025/07/16 11:50:42 Certificado importado com sucesso: AC_Certisign_JUS_G6.crt
+2025/07/16 11:50:42 
+Processando certificado: AC_Certisign_Multipla_CodeSigning.crt
+2025/07/16 11:50:42 Certificado importado com sucesso: AC_Certisign_Multipla_CodeSigning.crt
+2025/07/16 11:50:42 
+Processando certificado: AC_Certisign_Multipla_G3.crt
+2025/07/16 11:50:42 Falha ao validar AC_Certisign_Multipla_G3.crt: Certificado expirado
+2025/07/16 11:50:42 
+Processando certificado: AC_Certisign_Multipla_G5.crt
+2025/07/16 11:50:42 Falha ao validar AC_Certisign_Multipla_G5.crt: Certificado expirado
+2025/07/16 11:50:42 
+Processando certificado: AC_Certisign_Multipla_G6.crt
+2025/07/16 11:50:43 Falha ao validar AC_Certisign_Multipla_G6.crt: Certificado expirado
+2025/07/16 11:50:43 
+Processando certificado: AC_Certisign_Multipla_G7.crt
+2025/07/16 11:50:43 Certificado importado com sucesso: AC_Certisign_Multipla_G7.crt
+2025/07/16 11:50:43 
+Processando certificado: AC_Certisign_Multipla_SSL.crt
+2025/07/16 11:50:44 Certificado importado com sucesso: AC_Certisign_Multipla_SSL.crt
+2025/07/16 11:50:44 
+Processando certificado: AC_Certisign_OM-BR.crt
+2025/07/16 11:50:44 Certificado importado com sucesso: AC_Certisign_OM-BR.crt
+2025/07/16 11:50:44 
+Processando certificado: AC_Certisign_RFB_G3.crt
+2025/07/16 11:50:44 Falha ao validar AC_Certisign_RFB_G3.crt: Certificado expirado
+2025/07/16 11:50:44 
+Processando certificado: AC_Certisign_RFB_G4.crt
+2025/07/16 11:50:44 Falha ao validar AC_Certisign_RFB_G4.crt: Certificado expirado
+2025/07/16 11:50:44 
+Processando certificado: AC_Certisign_RFB_G5.crt
+2025/07/16 11:50:45 Certificado importado com sucesso: AC_Certisign_RFB_G5.crt
+2025/07/16 11:50:45 
+Processando certificado: AC_Certisign_SPB_G3.crt
+2025/07/16 11:50:45 Falha ao validar AC_Certisign_SPB_G3.crt: Certificado expirado
+2025/07/16 11:50:45 
+Processando certificado: AC_Certisign_SPB_G5.crt
+2025/07/16 11:50:45 Falha ao validar AC_Certisign_SPB_G5.crt: Certificado expirado
+2025/07/16 11:50:45 
+Processando certificado: AC_Certisign_SPB_G6.crt
+2025/07/16 11:50:46 Certificado importado com sucesso: AC_Certisign_SPB_G6.crt
+2025/07/16 11:50:46 
+Processando certificado: AC_Certisign_Tempo_G1.crt
+2025/07/16 11:50:46 Falha ao validar AC_Certisign_Tempo_G1.crt: Certificado expirado
+2025/07/16 11:50:46 
+Processando certificado: AC_Certisign_Tempo_G2.crt
+2025/07/16 11:50:46 Certificado importado com sucesso: AC_Certisign_Tempo_G2.crt
+2025/07/16 11:50:46 
+Processando certificado: AC_DIGISEC_v5.crt
+2025/07/16 11:50:47 Certificado importado com sucesso: AC_DIGISEC_v5.crt
+2025/07/16 11:50:47 
+Processando certificado: AC_DIGITALSIGN_ACP_G2.crt
+2025/07/16 11:50:47 Certificado importado com sucesso: AC_DIGITALSIGN_ACP_G2.crt
+2025/07/16 11:50:47 
+Processando certificado: AC_DIGITALSIGN_G2.crt
+2025/07/16 11:50:48 Certificado importado com sucesso: AC_DIGITALSIGN_G2.crt
+2025/07/16 11:50:48 
+Processando certificado: AC_DIGITALSIGN_RFB_G2.crt
+2025/07/16 11:50:48 Certificado importado com sucesso: AC_DIGITALSIGN_RFB_G2.crt
+2025/07/16 11:50:48 
+Processando certificado: AC_DIGITALSIGN_RFB_G3.crt
+2025/07/16 11:50:49 Certificado importado com sucesso: AC_DIGITALSIGN_RFB_G3.crt
+2025/07/16 11:50:49 
+Processando certificado: AC_DIGITALSIGN_SSL.crt
+2025/07/16 11:50:49 Falha ao validar AC_DIGITALSIGN_SSL.crt: Certificado expirado
+2025/07/16 11:50:49 
+Processando certificado: AC_DIGITAL_MULTIPLA_G1.crt
+2025/07/16 11:50:50 Certificado importado com sucesso: AC_DIGITAL_MULTIPLA_G1.crt
+2025/07/16 11:50:50 
+Processando certificado: AC_DOCCLOUD.crt
+2025/07/16 11:50:50 Certificado importado com sucesso: AC_DOCCLOUD.crt
+2025/07/16 11:50:50 
+Processando certificado: AC_DOCCLOUD_RFB.crt
+2025/07/16 11:50:50 Falha ao validar AC_DOCCLOUD_RFB.crt: Certificado expirado
+2025/07/16 11:50:50 
+Processando certificado: AC_DOCCLOUD_RFB_v2.crt
+2025/07/16 11:50:51 Certificado importado com sucesso: AC_DOCCLOUD_RFB_v2.crt
+2025/07/16 11:50:51 
+Processando certificado: AC_Defesa_v5.crt
+2025/07/16 11:50:51 Certificado importado com sucesso: AC_Defesa_v5.crt
+2025/07/16 11:50:51 
+Processando certificado: AC_Digital.crt
+2025/07/16 11:50:51 Falha ao validar AC_Digital.crt: Certificado expirado
+2025/07/16 11:50:51 
+Processando certificado: AC_Digitalsign.crt
+2025/07/16 11:50:51 Falha ao validar AC_Digitalsign.crt: Certificado expirado
+2025/07/16 11:50:51 
+Processando certificado: AC_Digitalsign_ACP.crt
+2025/07/16 11:50:51 Falha ao validar AC_Digitalsign_ACP.crt: Certificado expirado
+2025/07/16 11:50:51 
+Processando certificado: AC_Digitalsign_RFB.crt
+2025/07/16 11:50:51 Falha ao validar AC_Digitalsign_RFB.crt: Certificado expirado
+2025/07/16 11:50:51 
+Processando certificado: AC_EGBA_MULTIPLA.crt
+2025/07/16 11:50:51 Falha ao validar AC_EGBA_MULTIPLA.crt: Certificado expirado
+2025/07/16 11:50:51 
+Processando certificado: AC_EGBA_Multipla_G2.crt
+2025/07/16 11:50:52 Certificado importado com sucesso: AC_EGBA_Multipla_G2.crt
+2025/07/16 11:50:52 
+Processando certificado: AC_EGBA_RFB.crt
+2025/07/16 11:50:52 Certificado importado com sucesso: AC_EGBA_RFB.crt
+2025/07/16 11:50:52 
+Processando certificado: AC_FCDL_SC_v5.crt
+2025/07/16 11:50:53 Certificado importado com sucesso: AC_FCDL_SC_v5.crt
+2025/07/16 11:50:53 
+Processando certificado: AC_FCDL_SC_v5_G2.crt
+2025/07/16 11:50:53 Certificado importado com sucesso: AC_FCDL_SC_v5_G2.crt
+2025/07/16 11:50:53 
+Processando certificado: AC_FENACOR_RFB.crt
+2025/07/16 11:50:54 Certificado importado com sucesso: AC_FENACOR_RFB.crt
+2025/07/16 11:50:54 
+Processando certificado: AC_Fenacon_Certisign_RFB_G2.crt
+2025/07/16 11:50:54 Falha ao validar AC_Fenacon_Certisign_RFB_G2.crt: Certificado expirado
+2025/07/16 11:50:54 
+Processando certificado: AC_Fenacon_Certisign_RFB_G3.crt
+2025/07/16 11:50:54 Falha ao validar AC_Fenacon_Certisign_RFB_G3.crt: Certificado expirado
+2025/07/16 11:50:54 
+Processando certificado: AC_IMESP_RFB_G2.crt
+2025/07/16 11:50:54 Falha ao validar AC_IMESP_RFB_G2.crt: Certificado expirado
+2025/07/16 11:50:54 
+Processando certificado: AC_IMESP_RFB_G3_retirar_repositorio.crt
+2025/07/16 11:50:54 Falha ao validar AC_IMESP_RFB_G3_retirar_repositorio.crt: Certificado expirado
+2025/07/16 11:50:54 
+Processando certificado: AC_INTERCERT_v5.crt
+2025/07/16 11:50:55 Certificado importado com sucesso: AC_INTERCERT_v5.crt
+2025/07/16 11:50:55 
+Processando certificado: AC_Imprensa_Oficial.crt
+2025/07/16 11:50:55 Falha ao validar AC_Imprensa_Oficial.crt: Certificado expirado
+2025/07/16 11:50:55 
+Processando certificado: AC_Imprensa_Oficial_G2.crt
+2025/07/16 11:50:55 Falha ao validar AC_Imprensa_Oficial_G2.crt: Certificado expirado
+2025/07/16 11:50:55 
+Processando certificado: AC_Imprensa_Oficial_G3.crt
+2025/07/16 11:50:55 Falha ao validar AC_Imprensa_Oficial_G3.crt: Certificado expirado
+2025/07/16 11:50:55 
+Processando certificado: AC_Imprensa_Oficial_G4.crt
+2025/07/16 11:50:55 Falha ao validar AC_Imprensa_Oficial_G4.crt: Certificado expirado
+2025/07/16 11:50:55 
+Processando certificado: AC_Imprensa_Oficial_SP.crt
+2025/07/16 11:50:55 Falha ao validar AC_Imprensa_Oficial_SP.crt: Certificado expirado
+2025/07/16 11:50:55 
+Processando certificado: AC_Imprensa_Oficial_SP_G2.crt
+2025/07/16 11:50:55 Falha ao validar AC_Imprensa_Oficial_SP_G2.crt: Certificado expirado
+2025/07/16 11:50:55 
+Processando certificado: AC_Imprensa_Oficial_SP_G3.crt
+2025/07/16 11:50:55 Falha ao validar AC_Imprensa_Oficial_SP_G3.crt: Certificado expirado
+2025/07/16 11:50:55 
+Processando certificado: AC_Imprensa_Oficial_SP_G4.crt
+2025/07/16 11:50:55 Falha ao validar AC_Imprensa_Oficial_SP_G4.crt: Certificado expirado
+2025/07/16 11:50:55 
+Processando certificado: AC_Imprensa_Oficial_SP_RFB_G3.crt
+2025/07/16 11:50:55 Falha ao validar AC_Imprensa_Oficial_SP_RFB_G3.crt: Certificado expirado
+2025/07/16 11:50:55 
+Processando certificado: AC_Imprensa_Oficial_SP_RFB_G4.crt
+2025/07/16 11:50:55 Falha ao validar AC_Imprensa_Oficial_SP_RFB_G4.crt: Certificado expirado
+2025/07/16 11:50:55 
+Processando certificado: AC_Imprensa_Oficial_SP_RFB_G5.crt
+2025/07/16 11:50:55 Certificado importado com sucesso: AC_Imprensa_Oficial_SP_RFB_G5.crt
+2025/07/16 11:50:55 
+Processando certificado: AC_Imprensa_Oficial_SSL.crt
+2025/07/16 11:50:55 Falha ao validar AC_Imprensa_Oficial_SSL.crt: Certificado expirado
+2025/07/16 11:50:55 
+Processando certificado: AC_Instituto_Fenacom_RFB.crt
+2025/07/16 11:50:55 Falha ao validar AC_Instituto_Fenacom_RFB.crt: Certificado expirado
+2025/07/16 11:50:55 
+Processando certificado: AC_Instituto_Fenacon.crt
+2025/07/16 11:50:55 Falha ao validar AC_Instituto_Fenacon.crt: Certificado expirado
+2025/07/16 11:50:55 
+Processando certificado: AC_Instituto_Fenacon_G2.crt
+2025/07/16 11:50:55 Falha ao validar AC_Instituto_Fenacon_G2.crt: Certificado expirado
+2025/07/16 11:50:55 
+Processando certificado: AC_Instituto_Fenacon_G3.crt
+2025/07/16 11:50:56 Certificado importado com sucesso: AC_Instituto_Fenacon_G3.crt
+2025/07/16 11:50:56 
+Processando certificado: AC_Instituto_Fenacon_G4.crt
+2025/07/16 11:50:56 Certificado importado com sucesso: AC_Instituto_Fenacon_G4.crt
+2025/07/16 11:50:56 
+Processando certificado: AC_Instituto_Fenacon_RFB_G2.crt
+2025/07/16 11:50:56 Falha ao validar AC_Instituto_Fenacon_RFB_G2.crt: Certificado expirado
+2025/07/16 11:50:56 
+Processando certificado: AC_Instituto_Fenacon_RFB_G3.crt
+2025/07/16 11:50:57 Certificado importado com sucesso: AC_Instituto_Fenacon_RFB_G3.crt
+2025/07/16 11:50:57 
+Processando certificado: AC_JUS_v6.crt
+2025/07/16 11:50:57 Certificado importado com sucesso: AC_JUS_v6.crt
+2025/07/16 11:50:57 
+Processando certificado: AC_LINK_CD.crt
+2025/07/16 11:50:58 Certificado importado com sucesso: AC_LINK_CD.crt
+2025/07/16 11:50:58 
+Processando certificado: AC_LINK_RFB.crt
+2025/07/16 11:50:58 Falha ao validar AC_LINK_RFB.crt: Certificado expirado
+2025/07/16 11:50:58 
+Processando certificado: AC_LINK_RFB_v2.crt
+2025/07/16 11:50:59 Certificado importado com sucesso: AC_LINK_RFB_v2.crt
+2025/07/16 11:50:59 
+Processando certificado: AC_MAXIMUS_TECNOLOGIA_E_EVENTOS_v5.crt
+2025/07/16 11:50:59 Certificado importado com sucesso: AC_MAXIMUS_TECNOLOGIA_E_EVENTOS_v5.crt
+2025/07/16 11:50:59 
+Processando certificado: AC_MAXIMUS_TECNOLOGIA_E_EVENTOS_v5_G2.crt
+2025/07/16 11:51:00 Certificado importado com sucesso: AC_MAXIMUS_TECNOLOGIA_E_EVENTOS_v5_G2.crt
+2025/07/16 11:51:00 
+Processando certificado: AC_META_CERTIFICADO_DIGITAL_CD.crt
+2025/07/16 11:51:00 Certificado importado com sucesso: AC_META_CERTIFICADO_DIGITAL_CD.crt
+2025/07/16 11:51:00 
+Processando certificado: AC_MRE.crt
+2025/07/16 11:51:01 Falha ao importar AC_MRE.crt: erro de keytool: java.lang.Exception: A entrada não é um certificado X.509
+2025/07/16 11:51:01 
+Processando certificado: AC_Notarial_RFB_G2.crt
+2025/07/16 11:51:01 Falha ao validar AC_Notarial_RFB_G2.crt: Certificado expirado
+2025/07/16 11:51:01 
+Processando certificado: AC_Notarial_RFB_G3.crt
+2025/07/16 11:51:01 Falha ao validar AC_Notarial_RFB_G3.crt: Certificado expirado
+2025/07/16 11:51:01 
+Processando certificado: AC_Notarial_RFB_G4.crt
+2025/07/16 11:51:01 Certificado importado com sucesso: AC_Notarial_RFB_G4.crt
+2025/07/16 11:51:01 
+Processando certificado: AC_OAB_G3.crt
+2025/07/16 11:51:02 Certificado importado com sucesso: AC_OAB_G3.crt
+2025/07/16 11:51:02 
+Processando certificado: AC_ONLINEBRASIL_v5.crt
+2025/07/16 11:51:02 Certificado importado com sucesso: AC_ONLINEBRASIL_v5.crt
+2025/07/16 11:51:02 
+Processando certificado: AC_ONLINE_RFB_v5.crt
+2025/07/16 11:51:03 Certificado importado com sucesso: AC_ONLINE_RFB_v5.crt
+2025/07/16 11:51:03 
+Processando certificado: AC_Oab.crt
+2025/07/16 11:51:03 Falha ao validar AC_Oab.crt: Certificado expirado
+2025/07/16 11:51:03 
+Processando certificado: AC_Oab_G2.crt
+2025/07/16 11:51:03 Falha ao validar AC_Oab_G2.crt: Certificado expirado
+2025/07/16 11:51:03 
+Processando certificado: AC_Online_Brasil.crt
+2025/07/16 11:51:03 Falha ao validar AC_Online_Brasil.crt: Certificado expirado
+2025/07/16 11:51:03 
+Processando certificado: AC_Online_RFB.crt
+2025/07/16 11:51:03 Falha ao validar AC_Online_RFB.crt: Certificado expirado
+2025/07/16 11:51:03 
+Processando certificado: AC_PETROBRAS_G4.crt
+2025/07/16 11:51:03 Falha ao validar AC_PETROBRAS_G4.crt: Certificado expirado
+2025/07/16 11:51:03 
+Processando certificado: AC_PLANO_DIGITAL_CD.crt
+2025/07/16 11:51:04 Certificado importado com sucesso: AC_PLANO_DIGITAL_CD.crt
+2025/07/16 11:51:04 
+Processando certificado: AC_PREMIUM_CERTIFICADORA_DIGITAL_CD.crt
+2025/07/16 11:51:04 Certificado importado com sucesso: AC_PREMIUM_CERTIFICADORA_DIGITAL_CD.crt
+2025/07/16 11:51:04 
+Processando certificado: AC_PRODEMGE_G4.crt
+2025/07/16 11:51:05 Certificado importado com sucesso: AC_PRODEMGE_G4.crt
+2025/07/16 11:51:05 
+Processando certificado: AC_PRODESP_v1.crt
+2025/07/16 11:51:05 Certificado importado com sucesso: AC_PRODESP_v1.crt
+2025/07/16 11:51:05 
+Processando certificado: AC_Petrobras_G2.crt
+2025/07/16 11:51:05 Falha ao validar AC_Petrobras_G2.crt: Certificado expirado
+2025/07/16 11:51:05 
+Processando certificado: AC_Petrobras_G3.crt
+2025/07/16 11:51:05 Falha ao validar AC_Petrobras_G3.crt: Certificado expirado
+2025/07/16 11:51:05 
+Processando certificado: AC_Prodemge_G2.crt
+2025/07/16 11:51:05 Falha ao validar AC_Prodemge_G2.crt: Certificado expirado
+2025/07/16 11:51:05 
+Processando certificado: AC_Prodemge_G3.crt
+2025/07/16 11:51:05 Falha ao validar AC_Prodemge_G3.crt: Certificado expirado
+2025/07/16 11:51:05 
+Processando certificado: AC_Prodemge_RFB.crt
+2025/07/16 11:51:06 Certificado importado com sucesso: AC_Prodemge_RFB.crt
+2025/07/16 11:51:06 
+Processando certificado: AC_Prodemge_RFB_G2.crt
+2025/07/16 11:51:06 Falha ao validar AC_Prodemge_RFB_G2.crt: Certificado expirado
+2025/07/16 11:51:06 
+Processando certificado: AC_Prodemge_RFB_G3.crt
+2025/07/16 11:51:06 Falha ao validar AC_Prodemge_RFB_G3.crt: Certificado expirado
+2025/07/16 11:51:06 
+Processando certificado: AC_Prodemge_RFB_G4.crt
+2025/07/16 11:51:06 Certificado importado com sucesso: AC_Prodemge_RFB_G4.crt
+2025/07/16 11:51:06 
+Processando certificado: AC_Prodest_RFB.crt
+2025/07/16 11:51:06 Falha ao validar AC_Prodest_RFB.crt: Certificado expirado
+2025/07/16 11:51:06 
+Processando certificado: AC_Prodest_RFB_v2.crt
+2025/07/16 11:51:06 Falha ao validar AC_Prodest_RFB_v2.crt: Certificado expirado
+2025/07/16 11:51:06 
+Processando certificado: AC_REDE_BRASIL_v5_G2.crt
+2025/07/16 11:51:07 Certificado importado com sucesso: AC_REDE_BRASIL_v5_G2.crt
+2025/07/16 11:51:07 
+Processando certificado: AC_REDE_IDEIA_CD.crt
+2025/07/16 11:51:07 Certificado importado com sucesso: AC_REDE_IDEIA_CD.crt
+2025/07/16 11:51:07 
+Processando certificado: AC_REDE_IDEIA_RFB.crt
+2025/07/16 11:51:08 Certificado importado com sucesso: AC_REDE_IDEIA_RFB.crt
+2025/07/16 11:51:08 
+Processando certificado: AC_SAFEIDBRASIL.crt
+2025/07/16 11:51:08 Certificado importado com sucesso: AC_SAFEIDBRASIL.crt
+2025/07/16 11:51:08 
+Processando certificado: AC_SAFETECH_CD.crt
+2025/07/16 11:51:09 Certificado importado com sucesso: AC_SAFETECH_CD.crt
+2025/07/16 11:51:09 
+Processando certificado: AC_SAFEWEB_CD.crt
+2025/07/16 11:51:09 Certificado importado com sucesso: AC_SAFEWEB_CD.crt
+2025/07/16 11:51:09 
+Processando certificado: AC_SAFEWEB_RFB_v5.crt
+2025/07/16 11:51:10 Certificado importado com sucesso: AC_SAFEWEB_RFB_v5.crt
+2025/07/16 11:51:10 
+Processando certificado: AC_SAFEWEB_TIMESTAMPING.crt
+2025/07/16 11:51:11 Certificado importado com sucesso: AC_SAFEWEB_TIMESTAMPING.crt
+2025/07/16 11:51:11 
+Processando certificado: AC_SEGURA_ID_v5.crt
+2025/07/16 11:51:11 Certificado importado com sucesso: AC_SEGURA_ID_v5.crt
+2025/07/16 11:51:11 
+Processando certificado: AC_SEMPRE_CD.crt
+2025/07/16 11:51:12 Certificado importado com sucesso: AC_SEMPRE_CD.crt
+2025/07/16 11:51:12 
+Processando certificado: AC_SEMPRE_RFB_v2.crt
+2025/07/16 11:51:12 Certificado importado com sucesso: AC_SEMPRE_RFB_v2.crt
+2025/07/16 11:51:12 
+Processando certificado: AC_SENHA_DIGITAL_BRASIL.crt
+2025/07/16 11:51:13 Certificado importado com sucesso: AC_SENHA_DIGITAL_BRASIL.crt
+2025/07/16 11:51:13 
+Processando certificado: AC_SERPRO_JUS_v5.crt
+2025/07/16 11:51:13 Certificado importado com sucesso: AC_SERPRO_JUS_v5.crt
+2025/07/16 11:51:13 
+Processando certificado: AC_SIC_BRASIL.crt
+2025/07/16 11:51:14 Certificado importado com sucesso: AC_SIC_BRASIL.crt
+2025/07/16 11:51:14 
+Processando certificado: AC_SIC_RFB.crt
+2025/07/16 11:51:14 Certificado importado com sucesso: AC_SIC_RFB.crt
+2025/07/16 11:51:14 
+Processando certificado: AC_SIG_BRASIL.crt
+2025/07/16 11:51:15 Certificado importado com sucesso: AC_SIG_BRASIL.crt
+2025/07/16 11:51:15 
+Processando certificado: AC_SINCOR_G4.crt
+2025/07/16 11:51:16 Certificado importado com sucesso: AC_SINCOR_G4.crt
+2025/07/16 11:51:16 
+Processando certificado: AC_SINCOR_RIO_RFB_G2.crt
+2025/07/16 11:51:16 Certificado importado com sucesso: AC_SINCOR_RIO_RFB_G2.crt
+2025/07/16 11:51:16 
+Processando certificado: AC_SOLUTI-JUS_CODESIGNING_v5.crt
+2025/07/16 11:51:17 Certificado importado com sucesso: AC_SOLUTI-JUS_CODESIGNING_v5.crt
+2025/07/16 11:51:17 
+Processando certificado: AC_SOLUTI-JUS_SSL_v5.crt
+2025/07/16 11:51:17 Certificado importado com sucesso: AC_SOLUTI-JUS_SSL_v5.crt
+2025/07/16 11:51:17 
+Processando certificado: AC_SOLUTI-JUS_v5.crt
+2025/07/16 11:51:18 Certificado importado com sucesso: AC_SOLUTI-JUS_v5.crt
+2025/07/16 11:51:18 
+Processando certificado: AC_SOLUTI_Multipla_CODESIGNING.crt
+2025/07/16 11:51:18 Falha ao validar AC_SOLUTI_Multipla_CODESIGNING.crt: Certificado expirado
+2025/07/16 11:51:18 
+Processando certificado: AC_SOLUTI_Multipla_SSL.crt
+2025/07/16 11:51:18 Falha ao validar AC_SOLUTI_Multipla_SSL.crt: Certificado expirado
+2025/07/16 11:51:18 
+Processando certificado: AC_SOLUTI_Multipla_TIMESTAMPING.crt
+2025/07/16 11:51:18 Falha ao validar AC_SOLUTI_Multipla_TIMESTAMPING.crt: Certificado expirado
+2025/07/16 11:51:18 
+Processando certificado: AC_SOLUTI_Multipla_TIMESTAMPING_v5.crt
+2025/07/16 11:51:18 Certificado importado com sucesso: AC_SOLUTI_Multipla_TIMESTAMPING_v5.crt
+2025/07/16 11:51:18 
+Processando certificado: AC_SOLUTI_Multipla_v5.crt
+2025/07/16 11:51:19 Certificado importado com sucesso: AC_SOLUTI_Multipla_v5.crt
+2025/07/16 11:51:19 
+Processando certificado: AC_SOLUTI_Multipla_v5_G2.crt
+2025/07/16 11:51:19 Certificado importado com sucesso: AC_SOLUTI_Multipla_v5_G2.crt
+2025/07/16 11:51:19 
+Processando certificado: AC_SOLUTI_RFB_V5.crt
+2025/07/16 11:51:20 Certificado importado com sucesso: AC_SOLUTI_RFB_V5.crt
+2025/07/16 11:51:20 
+Processando certificado: AC_Safeweb_RFB.crt
+2025/07/16 11:51:20 Falha ao validar AC_Safeweb_RFB.crt: Certificado expirado
+2025/07/16 11:51:20 
+Processando certificado: AC_Safeweb_v5.crt
+2025/07/16 11:51:21 Certificado importado com sucesso: AC_Safeweb_v5.crt
+2025/07/16 11:51:21 
+Processando certificado: AC_Secretaria_da_Receita_Federal_do_Brasil_v3.crt
+2025/07/16 11:51:21 Falha ao validar AC_Secretaria_da_Receita_Federal_do_Brasil_v3.crt: Certificado expirado
+2025/07/16 11:51:21 
+Processando certificado: AC_Secretaria_da_Receita_Federal_do_Brasil_v4.crt
+2025/07/16 11:51:21 Certificado importado com sucesso: AC_Secretaria_da_Receita_Federal_do_Brasil_v4.crt
+2025/07/16 11:51:21 
+Processando certificado: AC_Serasa_ACP.crt
+2025/07/16 11:51:21 Falha ao validar AC_Serasa_ACP.crt: Certificado expirado
+2025/07/16 11:51:21 
+Processando certificado: AC_Serasa_Autoridade_Certificadora_Principal.crt
+2025/07/16 11:51:21 Falha ao validar AC_Serasa_Autoridade_Certificadora_Principal.crt: Certificado expirado
+2025/07/16 11:51:21 
+Processando certificado: AC_Serasa_JUS.crt
+2025/07/16 11:51:21 Falha ao validar AC_Serasa_JUS.crt: Certificado expirado
+2025/07/16 11:51:21 
+Processando certificado: AC_Serasa_JUS_v1.crt
+2025/07/16 11:51:21 Falha ao validar AC_Serasa_JUS_v1.crt: Certificado expirado
+2025/07/16 11:51:21 
+Processando certificado: AC_Serasa_JUS_v2.crt
+2025/07/16 11:51:21 Falha ao validar AC_Serasa_JUS_v2.crt: Certificado expirado
+2025/07/16 11:51:21 
+Processando certificado: AC_Serasa_JUS_v5.crt
+2025/07/16 11:51:22 Certificado importado com sucesso: AC_Serasa_JUS_v5.crt
+2025/07/16 11:51:22 
+Processando certificado: AC_Serasa_RFB.crt
+2025/07/16 11:51:22 Falha ao validar AC_Serasa_RFB.crt: Certificado expirado
+2025/07/16 11:51:22 
+Processando certificado: AC_Serasa_RFB_v2.crt
+2025/07/16 11:51:22 Falha ao validar AC_Serasa_RFB_v2.crt: Certificado expirado
+2025/07/16 11:51:22 
+Processando certificado: AC_Serasa_RFB_v5.crt
+2025/07/16 11:51:22 Certificado importado com sucesso: AC_Serasa_RFB_v5.crt
+2025/07/16 11:51:22 
+Processando certificado: AC_Serpro_JUS_v3.crt
+2025/07/16 11:51:22 Falha ao validar AC_Serpro_JUS_v3.crt: Certificado expirado
+2025/07/16 11:51:22 
+Processando certificado: AC_Serpro_JUS_v4.crt
+2025/07/16 11:51:22 Falha ao validar AC_Serpro_JUS_v4.crt: Certificado expirado
+2025/07/16 11:51:22 
+Processando certificado: AC_Serpro_JUS_v5_erro_retirado_repositorio.crt
+2025/07/16 11:51:23 Certificado importado com sucesso: AC_Serpro_JUS_v5_erro_retirado_repositorio.crt
+2025/07/16 11:51:23 
+Processando certificado: AC_Serpro_RFB.crt
+2025/07/16 11:51:23 Falha ao validar AC_Serpro_RFB.crt: Certificado expirado
+2025/07/16 11:51:23 
+Processando certificado: AC_Serpro_RFB_v3.crt
+2025/07/16 11:51:23 Falha ao validar AC_Serpro_RFB_v3.crt: Certificado expirado
+2025/07/16 11:51:23 
+Processando certificado: AC_Serpro_RFB_v4.crt
+2025/07/16 11:51:23 Falha ao validar AC_Serpro_RFB_v4.crt: Certificado expirado
+2025/07/16 11:51:23 
+Processando certificado: AC_Sincor_G2.crt
+2025/07/16 11:51:23 Falha ao validar AC_Sincor_G2.crt: Certificado expirado
+2025/07/16 11:51:23 
+Processando certificado: AC_Sincor_G3.crt
+2025/07/16 11:51:23 Falha ao validar AC_Sincor_G3.crt: Certificado expirado
+2025/07/16 11:51:23 
+Processando certificado: AC_Sincor_RFB_G2.crt
+2025/07/16 11:51:23 Falha ao validar AC_Sincor_RFB_G2.crt: Certificado expirado
+2025/07/16 11:51:23 
+Processando certificado: AC_Sincor_RFB_G4.crt
+2025/07/16 11:51:23 Falha ao validar AC_Sincor_RFB_G4.crt: Certificado expirado
+2025/07/16 11:51:23 
+Processando certificado: AC_Sincor_RFB_G5.crt
+2025/07/16 11:51:24 Certificado importado com sucesso: AC_Sincor_RFB_G5.crt
+2025/07/16 11:51:24 
+Processando certificado: AC_Sincor_Rio_RFB_G1.crt
+2025/07/16 11:51:24 Falha ao validar AC_Sincor_Rio_RFB_G1.crt: Certificado expirado
+2025/07/16 11:51:24 
+Processando certificado: AC_Solucao_Digital_Multipla.crt
+2025/07/16 11:51:24 Certificado importado com sucesso: AC_Solucao_Digital_Multipla.crt
+2025/07/16 11:51:24 
+Processando certificado: AC_Soluti.crt
+2025/07/16 11:51:24 Falha ao validar AC_Soluti.crt: Certificado expirado
+2025/07/16 11:51:24 
+Processando certificado: AC_Soluti_JUS_v1.crt
+2025/07/16 11:51:24 Falha ao validar AC_Soluti_JUS_v1.crt: Certificado expirado
+2025/07/16 11:51:24 
+Processando certificado: AC_Soluti_Multipla_v1.crt
+2025/07/16 11:51:24 Falha ao validar AC_Soluti_Multipla_v1.crt: Certificado expirado
+2025/07/16 11:51:24 
+Processando certificado: AC_Soluti_OM-BR.crt
+2025/07/16 11:51:25 Certificado importado com sucesso: AC_Soluti_OM-BR.crt
+2025/07/16 11:51:25 
+Processando certificado: AC_Soluti_RFB.crt
+2025/07/16 11:51:25 Falha ao validar AC_Soluti_RFB.crt: Certificado expirado
+2025/07/16 11:51:25 
+Processando certificado: AC_Soluti_v5.crt
+2025/07/16 11:51:25 Certificado importado com sucesso: AC_Soluti_v5.crt
+2025/07/16 11:51:25 
+Processando certificado: AC_SyngularID_Multipla.crt
+2025/07/16 11:51:26 Certificado importado com sucesso: AC_SyngularID_Multipla.crt
+2025/07/16 11:51:26 
+Processando certificado: AC_VALID-JUS_CODESIGNING_v5.crt
+2025/07/16 11:51:26 Certificado importado com sucesso: AC_VALID-JUS_CODESIGNING_v5.crt
+2025/07/16 11:51:26 
+Processando certificado: AC_VALID-JUS_SSL_v5.crt
+2025/07/16 11:51:27 Certificado importado com sucesso: AC_VALID-JUS_SSL_v5.crt
+2025/07/16 11:51:27 
+Processando certificado: AC_VALID-JUS_v5.crt
+2025/07/16 11:51:28 Certificado importado com sucesso: AC_VALID-JUS_v5.crt
+2025/07/16 11:51:28 
+Processando certificado: AC_VALID_BRASIL_CODESIGNING.crt
+2025/07/16 11:51:28 Certificado importado com sucesso: AC_VALID_BRASIL_CODESIGNING.crt
+2025/07/16 11:51:28 
+Processando certificado: AC_VALID_BRASIL_SSL.crt
+2025/07/16 11:51:29 Certificado importado com sucesso: AC_VALID_BRASIL_SSL.crt
+2025/07/16 11:51:29 
+Processando certificado: AC_VALID_BRASIL_v5.crt
+2025/07/16 11:51:29 Certificado importado com sucesso: AC_VALID_BRASIL_v5.crt
+2025/07/16 11:51:29 
+Processando certificado: AC_VALID_PLUS_CODESIGNING.crt
+2025/07/16 11:51:30 Certificado importado com sucesso: AC_VALID_PLUS_CODESIGNING.crt
+2025/07/16 11:51:30 
+Processando certificado: AC_VALID_PLUS_SSL.crt
+2025/07/16 11:51:30 Certificado importado com sucesso: AC_VALID_PLUS_SSL.crt
+2025/07/16 11:51:30 
+Processando certificado: AC_VALID_PLUS_TIMESTAMPING.crt
+2025/07/16 11:51:31 Certificado importado com sucesso: AC_VALID_PLUS_TIMESTAMPING.crt
+2025/07/16 11:51:31 
+Processando certificado: AC_VALID_PLUS_v5.crt
+2025/07/16 11:51:32 Certificado importado com sucesso: AC_VALID_PLUS_v5.crt
+2025/07/16 11:51:32 
+Processando certificado: AC_VALID_RFB_v5.crt
+2025/07/16 11:51:32 Certificado importado com sucesso: AC_VALID_RFB_v5.crt
+2025/07/16 11:51:32 
+Processando certificado: AC_VALID_SPB_v5.crt
+2025/07/16 11:51:33 Certificado importado com sucesso: AC_VALID_SPB_v5.crt
+2025/07/16 11:51:33 
+Processando certificado: AC_VALID_V12.crt
+2025/07/16 11:51:33 Certificado importado com sucesso: AC_VALID_V12.crt
+2025/07/16 11:51:33 
+Processando certificado: AC_VALID_v5.crt
+2025/07/16 11:51:34 Certificado importado com sucesso: AC_VALID_v5.crt
+2025/07/16 11:51:34 
+Processando certificado: AC_Valid_Brasil.crt
+2025/07/16 11:51:34 Falha ao validar AC_Valid_Brasil.crt: Certificado expirado
+2025/07/16 11:51:34 
+Processando certificado: AC_Valid_JUS_v4.crt
+2025/07/16 11:51:34 Falha ao validar AC_Valid_JUS_v4.crt: Certificado expirado
+2025/07/16 11:51:34 
+Processando certificado: AC_Valid_PLUS.crt
+2025/07/16 11:51:34 Falha ao validar AC_Valid_PLUS.crt: Certificado expirado
+2025/07/16 11:51:34 
+Processando certificado: AC_Valid_RFB.crt
+2025/07/16 11:51:34 Falha ao validar AC_Valid_RFB.crt: Certificado expirado
+2025/07/16 11:51:34 
+Processando certificado: AC_Valid_SPB.crt
+2025/07/16 11:51:34 Falha ao validar AC_Valid_SPB.crt: Certificado expirado
+2025/07/16 11:51:34 
+Processando certificado: AC_Validar_Multipla.crt
+2025/07/16 11:51:35 Certificado importado com sucesso: AC_Validar_Multipla.crt
+2025/07/16 11:51:35 
+Processando certificado: AUTORIDADE_CERTIFICADORA_PROCERTI.crt
+2025/07/16 11:51:35 Certificado importado com sucesso: AUTORIDADE_CERTIFICADORA_PROCERTI.crt
+2025/07/16 11:51:35 
+Processando certificado: Autoridade Certificadora da Presidencia da Republica v1.crt
+2025/07/16 11:51:35 Falha ao validar Autoridade Certificadora da Presidencia da Republica v1.crt: Certificado expirado
+2025/07/16 11:51:35 
+Processando certificado: Autoridade Certificadora da Presidencia da Republica v2.crt
+2025/07/16 11:51:35 Falha ao validar Autoridade Certificadora da Presidencia da Republica v2.crt: Certificado expirado
+2025/07/16 11:51:35 
+Processando certificado: Autoridade_Certificadora_ALTERNATIVE.crt
+2025/07/16 11:51:36 Certificado importado com sucesso: Autoridade_Certificadora_ALTERNATIVE.crt
+2025/07/16 11:51:36 
+Processando certificado: Autoridade_Certificadora_BRASIL_CERTEC.crt
+2025/07/16 11:51:36 Certificado importado com sucesso: Autoridade_Certificadora_BRASIL_CERTEC.crt
+2025/07/16 11:51:36 
+Processando certificado: Autoridade_Certificadora_DIGITAL_CERTY.crt
+2025/07/16 11:51:37 Certificado importado com sucesso: Autoridade_Certificadora_DIGITAL_CERTY.crt
+2025/07/16 11:51:37 
+Processando certificado: Autoridade_Certificadora_IDFEDERAL.crt
+2025/07/16 11:51:37 Certificado importado com sucesso: Autoridade_Certificadora_IDFEDERAL.crt
+2025/07/16 11:51:37 
+Processando certificado: Autoridade_Certificadora_INFOCOMEX.crt
+2025/07/16 11:51:38 Certificado importado com sucesso: Autoridade_Certificadora_INFOCOMEX.crt
+2025/07/16 11:51:38 
+Processando certificado: Autoridade_Certificadora_INVIA.crt
+2025/07/16 11:51:38 Certificado importado com sucesso: Autoridade_Certificadora_INVIA.crt
+2025/07/16 11:51:38 
+Processando certificado: Autoridade_Certificadora_NACIONAL.crt
+2025/07/16 11:51:39 Certificado importado com sucesso: Autoridade_Certificadora_NACIONAL.crt
+2025/07/16 11:51:39 
+Processando certificado: Autoridade_Certificadora_PRIMECERT.crt
+2025/07/16 11:51:40 Certificado importado com sucesso: Autoridade_Certificadora_PRIMECERT.crt
+2025/07/16 11:51:40 
+Processando certificado: Autoridade_Certificadora_SDI.crt
+2025/07/16 11:51:40 Certificado importado com sucesso: Autoridade_Certificadora_SDI.crt
+2025/07/16 11:51:40 
+Processando certificado: Autoridade_Certificadora_SEFAZCE.crt
+2025/07/16 11:51:41 Certificado importado com sucesso: Autoridade_Certificadora_SEFAZCE.crt
+2025/07/16 11:51:41 
+Processando certificado: Autoridade_Certificadora_SERPRORFBv5.crt
+2025/07/16 11:51:42 Certificado importado com sucesso: Autoridade_Certificadora_SERPRORFBv5.crt
+2025/07/16 11:51:42 
+Processando certificado: Autoridade_Certificadora_Serpro_v2.crt
+2025/07/16 11:51:42 Falha ao validar Autoridade_Certificadora_Serpro_v2.crt: Certificado expirado
+2025/07/16 11:51:42 
+Processando certificado: Autoridade_Certificadora_Serpro_v3.crt
+2025/07/16 11:51:42 Falha ao validar Autoridade_Certificadora_Serpro_v3.crt: Certificado expirado
+2025/07/16 11:51:42 
+Processando certificado: Autoridade_Certificadora_Serpro_v4.crt
+2025/07/16 11:51:42 Certificado importado com sucesso: Autoridade_Certificadora_Serpro_v4.crt
+2025/07/16 11:51:42 
+Processando certificado: Autoridade_Certificadora_da_Casa_da_Moeda_do_Brasil.crt
+2025/07/16 11:51:42 Falha ao validar Autoridade_Certificadora_da_Casa_da_Moeda_do_Brasil.crt: Certificado expirado
+2025/07/16 11:51:42 
+Processando certificado: Autoridade_Certificadora_da_Casa_da_Moeda_do_Brasil_v2.crt
+2025/07/16 11:51:42 Falha ao validar Autoridade_Certificadora_da_Casa_da_Moeda_do_Brasil_v2.crt: Certificado expirado
+2025/07/16 11:51:42 
+Processando certificado: Autoridade_Certificadora_da_Casa_da_Moeda_do_Brasil_v3.crt
+2025/07/16 11:51:42 Falha ao validar Autoridade_Certificadora_da_Casa_da_Moeda_do_Brasil_v3.crt: Certificado expirado
+2025/07/16 11:51:42 
+Processando certificado: Autoridade_Certificadora_da_Justica.crt
+2025/07/16 11:51:42 Falha ao validar Autoridade_Certificadora_da_Justica.crt: Certificado expirado
+2025/07/16 11:51:42 
+Processando certificado: Autoridade_Certificadora_da_Justica_v3.crt
+2025/07/16 11:51:42 Falha ao validar Autoridade_Certificadora_da_Justica_v3.crt: Certificado expirado
+2025/07/16 11:51:42 
+Processando certificado: Autoridade_Certificadora_da_Justica_v4.crt
+2025/07/16 11:51:42 Falha ao validar Autoridade_Certificadora_da_Justica_v4.crt: Certificado expirado
+2025/07/16 11:51:42 
+Processando certificado: Autoridade_Certificadora_da_Justica_v5.crt
+2025/07/16 11:51:43 Certificado importado com sucesso: Autoridade_Certificadora_da_Justica_v5.crt
+2025/07/16 11:51:43 
+Processando certificado: Autoridade_Certificadora_da_Presidencia_da_Republica.crt
+2025/07/16 11:51:43 Falha ao validar Autoridade_Certificadora_da_Presidencia_da_Republica.crt: Certificado expirado
+2025/07/16 11:51:43 
+Processando certificado: Autoridade_Certificadora_da_Presidencia_da_Republica_2005.crt
+2025/07/16 11:51:43 Falha ao validar Autoridade_Certificadora_da_Presidencia_da_Republica_2005.crt: Certificado expirado
+2025/07/16 11:51:43 
+Processando certificado: Autoridade_Certificadora_da_Presidencia_da_Republica_v1.crt
+2025/07/16 11:51:43 Falha ao validar Autoridade_Certificadora_da_Presidencia_da_Republica_v1.crt: Certificado expirado
+2025/07/16 11:51:43 
+Processando certificado: Autoridade_Certificadora_da_Presidencia_da_Republica_v2.crt
+2025/07/16 11:51:43 Falha ao validar Autoridade_Certificadora_da_Presidencia_da_Republica_v2.crt: Certificado expirado
+2025/07/16 11:51:43 
+Processando certificado: Autoridade_Certificadora_da_Presidencia_da_Republica_v3.crt
+2025/07/16 11:51:43 Falha ao validar Autoridade_Certificadora_da_Presidencia_da_Republica_v3.crt: Certificado expirado
+2025/07/16 11:51:43 
+Processando certificado: Autoridade_Certificadora_da_Presidencia_da_Republica_v4.crt
+2025/07/16 11:51:43 Falha ao validar Autoridade_Certificadora_da_Presidencia_da_Republica_v4.crt: Certificado expirado
+2025/07/16 11:51:43 
+Processando certificado: Autoridade_Certificadora_da_Presidencia_da_Republica_v5.crt
+2025/07/16 11:51:44 Certificado importado com sucesso: Autoridade_Certificadora_da_Presidencia_da_Republica_v5.crt
+2025/07/16 11:51:44 
+Processando certificado: Autoridade_Certificadora_da_Presidencia_da_Republica_v6.crt
+2025/07/16 11:51:44 Certificado importado com sucesso: Autoridade_Certificadora_da_Presidencia_da_Republica_v6.crt
+2025/07/16 11:51:44 
+Processando certificado: Autoridade_Certificadora_da_Secretaria_da_Receita_Federal.crt
+2025/07/16 11:51:44 Falha ao validar Autoridade_Certificadora_da_Secretaria_da_Receita_Federal.crt: Certificado expirado
+2025/07/16 11:51:44 
+Processando certificado: Autoridade_Certificadora_da_Secretaria_da_Receita_Federal_v1.crt
+2025/07/16 11:51:44 Falha ao validar Autoridade_Certificadora_da_Secretaria_da_Receita_Federal_v1.crt: Certificado expirado
+2025/07/16 11:51:44 
+Processando certificado: Autoridade_Certificadora_do_Proderj.crt
+2025/07/16 11:51:44 Falha ao validar Autoridade_Certificadora_do_Proderj.crt: Certificado expirado
+2025/07/16 11:51:44 
+Processando certificado: Autoridade_Certificadora_do_Proderj_v2.crt
+2025/07/16 11:51:44 Falha ao validar Autoridade_Certificadora_do_Proderj_v2.crt: Certificado expirado
+2025/07/16 11:51:44 
+Processando certificado: Autoridade_Certificadora_do_SERPRO_RFB_SSL.crt
+2025/07/16 11:51:44 Falha ao validar Autoridade_Certificadora_do_SERPRO_RFB_SSL.crt: Certificado expirado
+2025/07/16 11:51:44 
+Processando certificado: Autoridade_Certificadora_do_Serpro.crt
+2025/07/16 11:51:44 Falha ao validar Autoridade_Certificadora_do_Serpro.crt: Certificado expirado
+2025/07/16 11:51:44 
+Processando certificado: Autoridade_Certificadora_do_Serpro_Final_SSL.crt
+2025/07/16 11:51:45 Certificado importado com sucesso: Autoridade_Certificadora_do_Serpro_Final_SSL.crt
+2025/07/16 11:51:45 
+Processando certificado: Autoridade_Certificadora_do_Serpro_Final_v1.crt
+2025/07/16 11:51:45 Falha ao validar Autoridade_Certificadora_do_Serpro_Final_v1.crt: Certificado expirado
+2025/07/16 11:51:45 
+Processando certificado: Autoridade_Certificadora_do_Serpro_Final_v2.crt
+2025/07/16 11:51:45 Falha ao validar Autoridade_Certificadora_do_Serpro_Final_v2.crt: Certificado expirado
+2025/07/16 11:51:45 
+Processando certificado: Autoridade_Certificadora_do_Serpro_Final_v3.crt
+2025/07/16 11:51:45 Falha ao validar Autoridade_Certificadora_do_Serpro_Final_v3.crt: Certificado expirado
+2025/07/16 11:51:45 
+Processando certificado: Autoridade_Certificadora_do_Serpro_Final_v4.crt
+2025/07/16 11:51:45 Falha ao validar Autoridade_Certificadora_do_Serpro_Final_v4.crt: Certificado expirado
+2025/07/16 11:51:45 
+Processando certificado: Autoridade_Certificadora_do_Serpro_Final_v5.crt
+2025/07/16 11:51:45 Certificado importado com sucesso: Autoridade_Certificadora_do_Serpro_Final_v5.crt
+2025/07/16 11:51:45 
+Processando certificado: Autoridade_Certificadora_do_Serpro_v1.crt
+2025/07/16 11:51:45 Falha ao validar Autoridade_Certificadora_do_Serpro_v1.crt: Certificado expirado
+2025/07/16 11:51:45 
+Processando certificado: Autoridade__Certificadora_do_Serpro_v1.crt
+2025/07/16 11:51:45 Falha ao validar Autoridade__Certificadora_do_Serpro_v1.crt: Certificado expirado
+2025/07/16 11:51:45 
+Processando certificado: Certificado_AC_Raiz.crt
+2025/07/16 11:51:45 Falha ao validar Certificado_AC_Raiz.crt: Certificado expirado
+2025/07/16 11:51:45 
+Processando certificado: ICP-Brasil.crt
+2025/07/16 11:51:45 Falha ao validar ICP-Brasil.crt: Certificado expirado
+2025/07/16 11:51:45 
+Processando certificado: ICP-Brasilv10.crt
+2025/07/16 11:51:46 Certificado importado com sucesso: ICP-Brasilv10.crt
+2025/07/16 11:51:46 
+Processando certificado: ICP-Brasilv11.crt
+2025/07/16 11:51:46 Certificado importado com sucesso: ICP-Brasilv11.crt
+2025/07/16 11:51:46 
+Processando certificado: ICP-Brasilv12.crt
+2025/07/16 11:51:47 Certificado importado com sucesso: ICP-Brasilv12.crt
+2025/07/16 11:51:47 
+Processando certificado: ICP-Brasilv13.crt
+2025/07/16 11:51:48 Falha ao importar ICP-Brasilv13.crt: erro de keytool: java.lang.Exception: A entrada não é um certificado X.509
+2025/07/16 11:51:48 
+Processando certificado: ICP-Brasilv2.crt
+2025/07/16 11:51:48 Falha ao validar ICP-Brasilv2.crt: Certificado expirado
+2025/07/16 11:51:48 
+Processando certificado: ICP-Brasilv3.crt
+2025/07/16 11:51:48 Falha ao validar ICP-Brasilv3.crt: Certificado expirado
+2025/07/16 11:51:48 
+Processando certificado: ICP-Brasilv4.crt
+2025/07/16 11:51:48 Falha ao importar ICP-Brasilv4.crt: erro de keytool: java.lang.Exception: A entrada não é um certificado X.509
+2025/07/16 11:51:48 
+Processando certificado: ICP-Brasilv5.crt
+2025/07/16 11:51:49 Certificado importado com sucesso: ICP-Brasilv5.crt
+2025/07/16 11:51:49 
+Processando certificado: ICP-Brasilv6.crt
+2025/07/16 11:51:49 Certificado importado com sucesso: ICP-Brasilv6.crt
+2025/07/16 11:51:49 
+Processando certificado: ICP-Brasilv7.crt
+2025/07/16 11:51:50 Certificado importado com sucesso: ICP-Brasilv7.crt
+2025/07/16 11:51:50 
+Processando certificado: Instituto_Nacional_de_Metrologia_Qualidade_e_Tecnologia_INMETRO.crt
+2025/07/16 11:51:50 Certificado importado com sucesso: Instituto_Nacional_de_Metrologia_Qualidade_e_Tecnologia_INMETRO.crt
+2025/07/16 11:51:50 
+Processando certificado: Secretaria_da_Receita_Federal_do_Brasil.crt
+2025/07/16 11:51:50 Falha ao validar Secretaria_da_Receita_Federal_do_Brasil.crt: Certificado expirado
+2025/07/16 11:51:50 
+Processando certificado: Serasa_AC_v5.crt
+2025/07/16 11:51:51 Certificado importado com sucesso: Serasa_AC_v5.crt
+2025/07/16 11:51:51 
+Processando certificado: Serasa_Autoridade_Certificadora_Principal.crt
+2025/07/16 11:51:51 Falha ao validar Serasa_Autoridade_Certificadora_Principal.crt: Certificado expirado
+2025/07/16 11:51:51 
+Processando certificado: Serasa_Autoridade_Certificadora_Principal_v1.crt
+2025/07/16 11:51:51 Falha ao validar Serasa_Autoridade_Certificadora_Principal_v1.crt: Certificado expirado
+2025/07/16 11:51:51 
+Processando certificado: Serasa_Autoridade_Certificadora_Principal_v2.crt
+2025/07/16 11:51:51 Falha ao validar Serasa_Autoridade_Certificadora_Principal_v2.crt: Certificado expirado
+2025/07/16 11:51:51 
+Processando certificado: Serasa_Autoridade_Certificadora_Principal_v5.crt
+2025/07/16 11:51:52 Certificado importado com sucesso: Serasa_Autoridade_Certificadora_Principal_v5.crt
+2025/07/16 11:51:52 
+Processando certificado: Serasa_Autoridade_Certificadora_v2.crt
+2025/07/16 11:51:52 Falha ao validar Serasa_Autoridade_Certificadora_v2.crt: Certificado expirado
+2025/07/16 11:51:52 
+Processando certificado: Serasa_CD_SSL_v5.crt
+2025/07/16 11:51:52 Certificado importado com sucesso: Serasa_CD_SSL_v5.crt
+2025/07/16 11:51:52 
+Processando certificado: Serasa_CD_v5.crt
+2025/07/16 11:51:53 Certificado importado com sucesso: Serasa_CD_v5.crt
+2025/07/16 11:51:53 
+Processando certificado: Serasa_Certificadora_Digital_v2.crt
+2025/07/16 11:51:53 Falha ao validar Serasa_Certificadora_Digital_v2.crt: Certificado expirado
+2025/07/16 11:51:53 
+Processando certificado: ac_certfacil_v5.crt
+2025/07/16 11:51:53 Certificado importado com sucesso: ac_certfacil_v5.crt
+2025/07/16 11:51:53 
+Processando certificado: ac_mult_v5.crt
+2025/07/16 11:51:54 Certificado importado com sucesso: ac_mult_v5.crt
+2025/07/16 11:51:54 
+Processando certificado: ac_soluti_spb_v5.crt
+2025/07/16 11:51:54 Certificado importado com sucesso: ac_soluti_spb_v5.crt
+2025/07/16 11:51:54 Starting keystore validation...
+2025/07/16 11:51:55 
+--- Resumo da Importação ---
+2025/07/16 11:51:55 
+--- Erros de Importação ---
+2025/07/16 11:51:55 Certificado: AC_Caixa_PJ-1_v1.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Notarial_RFB_G2.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: Autoridade_Certificadora_do_Proderj_v2.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Serasa_JUS_v1.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Serpro_JUS_v3.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Valid_JUS_v4.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: ACIMESP1n.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Oab.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: Autoridade_Certificadora_Serpro_v3.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Certisign_Multipla_G5.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Imprensa_Oficial_SP_RFB_G4.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: Autoridade_Certificadora_do_Serpro_Final_v2.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Caixa_PF-1_v1.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Digitalsign.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Sincor_Rio_RFB_G1.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: Autoridade_Certificadora_da_Casa_da_Moeda_do_Brasil_v3.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: Secretaria_da_Receita_Federal_do_Brasil.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Certisign_SPB_G3.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_DIGITALSIGN_SSL.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Imprensa_Oficial.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Sincor_G2.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: Autoridade Certificadora da Presidencia da Republica v1.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: Autoridade_Certificadora_da_Presidencia_da_Republica_v3.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: Autoridade_Certificadora_da_Presidencia_da_Republica_v4.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: Autoridade_Certificadora_do_SERPRO_RFB_SSL.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Caixa_PF_v1.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: ICP-Brasil.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Caixa_SPB.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Prodest_RFB_v2.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: Autoridade_Certificadora_Serpro_v2.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Certisign_RFB_G3.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Imprensa_Oficial_SP.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_LINK_RFB.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: Autoridade_Certificadora_do_Serpro.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Prodemge_G2.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: Autoridade_Certificadora_da_Justica.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: Autoridade_Certificadora_da_Secretaria_da_Receita_Federal.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: Autoridade_Certificadora_do_Serpro_v1.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: ICP-Brasilv13.crt | Motivo: erro de keytool: java.lang.Exception: A entrada não é um certificado X.509
+2025/07/16 11:51:55 Certificado: AC_Caixa_PJ_v1.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC CertiSign.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Serasa_JUS.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: Autoridade_Certificadora_da_Casa_da_Moeda_do_Brasil.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Caixa_PJ_v2.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Certisign_Multipla_G6.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Imprensa_Oficial_SP_RFB_G3.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_MRE.crt | Motivo: erro de keytool: java.lang.Exception: A entrada não é um certificado X.509
+2025/07/16 11:51:55 Certificado: AC_Notarial_RFB_G3.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Sincor_G3.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: Autoridade_Certificadora_da_Justica_v4.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: Autoridade_Certificadora_do_Serpro_Final_v3.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Certisign_SPB_G5.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: Autoridade_Certificadora_da_Presidencia_da_Republica_v2.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Imprensa_Oficial_SP_G3.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Serasa_RFB.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: Autoridade_Certificadora_da_Casa_da_Moeda_do_Brasil_v2.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: Serasa_Autoridade_Certificadora_Principal_v2.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: Serasa_Autoridade_Certificadora_v2.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_CAIXA_v2.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Caixa_JUS_v1.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Certisign_G3.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Instituto_Fenacon_RFB_G2.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_SOLUTI_Multipla_SSL.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_SOLUTI_Multipla_TIMESTAMPING.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: Autoridade_Certificadora_da_Justica_v3.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Boa_Vista_RFB.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_CertiSign_V3.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Certisign_JUS_G3.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Digitalsign_ACP.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_EGBA_MULTIPLA.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Prodemge_RFB_G2.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Serpro_RFB.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Valid_RFB.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Certisign_Multipla_G3.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Serasa_ACP.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: Autoridade_Certificadora_da_Presidencia_da_Republica_v1.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: Serasa_Certificadora_Digital_v2.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Serasa_RFB_v2.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Soluti_JUS_v1.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_SOLUTI_Multipla_CODESIGNING.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Serpro_JUS_v4.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Soluti.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_IMESP_RFB_G3_retirar_repositorio.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: ACImprensaOficial_18072011.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_BR_RFB_G3.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_CNDL_RFB.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Instituto_Fenacom_RFB.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Instituto_Fenacon.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC-MRE-V1.crt | Motivo: erro de keytool: java.lang.Exception: A entrada não é um certificado X.509
+2025/07/16 11:51:55 Certificado: AC_CAIXA_PF_1v2.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_CAIXA_PJ-SSL_v2.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Imprensa_Oficial_SP_G4.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Oab_G2.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Petrobras_G3.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Valid_Brasil.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Caixa.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Imprensa_Oficial_SP_G2.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Soluti_RFB.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: ICP-Brasilv3.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_CAIXA_PJ_1v2.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Imprensa_Oficial_G3.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Imprensa_Oficial_SSL.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Sincor_RFB_G2.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Valid_PLUS.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: ICP-Brasilv2.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: ICP-Brasilv4.crt | Motivo: erro de keytool: java.lang.Exception: A entrada não é um certificado X.509
+2025/07/16 11:51:55 Certificado: AC_Caixa_JUS_v2.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Certisign_G6.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Certisign_JUS_G2.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Fenacon_Certisign_RFB_G2.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Valid_SPB.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: Autoridade_Certificadora_da_Presidencia_da_Republica.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: Autoridade_Certificadora_do_Serpro_Final_v1.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_BoaVista_Certificadora.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Soluti_Multipla_v1.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: Autoridade_Certificadora_da_Secretaria_da_Receita_Federal_v1.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: Autoridade_Certificadora_do_Serpro_Final_v4.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Caixa_PF_v2.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Digitalsign_RFB.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Prodest_RFB.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Sincor_RFB_G4.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_CertiSign_JUS.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Digital.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Fenacon_Certisign_RFB_G3.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Instituto_Fenacon_G2.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Serasa_JUS_v2.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: Autoridade__Certificadora_do_Serpro_v1.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: Certificado_AC_Raiz.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_BoaVista.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_CACB_RFB.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Certisign_RFB_G4.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_DOCCLOUD_RFB.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Safeweb_RFB.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: Autoridade Certificadora da Presidencia da Republica v2.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: Autoridade_Certificadora_do_Proderj.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Imprensa_Oficial_G2.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Online_Brasil.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Serpro_RFB_v4.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: Autoridade_Certificadora_da_Presidencia_da_Republica_2005.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_BR_RFB_G2.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Certisign_Tempo_G1.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Prodemge_RFB_G3.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Serpro_RFB_v3.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: Serasa_Autoridade_Certificadora_Principal.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: Serasa_Autoridade_Certificadora_Principal_v1.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Imprensa_Oficial_G4.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Petrobras_G2.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_CNDL_RFB_v2.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_IMESP_RFB_G2.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Online_RFB.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_PETROBRAS_G4.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Prodemge_G3.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Secretaria_da_Receita_Federal_do_Brasil_v3.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Serasa_Autoridade_Certificadora_Principal.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 Certificado: AC_Caixa_v1.crt | Motivo: Certificado expirado
+2025/07/16 11:51:55 
+--- TOTAIS FINAIS ---
+2025/07/16 11:51:55 Total de certificados que tentaram ser importados: 323
+2025/07/16 11:51:55 Certificados válidos importados: 168
+2025/07/16 11:51:55 Certificados com erro de importação: 155
+2025/07/16 11:51:55 Certificados com erro de validação: 0
+2025/07/16 11:51:55 --- FIM DO RESUMO ---

@@ -1,0 +1,1 @@
+8e7689b5533dca9ff7a56655d6ceeb5e9409c6c4aea41bb1cd4bddde8b608ff2  PA_PAdES_AD_RA_v1_2.der
