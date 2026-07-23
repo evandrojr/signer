@@ -55,6 +55,7 @@ func main() {
 			TargetKeystore:   filepath.Join(wd, "../chain-icp-brasil/src/main/resources/cadeiasicpbrasil.bks"),
 			KeystorePass:     "serprosigner",
 			BouncyCastlePath: filepath.Join(wd, "../chain-icp-brasil/src/scripts_keytool/bcprov-lts8on-2.73.11.jar"),
+			TsaP7bURL:        "https://repositorio.serpro.gov.br/cadeias/acserproacfts.p7b",
 		}
 		polConfig = politicas.Config{
 			Env:           "pro",
