@@ -66,12 +66,17 @@ public class ICPBrasilProviderCA implements ProviderCA {
 
 	private static MessagesBundle chainMessagesBundle = new MessagesBundle();
 	Logger LOGGER = LoggerFactory.getLogger(ICPBrasilProviderCA.class);
+	private static final String ENV_HOMOLOGACAO = System.getProperty("org.demoiselle.signer.env", "");
 
 	/**
 	 * read Certificate Authority chain from loaded keystore
 	 */
 	@Override
 	public Collection<X509Certificate> getCAs() {
+		if ("hom".equalsIgnoreCase(ENV_HOMOLOGACAO) || "homolog".equalsIgnoreCase(ENV_HOMOLOGACAO)) {
+			LOGGER.info("Ambiente de homologacao detectado ({}). Pulando carga de CAs de producao.", ENV_HOMOLOGACAO);
+			return new ArrayList<>();
+		}
 		KeyStore keyStore = this.getKeyStore();
 		List<X509Certificate> result = new ArrayList<X509Certificate>();
 		try {

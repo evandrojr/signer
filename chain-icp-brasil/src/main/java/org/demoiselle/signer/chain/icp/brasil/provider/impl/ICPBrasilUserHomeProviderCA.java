@@ -83,12 +83,17 @@ public class ICPBrasilUserHomeProviderCA implements ProviderCA {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ICPBrasilUserHomeProviderCA.class);
 	
 	private static final MessagesBundle chainMessagesBundle = new MessagesBundle();
+	private static final String ENV_HOMOLOGACAO = System.getProperty("org.demoiselle.signer.env", "");
 
 	/**
 	 * Main method for read trusted Certificate Authorities Chain
 	 */
 	@Override
 	public Collection<X509Certificate> getCAs() {
+		if ("hom".equalsIgnoreCase(ENV_HOMOLOGACAO) || "homolog".equalsIgnoreCase(ENV_HOMOLOGACAO)) {
+			LOGGER.info("Ambiente de homologacao detectado ({}). Pulando carga de CAs de producao.", ENV_HOMOLOGACAO);
+			return new java.util.HashSet<>();
+		}
 
 		// verify if the FULL_PATH_FOLDER_SINGER exists
 		try {

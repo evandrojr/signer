@@ -5,9 +5,15 @@ import java.util.Collection;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class HomologacaoProviderCATest {
+    @BeforeEach
+    void setupEnv() {
+        System.setProperty("org.demoiselle.signer.env", "hom");
+    }
+
     @Test
     void testLoadBksCertificates() {
         HomologacaoProviderCA provider = new HomologacaoProviderCA();

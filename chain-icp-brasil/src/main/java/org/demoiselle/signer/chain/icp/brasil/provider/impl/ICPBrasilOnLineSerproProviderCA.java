@@ -79,6 +79,7 @@ public class ICPBrasilOnLineSerproProviderCA implements ProviderCA {
 	private static final String STRING_URL_ZIP = ChainICPBrasilConfig.getInstance().getUrl_local_ac_list();
 	private static final String STRING_URL_HASH = ChainICPBrasilConfig.getInstance().getUrl_local_ac_list_sha512();
 	Logger LOGGER = LoggerFactory.getLogger(ICPBrasilOnLineSerproProviderCA.class);
+	private static final String ENV_HOMOLOGACAO = System.getProperty("org.demoiselle.signer.env", "");
 
 	protected static MessagesBundle chainMessagesBundle = new MessagesBundle();
 
@@ -110,6 +111,10 @@ public class ICPBrasilOnLineSerproProviderCA implements ProviderCA {
 	 */
 	@Override
 	public Collection<X509Certificate> getCAs() {
+		if ("hom".equalsIgnoreCase(ENV_HOMOLOGACAO) || "homolog".equalsIgnoreCase(ENV_HOMOLOGACAO)) {
+			LOGGER.info("Ambiente de homologacao detectado ({}). Pulando carga de CAs de producao.", ENV_HOMOLOGACAO);
+			return new HashSet<>();
+		}
 
 		Collection<X509Certificate> result = null;
 		boolean useCache = false;
