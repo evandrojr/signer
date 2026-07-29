@@ -117,6 +117,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<github.global.server>github</github.global.server>
 		<release.goals>deploy</release.goals>
+		<central.publish.skip>true</central.publish.skip>
 	</properties>
 
 	<build>
@@ -198,11 +199,10 @@
 				<groupId>org.sonatype.central</groupId>
 				<artifactId>central-publishing-maven-plugin</artifactId>
 				<version>0.6.0</version>
-				<extensions>true</extensions>
 				<configuration>
 					<publishingServerId>ossrh</publishingServerId>
 					<autoPublish>true</autoPublish>
-					<skipPublishing>true</skipPublishing>
+					<skipPublishing>${central.publish.skip}</skipPublishing>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -273,6 +273,24 @@
 	</reporting>
 
 	<profiles>
+		<profile>
+			<id>release</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.sonatype.central</groupId>
+						<artifactId>central-publishing-maven-plugin</artifactId>
+						<version>0.6.0</version>
+						<extensions>true</extensions>
+						<configuration>
+							<publishingServerId>ossrh</publishingServerId>
+							<autoPublish>true</autoPublish>
+							<skipPublishing>false</skipPublishing>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
 		<profile>
 			<!-- mvn javadoc:aggregate -P aggregated    -->
 			<!-- Output: target/html/apidocs/index.html -->

@@ -1,13 +1,32 @@
 #!/bin/bash
-export JAVA_HOME=/home/s932743005/.sdkman/candidates/java/8.0.492-tem
+#
+# Script de retry para deploy de SNAPSHOTs no Sonatype
+# Uso: ./retry-deploy.sh [arguments...]
+#   -release   modo release (ativa -P release para publicar no Maven Central)
+#
+set -e
+
+JAVA_HOME=${JAVA_HOME:-$(dirname $(dirname $(readlink -f $(which java))))}
+export JAVA_HOME
 export PATH=$JAVA_HOME/bin:$PATH
 
-cd /home/s932743005/repo/signer-evandrojr/
+cd "$(dirname "$0")"
+
+PROFILE=""
+if [ "$1" = "-release" ]; then
+    PROFILE="-P release"
+    echo "Modo RELEASE ativado"
+fi
 
 for i in {1..20}; do
-    echo "Attempting deploy #$i..."
-    # Skipping javadoc to speed up and avoid timeouts
-    mvn clean deploy -Dmaven.test.skip=true -Dmaven.javadoc.skip=true -B \
+    echo ""
+    echo "=== Tentativa de deploy #$i ==="
+    echo ""
+    mvn clean deploy \
+        -Dmaven.test.skip=true \
+        -Dmaven.javadoc.skip=true \
+        -B \
+        $PROFILE \
         -Dgpg.passphrase="" \
         -Dgpg.arguments="--pinentry-mode loopback" \
         -Dmaven.wagon.http.retryHandler.count=5 \
@@ -16,12 +35,16 @@ for i in {1..20}; do
         -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
     
     if [ $? -eq 0 ]; then
-        echo "Deploy successful!"
+        echo ""
+        echo "=== Deploy bem-sucedido na tentativa #$i ==="
         exit 0
     fi
-    echo "Deploy failed. Retrying in 15 seconds..."
+    
+    echo ""
+    echo "=== Falha na tentativa #$i. Retry em 15s... ==="
     sleep 15
 done
 
-echo "Failed after many attempts."
+echo ""
+echo "=== Falha após 20 tentativas ==="
 exit 1

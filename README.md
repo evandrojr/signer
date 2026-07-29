@@ -83,6 +83,86 @@ As principais configurações são feitas via variável de ambiente ou system pr
 
 ---
 
+## Publicação (Deploy)
+
+### Pré-requisitos
+
+- **settings.xml** configurado com server `ossrh` (usuário/token do [central.sonatype.com](https://central.sonatype.com))
+- **GPG** key configurada para assinatura dos artefatos
+- Java 8+ e Maven 3.9+
+
+### SNAPSHOT
+
+Publica no repositório de SNAPSHOTs (`https://central.sonatype.com/repository/maven-snapshots/`):
+
+```bash
+mvn clean deploy -Dmaven.test.skip=true -Dmaven.javadoc.skip=true -B \
+    -Dgpg.passphrase="" \
+    -Dgpg.arguments="--pinentry-mode loopback"
+```
+
+Ou usando o script de retry:
+
+```bash
+./retry-deploy.sh
+```
+
+### Release (Maven Central)
+
+> ⚠️ A versão no POM **não pode** conter `-SNAPSHOT`.
+
+```bash
+mvn clean deploy -Dmaven.test.skip=true -Dmaven.javadoc.skip=true -B \
+    -Dgpg.passphrase="" \
+    -Dgpg.arguments="--pinentry-mode loopback" \
+    -P release
+```
+
+O profile `release` ativa o `central-publishing-maven-plugin` com `<extensions>true</extensions>`, que faz o upload e publish para o Maven Central.
+
+### Publicador Go
+
+O programa [`publicador.go`](publicador.go) automatiza a publicação completa:
+
+```bash
+# SNAPSHOT
+go run publicador.go
+
+# Release
+go run publicador.go -release
+```
+
+Ele executa `mvn deploy` no reactor todo, com retry automático (3 tentativas) e validação pós-publicação via consulta ao repositório.
+
+#### Verificar publicação
+
+Verifica se todos os módulos estão publicados no servidor e gera um relatório detalhado:
+
+```bash
+# Verificar SNAPSHOTs
+go run publicador.go -validar
+
+# Verificar releases no Maven Central
+go run publicador.go -validar -release
+```
+
+O relatório mostra por módulo:
+- ✅ Status geral (publicado/não publicado)
+- 📦 Versão e número do build
+- 📋 Arquivos publicados (pom, jar, sources.jar, javadoc.jar, assinaturas .asc) com status individual
+
+### Retry Automático
+
+O script [`retry-deploy.sh`](retry-deploy.sh) tenta o deploy até 20 vezes com intervalo de 15s:
+
+```bash
+# SNAPSHOT
+./retry-deploy.sh
+
+# Release
+./retry-deploy.sh -release
+```
+
 ## Release Notes
 
 - [4.6.1](release-notes/4.6.1.md)
