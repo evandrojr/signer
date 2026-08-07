@@ -32,3 +32,4 @@ build_full.log
 build_result.log
 output.log
 tests/results/authority_key_id_token_test.txt
+validation.log
