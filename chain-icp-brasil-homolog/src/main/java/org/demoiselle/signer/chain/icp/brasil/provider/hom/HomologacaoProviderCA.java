@@ -58,12 +58,12 @@ public class HomologacaoProviderCA implements ProviderCA {
 
 	protected static MessagesBundle chainMessagesBundle = new MessagesBundle();
 	private static final Logger logger = LoggerFactory.getLogger(HomologacaoProviderCA.class);
-	private static final String ENV_HOMOLOGACAO = System.getProperty("org.demoiselle.signer.env", "");
 
 	@Override
 	public Collection<X509Certificate> getCAs() {
-		if (!"hom".equalsIgnoreCase(ENV_HOMOLOGACAO) && !"homolog".equalsIgnoreCase(ENV_HOMOLOGACAO)) {
-			logger.info("Ambiente de producao detectado ({}). Pulando carga de CAs de homologacao.", ENV_HOMOLOGACAO);
+		String env = System.getProperty("org.demoiselle.signer.env", "");
+                if (!"hom".equalsIgnoreCase(env) && !"homolog".equalsIgnoreCase(env)) {
+			logger.info("Ambiente de producao detectado ({}). Pulando carga de CAs de homologacao.", env);
 			return new ArrayList<>();
 		}
 		List<X509Certificate> result = new ArrayList<>();

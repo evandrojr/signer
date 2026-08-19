@@ -34,21 +34,21 @@ var v12Expected = []struct {
 	Role    string
 }{
 	{
-		CN:      "Autoridade Certificadora Raiz Brasileira v12",
-		Subject: "CN=Autoridade Certificadora Raiz Brasileira v12,OU=Instituto Nacional de Tecnologia da Informacao - ITI,O=ICP-Brasil,C=BR",
-		Serial:  "16510958650902378891",
-		Role:    "RAIZ (Root CA) - AC Raiz Brasileira v12",
+		CN:      "Autoridade Certificadora Raiz Brasileira v12 - HOM",
+		Subject: "CN=Autoridade Certificadora Raiz Brasileira v12 - HOM,OU=Instituto Nacional de Tecnologia da Informacao - ITI,O=ICP-Brasil,C=BR",
+		Serial:  "14083423439450162859",
+		Role:    "RAIZ (Root CA) - AC Raiz Brasileira v12 HOM",
 	},
 	{
-		CN:      "Autoridade Certificadora SERPRO v5 - HOM",
-		Subject: "CN=Autoridade Certificadora SERPRO v5 - HOM,OU=Autoridade Certificadora Raiz Brasileira v12,O=ICP-Brasil,C=BR",
-		Serial:  "14043476084434365245",
-		Role:    "INTERMEDIARIA - AC SERPRO v5 HOM (emitida pela Raiz v12)",
+		CN:      "Autoridade Certificadora SERPRO v5 - Hom",
+		Subject: "CN=Autoridade Certificadora SERPRO v5 - Hom,OU=Autoridade Certificadora Raiz Brasileira v12 - HOM,O=ICP-Brasil,C=BR",
+		Serial:  "15904888841235244081",
+		Role:    "INTERMEDIARIA - AC SERPRO v5 HOM (emitida pela Raiz v12 HOM)",
 	},
 	{
-		CN:      "Autoridade Certificadora do SERPRO Final v6 - HOM",
-		Subject: "CN=Autoridade Certificadora do SERPRO Final v6 - HOM,OU=Servico Federal de Processamento de Dados - SERPRO,O=ICP-Brasil,C=BR",
-		Serial:  "17483248897899078377",
+		CN:      "Autoridade Certificadora do Serpro Final v6 - Hom",
+		Subject: "CN=Autoridade Certificadora do Serpro Final v6 - Hom,OU=Servico Federal de Processamento de Dados - SERPRO,O=ICP-Brasil,C=BR",
+		Serial:  "8889727753282084105",
 		Role:    "FINAL - AC SERPRO Final v6 HOM (emite certificados SURJ)",
 	},
 }

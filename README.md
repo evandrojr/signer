@@ -91,20 +91,14 @@ As principais configurações são feitas via variável de ambiente ou system pr
 - **GPG** key configurada para assinatura dos artefatos
 - Java 8+ e Maven 3.9+
 
+> ⚠️ **GPG**: configure `gpg.keyname`, `gpg.passphrase` e `gpg.arg=--pinentry-mode/loopback` no profile do `settings.xml`. **Não** passe `-Dgpg.passphrase=""` na linha de comando — isso sobrescreve a passphrase do `settings.xml` e a assinatura falha com `gpg: Frase secreta não fornecida`.
+
 ### SNAPSHOT
 
 Publica no repositório de SNAPSHOTs (`https://central.sonatype.com/repository/maven-snapshots/`):
 
 ```bash
-mvn clean deploy -Dmaven.test.skip=true -Dmaven.javadoc.skip=true -B \
-    -Dgpg.passphrase="" \
-    -Dgpg.arguments="--pinentry-mode loopback"
-```
-
-Ou usando o script de retry:
-
-```bash
-./retry-deploy.sh
+mvn clean deploy -Dmaven.test.skip=true -Dmaven.javadoc.skip=true -B
 ```
 
 ### Release (Maven Central)
@@ -113,8 +107,6 @@ Ou usando o script de retry:
 
 ```bash
 mvn clean deploy -Dmaven.test.skip=true -Dmaven.javadoc.skip=true -B \
-    -Dgpg.passphrase="" \
-    -Dgpg.arguments="--pinentry-mode loopback" \
     -P release
 ```
 
@@ -132,7 +124,7 @@ go run publicador.go
 go run publicador.go -release
 ```
 
-Ele executa `mvn deploy` no reactor todo, com retry automático (3 tentativas) e validação pós-publicação via consulta ao repositório.
+Ele executa `mvn deploy` no reactor todo, com retry automático (até 20 tentativas com intervalo de 15s) e validação pós-publicação via consulta ao repositório.
 
 #### Verificar publicação
 
@@ -150,18 +142,6 @@ O relatório mostra por módulo:
 - ✅ Status geral (publicado/não publicado)
 - 📦 Versão e número do build
 - 📋 Arquivos publicados (pom, jar, sources.jar, javadoc.jar, assinaturas .asc) com status individual
-
-### Retry Automático
-
-O script [`retry-deploy.sh`](retry-deploy.sh) tenta o deploy até 20 vezes com intervalo de 15s:
-
-```bash
-# SNAPSHOT
-./retry-deploy.sh
-
-# Release
-./retry-deploy.sh -release
-```
 
 ## Release Notes
 

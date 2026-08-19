@@ -79,6 +79,24 @@ func runCommand(cmd *exec.Cmd) error {
 	return cmd.Run()
 }
 
+func setupJavaEnv() {
+	if os.Getenv("JAVA_HOME") == "" {
+		javaBin, err := exec.LookPath("java")
+		if err != nil {
+			return
+		}
+		resolved, err := filepath.EvalSymlinks(javaBin)
+		if err != nil {
+			resolved = javaBin
+		}
+		javaHome := filepath.Dir(filepath.Dir(resolved))
+		os.Setenv("JAVA_HOME", javaHome)
+	}
+	if javaHome := os.Getenv("JAVA_HOME"); javaHome != "" {
+		os.Setenv("PATH", filepath.Join(javaHome, "bin")+string(os.PathListSeparator)+os.Getenv("PATH"))
+	}
+}
+
 func readVersion(wd string) string {
 	data, err := os.ReadFile(filepath.Join(wd, "pom.xml"))
 	if err != nil {
@@ -293,6 +311,8 @@ func printReport(reports []ModuleReport, isRelease bool) {
 func main() {
 	start := time.Now()
 
+	setupJavaEnv()
+
 	wd, err := os.Getwd()
 	if err != nil {
 		fmt.Printf("❌ Erro ao obter diretório atual: %v\n", err)
@@ -392,7 +412,7 @@ func main() {
 		args = append(args, "-P", "release")
 	}
 
-	maxRetries := 3
+	maxRetries := 20
 	var lastErr error
 
 	for retry := 0; retry < maxRetries; retry++ {
