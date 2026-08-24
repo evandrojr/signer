@@ -5,14 +5,16 @@ import java.util.Collection;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+/**
+ * Tests the HomologacaoProviderCA.
+ * <p>
+ * By default (since 4.6.3), homologation chains are loaded automatically
+ * when the dependency is present. To disable, set:
+ * {@code SIGNER_DISABLE_ICP_BRASIL_HOMOLOG=true}
+ */
 class HomologacaoProviderCATest {
-    @BeforeEach
-    void setupEnv() {
-        System.setProperty("org.demoiselle.signer.env", "hom");
-    }
 
     @Test
     void testLoadBksCertificates() {

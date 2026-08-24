@@ -23,7 +23,6 @@ public class XMLSignerSURJHomIT {
 
 	@Before
 	public void setUp() throws Exception {
-		System.setProperty("org.demoiselle.signer.env", "homolog");
 		KeyStore ks = KeyStore.getInstance("PKCS12");
 		try (InputStream is = getClass().getClassLoader().getResourceAsStream(PFX_RESOURCE)) {
 			assertNotNull("PFX resource nao encontrado: " + PFX_RESOURCE, is);

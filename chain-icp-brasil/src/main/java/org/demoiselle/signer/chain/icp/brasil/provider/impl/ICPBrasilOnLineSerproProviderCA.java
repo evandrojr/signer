@@ -63,6 +63,7 @@ import java.util.Base64;
 import org.demoiselle.signer.chain.icp.brasil.provider.ChainICPBrasilConfig;
 import org.demoiselle.signer.core.ca.provider.ProviderCA;
 import org.demoiselle.signer.core.repository.ConfigurationRepo;
+import org.demoiselle.signer.core.util.DisablingUtil;
 import org.demoiselle.signer.core.util.Downloads;
 import org.demoiselle.signer.core.util.MessagesBundle;
 import org.slf4j.Logger;
@@ -110,9 +111,8 @@ public class ICPBrasilOnLineSerproProviderCA implements ProviderCA {
 	 */
 	@Override
 	public Collection<X509Certificate> getCAs() {
-		String env = System.getProperty("org.demoiselle.signer.env", "");
-                if ("hom".equalsIgnoreCase(env) || "homolog".equalsIgnoreCase(env)) {
-			LOGGER.info("Ambiente de homologacao detectado ({}). Pulando carga de CAs de producao.", env);
+		if (DisablingUtil.isChainDisabled("icp-brasil")) {
+			LOGGER.info("Production chain 'icp-brasil' is disabled. Skipping CA loading.");
 			return new HashSet<>();
 		}
 

@@ -45,12 +45,21 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import org.demoiselle.signer.core.ca.provider.ProviderCA;
+import org.demoiselle.signer.core.util.DisablingUtil;
 import org.demoiselle.signer.core.util.MessagesBundle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Provides Certificate Authority chain of SERPRO's
+ * Provides Certificate Authority chain of SERPRO (both production and homologation).
+ * <p>
+ * By default, loads the homologation chain when {@code SIGNER_ENV} is set to
+ * "hom" or "homolog", otherwise loads the production chain.
+ * <p>
+ * To disable the entire provider, set: {@code SIGNER_DISABLE_SERPRO_NEOSIGNER=true}
+ * <p>
+ * To disable only the homologation chain (load only production), set:
+ * {@code SIGNER_DISABLE_SERPRO_NEOSIGNER_HOMOLOG=true}
  */
 public class SerproNeoSignerProviderCA implements ProviderCA {
 
@@ -59,25 +68,30 @@ public class SerproNeoSignerProviderCA implements ProviderCA {
 
         @SuppressWarnings("finally")
         public Collection<X509Certificate> getCAs() {
-                List<X509Certificate> result = new ArrayList<X509Certificate>();
+                if (DisablingUtil.isChainDisabled("serpro-neosigner")) {
+                        logger.info("Provider 'serpro-neosigner' is disabled. Skipping CA loading.");
+                        return new ArrayList<>();
+                }
+                List<X509Certificate> result = new ArrayList<>();
                 try {
                         Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
                         CertificateFactory factory = CertificateFactory.getInstance("X.509", "BC");
                         
-                        String env = System.getProperty("org.demoiselle.signer.env", "");
-                        boolean isHom = "hom".equalsIgnoreCase(env) || "homolog".equalsIgnoreCase(env);
+                        boolean isHomologDisabled = DisablingUtil.isChainDisabled("serpro-neosigner-homolog");
+                        String env = DisablingUtil.getEnvironment();
+                        boolean isHomEnv = "hom".equalsIgnoreCase(env) || "homolog".equalsIgnoreCase(env);
 
-                        if (isHom) {
+                        if (isHomologDisabled || !isHomEnv) {
+                                logger.info("Ambiente de producao. Carregando cadeias de producao do SERPRO (NeoSigner).");
+                                loadCert(result, factory, "trustedca/AutoridadeCertificadoraAssinadorSERPRORaiz.crt");
+                                loadCert(result, factory, "trustedca/AutoridadeCertificadoraAssinadorSERPROFinal.crt");
+                        } else {
                                 logger.info("Ambiente de homologacao detectado. Carregando cadeias de homologacao do SERPRO (NeoSigner).");
                                 loadCert(result, factory, "trustedca/AutoridadeCertificadoraRaizdoSERPRO.crt");
                                 loadCert(result, factory, "trustedca/AutoridadeCertificadoraFinaldoSERPRO.crt");
                                 loadCert(result, factory, "trustedca/AutoridadeCertificadoraRaizdoSERPROSoftware.crt");
                                 loadCert(result, factory, "trustedca/AutoridadeCertificadoraFinaldoSERPROSoftware.crt");
                                 loadCert(result, factory, "trustedca/NeoSignerSERPRO.crt");
-                        } else {
-                                logger.info("Ambiente de producao detectado. Carregando cadeias de producao do SERPRO (NeoSigner).");
-                                loadCert(result, factory, "trustedca/AutoridadeCertificadoraAssinadorSERPRORaiz.crt");
-                                loadCert(result, factory, "trustedca/AutoridadeCertificadoraAssinadorSERPROFinal.crt");
                         }
                 } catch (Throwable error) {
                         logger.error("Erro ao carregar CAs do NeoSigner: " + error.getMessage());
