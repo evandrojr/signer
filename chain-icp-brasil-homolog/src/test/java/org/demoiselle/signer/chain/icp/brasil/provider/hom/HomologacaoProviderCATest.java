@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
  * <p>
  * By default (since 4.6.3), homologation chains are loaded automatically
  * when the dependency is present. To disable, set:
- * {@code SIGNER_DISABLE_ICP_BRASIL_HOMOLOG=true}
+ * {@code SIGNER_DISABLE_CHAIN_ICP_BRASIL_HOMOLOG=true}
  */
 class HomologacaoProviderCATest {
 

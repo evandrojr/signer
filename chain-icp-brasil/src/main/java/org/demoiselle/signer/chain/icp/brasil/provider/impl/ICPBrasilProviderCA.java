@@ -63,7 +63,7 @@ import org.slf4j.LoggerFactory;
  * from Keystore (icpbrasil.jks) stored in resources library.
  * <p>
  * By default, this chain is loaded when the dependency is present.
- * To disable it, set the environment variable: {@code SIGNER_DISABLE_ICP_BRASIL=true}
+ * To disable it, set the environment variable: {@code SIGNER_DISABLE_CHAIN_ICP_BRASIL=true}
  * <p>
  * The global environment variable {@code SIGNER_ENV} is also respected when
  * the disable variable is not explicitly set.

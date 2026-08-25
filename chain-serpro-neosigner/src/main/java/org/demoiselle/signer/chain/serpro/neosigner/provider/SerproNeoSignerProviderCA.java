@@ -56,10 +56,10 @@ import org.slf4j.LoggerFactory;
  * By default, loads the homologation chain when {@code SIGNER_ENV} is set to
  * "hom" or "homolog", otherwise loads the production chain.
  * <p>
- * To disable the entire provider, set: {@code SIGNER_DISABLE_SERPRO_NEOSIGNER=true}
+ * To disable the entire provider, set: {@code SIGNER_DISABLE_CHAIN_SERPRO_NEOSIGNER=true}
  * <p>
  * To disable only the homologation chain (load only production), set:
- * {@code SIGNER_DISABLE_SERPRO_NEOSIGNER_HOMOLOG=true}
+ * {@code SIGNER_DISABLE_CHAIN_SERPRO_NEOSIGNER_HOMOLOG=true}
  */
 public class SerproNeoSignerProviderCA implements ProviderCA {
 

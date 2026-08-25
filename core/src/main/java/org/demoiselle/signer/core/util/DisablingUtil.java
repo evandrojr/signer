@@ -46,8 +46,8 @@ import org.slf4j.LoggerFactory;
  * Utility class to manage chain loading disabling via environment variables.
  * <p>
  * Each chain module can be individually disabled by setting the environment variable:
- * {@code SIGNER_DISABLE_<CHAIN_NAME>} to {@code true}, where CHAIN_NAME is the chain name
- * in upper case with dashes replaced by underscores (e.g., {@code SIGNER_DISABLE_ICP_BRASIL_HOMOLOG}).
+ * {@code SIGNER_DISABLE_CHAIN_<CHAIN_NAME>} to {@code true}, where CHAIN_NAME is the chain name
+ * in upper case with dashes replaced by underscores (e.g., {@code SIGNER_DISABLE_CHAIN_ICP_BRASIL_HOMOLOG}).
  * <p>
  * By default, all chains are enabled (loaded) when their dependencies are present.
  * <p>
@@ -62,7 +62,7 @@ import org.slf4j.LoggerFactory;
  */
 public final class DisablingUtil {
 
-    private static final String DISABLE_ENV_PREFIX = "SIGNER_DISABLE_";
+    private static final String DISABLE_ENV_PREFIX = "SIGNER_DISABLE_CHAIN_";
     private static final String ENV_VARIABLE = "SIGNER_ENV";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DisablingUtil.class);
@@ -76,7 +76,7 @@ public final class DisablingUtil {
      * <p>
      * Priority:
      * <ol>
-     *   <li>If {@code SIGNER_DISABLE_<CHAIN_NAME>} is explicitly set, uses that value</li>
+     *   <li>If {@code SIGNER_DISABLE_CHAIN_<CHAIN_NAME>} is explicitly set, uses that value</li>
      *   <li>Otherwise, falls back to {@code SIGNER_ENV}-based behavior</li>
      * </ol>
      *
@@ -167,7 +167,7 @@ public final class DisablingUtil {
 
     /**
      * Converts a chain name to its disable environment variable name.
-     * Example: "icp-brasil-homolog" becomes "SIGNER_DISABLE_ICP_BRASIL_HOMOLOG".
+     * Example: "icp-brasil-homolog" becomes "SIGNER_DISABLE_CHAIN_ICP_BRASIL_HOMOLOG".
      *
      * @param chainName the chain/module name
      * @return the corresponding environment variable name

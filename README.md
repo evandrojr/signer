@@ -86,28 +86,28 @@ As principais configurações são feitas via variável de ambiente ou system pr
 Desde a versão **4.6.3**, todas as cadeias são carregadas por padrão quando suas dependências estão no classpath — inclusive as de **homologação** (`chain-icp-brasil-homolog`, `chain-iti-homolog`). Cada cadeia pode ser desativada individualmente via variável de ambiente:
 
 ```
-SIGNER_DISABLE_<NOME_DA_CADEIA>=true
+SIGNER_DISABLE_CHAIN_<NOME_DA_CADEIA>=true
 ```
 
 Cadeias disponíveis:
 
 | Variável de ambiente | Módulo | Tipo |
 |---|---|---|
-| `SIGNER_DISABLE_ICP_BRASIL` | `chain-icp-brasil` | Produção (todas as fontes: keystore, online SERPRO e repositório local) |
-| `SIGNER_DISABLE_ICP_BRASIL_HOMOLOG` | `chain-icp-brasil-homolog` | Homologação |
-| `SIGNER_DISABLE_ITI_HOMOLOG` | `chain-iti-homolog` | Homologação |
-| `SIGNER_DISABLE_SERPRO_NEOSIGNER` | `chain-serpro-neosigner` | Provider completo |
-| `SIGNER_DISABLE_SERPRO_NEOSIGNER_HOMOLOG` | `chain-serpro-neosigner` | Apenas cadeias de homologação do NeoSigner |
+| `SIGNER_DISABLE_CHAIN_ICP_BRASIL` | `chain-icp-brasil` | Produção (todas as fontes: keystore, online SERPRO e repositório local) |
+| `SIGNER_DISABLE_CHAIN_ICP_BRASIL_HOMOLOG` | `chain-icp-brasil-homolog` | Homologação |
+| `SIGNER_DISABLE_CHAIN_ITI_HOMOLOG` | `chain-iti-homolog` | Homologação |
+| `SIGNER_DISABLE_CHAIN_SERPRO_NEOSIGNER` | `chain-serpro-neosigner` | Provider completo |
+| `SIGNER_DISABLE_CHAIN_SERPRO_NEOSIGNER_HOMOLOG` | `chain-serpro-neosigner` | Apenas cadeias de homologação do NeoSigner |
 
 Exemplos:
 
 ```bash
 # Desativar somente as cadeias de homologação do ICP-Brasil e do ITI
-export SIGNER_DISABLE_ICP_BRASIL_HOMOLOG=true
-export SIGNER_DISABLE_ITI_HOMOLOG=true
+export SIGNER_DISABLE_CHAIN_ICP_BRASIL_HOMOLOG=true
+export SIGNER_DISABLE_CHAIN_ITI_HOMOLOG=true
 
 # Ou inline na execução:
-SIGNER_DISABLE_ICP_BRASIL_HOMOLOG=true java -jar app.jar
+SIGNER_DISABLE_CHAIN_ICP_BRASIL_HOMOLOG=true java -jar app.jar
 ```
 
 > **Nota**: variáveis de ambiente são lidas no momento do carregamento das cadeias e não podem ser alteradas em tempo de execução pelo código Java — defina-as antes de iniciar a JVM.
@@ -127,9 +127,9 @@ A variável global `SIGNER_ENV` seleciona o ambiente de uma só vez, quando a va
 export SIGNER_ENV=hom
 ```
 
-A variável específica da cadeia tem **precedência** sobre a global. Por exemplo, com `SIGNER_ENV=hom` e `SIGNER_DISABLE_ICP_BRASIL=false`, a cadeia de produção ICP-Brasil permanece ativa mesmo em ambiente de homologação.
+A variável específica da cadeia tem **precedência** sobre a global. Por exemplo, com `SIGNER_ENV=hom` e `SIGNER_DISABLE_CHAIN_ICP_BRASIL=false`, a cadeia de produção ICP-Brasil permanece ativa mesmo em ambiente de homologação.
 
-> ⚠️ **Atenção**: nunca deixe cadeias de homologação ativas em produção. Elas contêm ACs de teste e podem validar certificados falsos. Em produção, prefira `SIGNER_DISABLE_ICP_BRASIL_HOMOLOG=true` (e `SIGNER_DISABLE_ITI_HOMOLOG`, se aplicável).
+> ⚠️ **Atenção**: nunca deixe cadeias de homologação ativas em produção. Elas contêm ACs de teste e podem validar certificados falsos. Em produção, prefira `SIGNER_DISABLE_CHAIN_ICP_BRASIL_HOMOLOG=true` (e `SIGNER_DISABLE_CHAIN_ITI_HOMOLOG`, se aplicável).
 
 ---
 

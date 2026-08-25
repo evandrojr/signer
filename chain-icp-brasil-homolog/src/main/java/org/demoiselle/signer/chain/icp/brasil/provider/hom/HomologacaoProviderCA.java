@@ -54,7 +54,7 @@ import org.slf4j.LoggerFactory;
  * Provides homologation Certificate Authority chain of the ICP-BRAZIL.
  * <p>
  * By default, this chain is loaded when the dependency is present.
- * To disable it, set the environment variable: {@code SIGNER_DISABLE_ICP_BRASIL_HOMOLOG=true}
+ * To disable it, set the environment variable: {@code SIGNER_DISABLE_CHAIN_ICP_BRASIL_HOMOLOG=true}
  * <p>
  * The global environment variable {@code SIGNER_ENV} is also respected when
  * the disable variable is not explicitly set.

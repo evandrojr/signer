@@ -67,26 +67,26 @@ class DisablingUtilTest {
 
     @Test
     void testExplicitDisable_true_chainDisabled() {
-        assertTrue(DisablingUtil.isChainDisabled("test-chain", env("SIGNER_DISABLE_TEST_CHAIN", "true")));
+        assertTrue(DisablingUtil.isChainDisabled("test-chain", env("SIGNER_DISABLE_CHAIN_TEST_CHAIN", "true")));
     }
 
     @Test
     void testExplicitDisable_false_chainEnabled() {
-        assertFalse(DisablingUtil.isChainDisabled("test-chain", env("SIGNER_DISABLE_TEST_CHAIN", "false")));
+        assertFalse(DisablingUtil.isChainDisabled("test-chain", env("SIGNER_DISABLE_CHAIN_TEST_CHAIN", "false")));
     }
 
     @Test
     void testExplicitDisable_emptyString_chainEnabled() {
-        assertFalse(DisablingUtil.isChainDisabled("test-chain", env("SIGNER_DISABLE_TEST_CHAIN", "")));
+        assertFalse(DisablingUtil.isChainDisabled("test-chain", env("SIGNER_DISABLE_CHAIN_TEST_CHAIN", "")));
     }
 
     @Test
     void testToDisableVariableName() {
-        assertEquals("SIGNER_DISABLE_ICP_BRASIL_HOMOLOG",
+        assertEquals("SIGNER_DISABLE_CHAIN_ICP_BRASIL_HOMOLOG",
                 DisablingUtil.toDisableVariableName("icp-brasil-homolog"));
-        assertEquals("SIGNER_DISABLE_ITI_HOMOLOG",
+        assertEquals("SIGNER_DISABLE_CHAIN_ITI_HOMOLOG",
                 DisablingUtil.toDisableVariableName("iti-homolog"));
-        assertEquals("SIGNER_DISABLE_SERPRO_NEOSIGNER_HOMOLOG",
+        assertEquals("SIGNER_DISABLE_CHAIN_SERPRO_NEOSIGNER_HOMOLOG",
                 DisablingUtil.toDisableVariableName("serpro-neosigner-homolog"));
     }
 
@@ -127,7 +127,7 @@ class DisablingUtilTest {
     void testExplicitDisableTakesPrecedence() {
         Map<String, String> e = new HashMap<>();
         e.put("SIGNER_ENV", "hom");
-        e.put("SIGNER_DISABLE_ICP_BRASIL", "true");
+        e.put("SIGNER_DISABLE_CHAIN_ICP_BRASIL", "true");
         assertTrue(DisablingUtil.isChainDisabled("icp-brasil", e));
     }
 
@@ -135,7 +135,7 @@ class DisablingUtilTest {
     void testExplicitDisableHomologTakesPrecedence() {
         Map<String, String> e = new HashMap<>();
         e.put("SIGNER_ENV", "production");
-        e.put("SIGNER_DISABLE_ICP_BRASIL_HOMOLOG", "false");
+        e.put("SIGNER_DISABLE_CHAIN_ICP_BRASIL_HOMOLOG", "false");
         assertFalse(DisablingUtil.isChainDisabled("icp-brasil-homolog", e));
     }
 }
