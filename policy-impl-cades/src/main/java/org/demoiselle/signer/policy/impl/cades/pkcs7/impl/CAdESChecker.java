@@ -294,6 +294,8 @@ public class CAdESChecker implements PKCS7Checker {
 								}
 							}
 						}
+					// Validar consistencia do hash da politica no atributo SignaturePolicyIdentifier
+					validateSignaturePolicyHash(idSigningPolicy, signatureInfo);
 					}
 				}
 				Date dataHora = null;
@@ -671,6 +673,62 @@ signatureInfo.getValidatorWarningCodes().add(ValidationMessageCode.RFC2634_HASH_
 signatureInfo.getValidatorWarnins().add(cadesMessagesBundle.getString("warn.rfc2634.validation.failed", ex.getMessage()));
 signatureInfo.getValidatorWarningCodes().add(ValidationMessageCode.RFC2634_VALIDATION_FAILED);
 }
+}
+
+
+/**
+ * Valida a consistencia do hash da politica no atributo SignaturePolicyIdentifier.
+ * Verifica que o tamanho do hashValue eh compativel com o hashAlgorithm declarado.
+ * Conforme Nota Tecnica Nr 4/2026/CGOPE/DITEC do ITI.
+ */
+private void validateSignaturePolicyHash(Attribute idSigningPolicy, SignatureInformations signatureInfo) {
+	try {
+		org.bouncycastle.asn1.ASN1Encodable policyValue = idSigningPolicy.getAttrValues().getObjectAt(0);
+		org.bouncycastle.asn1.ASN1Sequence policySeq = org.bouncycastle.asn1.ASN1Sequence.getInstance(policyValue);
+		// SignaturePolicyId ::= SEQUENCE { sigPolicyId, sigPolicyHash, sigPolicyQualifiers OPTIONAL }
+		if (policySeq.size() < 2) return;
+		// sigPolicyHash = OtherHashAlgAndValue ::= SEQUENCE { hashAlgorithm AlgorithmIdentifier, hashValue OCTET STRING }
+		org.bouncycastle.asn1.ASN1Sequence hashSeq = org.bouncycastle.asn1.ASN1Sequence.getInstance(policySeq.getObjectAt(1));
+		if (hashSeq.size() < 2) return;
+		// Extrair o OID do algoritmo de hash
+		org.bouncycastle.asn1.ASN1Sequence algIdSeq = org.bouncycastle.asn1.ASN1Sequence.getInstance(hashSeq.getObjectAt(0));
+		org.bouncycastle.asn1.ASN1ObjectIdentifier hashAlgOID = org.bouncycastle.asn1.ASN1ObjectIdentifier.getInstance(algIdSeq.getObjectAt(0));
+		// Extrair o valor do hash
+		org.bouncycastle.asn1.ASN1OctetString hashValue = org.bouncycastle.asn1.ASN1OctetString.getInstance(hashSeq.getObjectAt(1));
+		byte[] hashBytes = hashValue.getOctets();
+		// Determinar tamanho esperado com base no algoritmo
+		int expectedSize = getExpectedHashSize(hashAlgOID);
+		if (expectedSize == -1) {
+			// Algoritmo desconhecido - warning
+			logger.warn("Algoritmo de hash desconhecido no SignaturePolicyIdentifier: " + hashAlgOID.getId());
+			signatureInfo.getValidatorWarnins().add(
+				cadesMessagesBundle.getString("warn.policy.hash.unknown.algorithm", hashAlgOID.getId()));
+			signatureInfo.getValidatorWarningCodes().add(ValidationMessageCode.POLICY_HASH_UNKNOWN_ALGORITHM);
+			return;
+		}
+		if (hashBytes.length != expectedSize) {
+			// Inconsistencia entre algoritmo declarado e tamanho do hash
+			String algName = getHashAlgorithmName(hashAlgOID);
+			String msg = cadesMessagesBundle.getString("error.policy.hash.size.mismatch",
+				algName != null ? algName : hashAlgOID.getId(),
+				String.valueOf(expectedSize),
+				String.valueOf(hashBytes.length));
+			logger.error(msg);
+			signatureInfo.getValidatorErrors().add(msg);
+			signatureInfo.getValidatorErrorCodes().add(ValidationMessageCode.POLICY_HASH_SIZE_MISMATCH);
+		}
+	} catch (Exception e) {
+		// Parsing falhou - warning, nao impedir verificacao
+		logger.warn("Nao foi possivel validar o hash da politica no SignaturePolicyIdentifier: " + e.getMessage());
+	}
+}
+
+private int getExpectedHashSize(org.bouncycastle.asn1.ASN1ObjectIdentifier oid) {
+	if (oid.equals(org.bouncycastle.asn1.nist.NISTObjectIdentifiers.id_sha256)) return 32;
+	if (oid.equals(org.bouncycastle.asn1.nist.NISTObjectIdentifiers.id_sha384)) return 48;
+	if (oid.equals(org.bouncycastle.asn1.nist.NISTObjectIdentifiers.id_sha512)) return 64;
+	if (oid.equals(org.bouncycastle.asn1.oiw.OIWObjectIdentifiers.idSHA1)) return 20;
+	return -1;
 }
 
 private String getHashAlgorithmName(ASN1ObjectIdentifier oid) {

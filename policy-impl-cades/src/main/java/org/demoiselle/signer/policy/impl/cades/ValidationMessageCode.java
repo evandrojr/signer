@@ -69,7 +69,13 @@ public enum ValidationMessageCode {
     RFC5035_VALIDATION_FAILED("error.rfc5035.validation.failed"),
     RFC2634_HASH_MISMATCH("warn.rfc2634.hash.mismatch"),
     RFC2634_VALIDATION_FAILED("warn.rfc2634.validation.failed"),
-    CERTIFICATE_CHAIN_FAILED("error.get.chain");
+    CERTIFICATE_CHAIN_FAILED("error.get.chain"),
+
+    // Validacao de consistencia do hash da politica (Nota Tecnica 4/2026 ITI)
+    POLICY_HASH_SIZE_MISMATCH("error.policy.hash.size.mismatch"),
+    POLICY_HASH_UNKNOWN_ALGORITHM("warn.policy.hash.unknown.algorithm");
+
+
 
     private final String messageKey;
 

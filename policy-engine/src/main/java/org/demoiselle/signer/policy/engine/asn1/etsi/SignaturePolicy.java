@@ -69,6 +69,14 @@ public class SignaturePolicy {
 	private SignPolicyInfo signPolicyInfo;
 	private SignPolicyHash signPolicyHash;
 	private String signPolicyURI;
+
+	/**
+	 * OID do algoritmo de hash usado para assinatura do documento.
+	 * Preenchido pelo CAdESSigner com base no algoritmo de assinatura selecionado
+	 * (ex: SHA512withRSA -> OID SHA-512 = 2.16.840.1.101.3.4.2.3).
+	 * Diferente de signPolicyHashAlg que eh o algoritmo do hash do arquivo .der da politica.
+	 */
+	private String signatureAlgorithmHashOID;
 	private static MessagesBundle policyMessagesBundle = new MessagesBundle("messages_policy");
 
 	public AlgorithmIdentifier getSignPolicyHashAlg() {
@@ -101,6 +109,14 @@ public class SignaturePolicy {
 
 	public void setSignPolicyURI(String signPolicyURI) {
 		this.signPolicyURI = signPolicyURI;
+	}
+
+	public String getSignatureAlgorithmHashOID() {
+		return signatureAlgorithmHashOID;
+	}
+
+	public void setSignatureAlgorithmHashOID(String signatureAlgorithmHashOID) {
+		this.signatureAlgorithmHashOID = signatureAlgorithmHashOID;
 	}
 
 	public void parse(ASN1Primitive derObject) {
