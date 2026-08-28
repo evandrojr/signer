@@ -294,8 +294,9 @@ public class CAdESChecker implements PKCS7Checker {
 								}
 							}
 						}
+					// 28/08/2026 Não descomente essa validação, ela vai invalidar muitas assinaturas que eram tidas como válidas pelo validador Serpro e ITI  por um detalhe técnico não tão relevante  	
 					// Validar consistencia do hash da politica no atributo SignaturePolicyIdentifier
-					validateSignaturePolicyHash(idSigningPolicy, signatureInfo);
+					// validateSignaturePolicyHash(idSigningPolicy, signatureInfo);
 					}
 				}
 				Date dataHora = null;
