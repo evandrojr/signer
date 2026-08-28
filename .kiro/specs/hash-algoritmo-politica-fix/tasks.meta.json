@@ -1,0 +1,127 @@
+{
+  "pbtResults": {
+    "1. Write bug condition exploration test": {
+      "status": "passed",
+      "failingExample": "All 3 tests FAIL as expected (confirming the bug exists):\n\nCase 1 (branch if, SHA512withRSA): signPolicyHashAlg.algorithm.value changed from \"2.16.840.1.101.3.4.2.1\" (SHA-256) to \"2.16.840.1.101.3.4.2.3\" (SHA-512)\nComparisonFailure: expected:<....16.840.1.101.3.4.2.[1]> but was:<....16.840.1.101.3.4.2.[3]>\n\nCase 2 (branch else, sem algoritmo): signPolicyHashAlg.algorithm.value changed from \"2.16.840.1.101.3.4.2.1\" (SHA-256) to \"2.16.840.1.101.3.4.2.3\" (SHA-512)\nComparisonFailure: expected:<....16.840.1.101.3.4.2.[1]> but was:<....16.840.1.101.3.4.2.[3]>\n\nCase 3 (branch if, SHA512withECDSA): signPolicyHashAlg.algorithm.value changed from \"2.16.840.1.101.3.4.2.1\" (SHA-256) to \"2.16.840.1.101.3.4.2.3\" (SHA-512)\nComparisonFailure: expected:<....16.840.1.101.3.4.2.[1]> but was:<....16.840.1.101.3.4.2.[3]>\n\nRoot cause confirmed: lines 1042-1046 and 1055-1060 in CAdESSigner.java overwrite signPolicyHashAlg with the hash OID from SignerAlgorithmEnum.",
+      "lastRunTimestamp": 1787858795009
+    },
+    "2. Write preservation property tests (BEFORE implementing fix)": {
+      "status": "passed",
+      "lastRunTimestamp": 1787859455432
+    },
+    "3.3 Verificar que os testes de preservação continuam passando": {
+      "status": "passed",
+      "lastRunTimestamp": 1787859992072
+    },
+    "3.2 Verificar que o teste de bug condition agora passa": {
+      "status": "passed",
+      "lastRunTimestamp": 1787860008386
+    }
+  },
+  "executionHistory": {
+    "1. Write bug condition exploration test": [
+      {
+        "executionId": "8c23fff9-f374-492a-b895-3a8b3ae20b53",
+        "chatSessionId": "sess_f61f62f2-c12a-4feb-ae14-dc41b17822e9",
+        "timestamp": 1787857779318
+      },
+      {
+        "executionId": "8c23fff9-f374-492a-b895-3a8b3ae20b53",
+        "chatSessionId": "sess_f61f62f2-c12a-4feb-ae14-dc41b17822e9",
+        "timestamp": 1787857789339
+      },
+      {
+        "executionId": "8c23fff9-f374-492a-b895-3a8b3ae20b53",
+        "chatSessionId": "sess_f61f62f2-c12a-4feb-ae14-dc41b17822e9",
+        "timestamp": 1787858912796
+      }
+    ],
+    "2. Write preservation property tests (BEFORE implementing fix)": [
+      {
+        "executionId": "8c23fff9-f374-492a-b895-3a8b3ae20b53",
+        "chatSessionId": "sess_f61f62f2-c12a-4feb-ae14-dc41b17822e9",
+        "timestamp": 1787857779369
+      },
+      {
+        "executionId": "8c23fff9-f374-492a-b895-3a8b3ae20b53",
+        "chatSessionId": "sess_f61f62f2-c12a-4feb-ae14-dc41b17822e9",
+        "timestamp": 1787858917442
+      },
+      {
+        "executionId": "8c23fff9-f374-492a-b895-3a8b3ae20b53",
+        "chatSessionId": "sess_f61f62f2-c12a-4feb-ae14-dc41b17822e9",
+        "timestamp": 1787859571411
+      }
+    ],
+    "3.1 Implementar a correção": [
+      {
+        "executionId": "8c23fff9-f374-492a-b895-3a8b3ae20b53",
+        "chatSessionId": "sess_f61f62f2-c12a-4feb-ae14-dc41b17822e9",
+        "timestamp": 1787857779455
+      },
+      {
+        "executionId": "8c23fff9-f374-492a-b895-3a8b3ae20b53",
+        "chatSessionId": "sess_f61f62f2-c12a-4feb-ae14-dc41b17822e9",
+        "timestamp": 1787859576023
+      },
+      {
+        "executionId": "8c23fff9-f374-492a-b895-3a8b3ae20b53",
+        "chatSessionId": "sess_f61f62f2-c12a-4feb-ae14-dc41b17822e9",
+        "timestamp": 1787859828218
+      }
+    ],
+    "3.2 Verificar que o teste de bug condition agora passa": [
+      {
+        "executionId": "8c23fff9-f374-492a-b895-3a8b3ae20b53",
+        "chatSessionId": "sess_f61f62f2-c12a-4feb-ae14-dc41b17822e9",
+        "timestamp": 1787857779497
+      },
+      {
+        "executionId": "8c23fff9-f374-492a-b895-3a8b3ae20b53",
+        "chatSessionId": "sess_f61f62f2-c12a-4feb-ae14-dc41b17822e9",
+        "timestamp": 1787859863575
+      },
+      {
+        "executionId": "8c23fff9-f374-492a-b895-3a8b3ae20b53",
+        "chatSessionId": "sess_f61f62f2-c12a-4feb-ae14-dc41b17822e9",
+        "timestamp": 1787860029616
+      }
+    ],
+    "3.3 Verificar que os testes de preservação continuam passando": [
+      {
+        "executionId": "8c23fff9-f374-492a-b895-3a8b3ae20b53",
+        "chatSessionId": "sess_f61f62f2-c12a-4feb-ae14-dc41b17822e9",
+        "timestamp": 1787857779535
+      },
+      {
+        "executionId": "8c23fff9-f374-492a-b895-3a8b3ae20b53",
+        "chatSessionId": "sess_f61f62f2-c12a-4feb-ae14-dc41b17822e9",
+        "timestamp": 1787859864523
+      },
+      {
+        "executionId": "8c23fff9-f374-492a-b895-3a8b3ae20b53",
+        "chatSessionId": "sess_f61f62f2-c12a-4feb-ae14-dc41b17822e9",
+        "timestamp": 1787860030539
+      }
+    ],
+    "4. Checkpoint - Ensure all tests pass": [
+      {
+        "executionId": "8c23fff9-f374-492a-b895-3a8b3ae20b53",
+        "chatSessionId": "sess_f61f62f2-c12a-4feb-ae14-dc41b17822e9",
+        "timestamp": 1787857779574
+      },
+      {
+        "executionId": "8c23fff9-f374-492a-b895-3a8b3ae20b53",
+        "chatSessionId": "sess_f61f62f2-c12a-4feb-ae14-dc41b17822e9",
+        "timestamp": 1787860035521
+      }
+    ],
+    "3. Correção da sobrescrita de signPolicyHashAlg em prepareAlgAndLength()": [
+      {
+        "executionId": "8c23fff9-f374-492a-b895-3a8b3ae20b53",
+        "chatSessionId": "sess_f61f62f2-c12a-4feb-ae14-dc41b17822e9",
+        "timestamp": 1787860030623
+      }
+    ]
+  }
+}
