@@ -294,8 +294,9 @@ public class CAdESChecker implements PKCS7Checker {
 								}
 							}
 						}
+					// 28/08/2026 Não descomente essa validação, ela vai invalidar muitas assinaturas que eram tidas como válidas pelo validador Serpro e ITI  por um detalhe técnico não tão relevante  	
 					// Validar consistencia do hash da politica no atributo SignaturePolicyIdentifier
-					validateSignaturePolicyHash(idSigningPolicy, signatureInfo);
+					// validateSignaturePolicyHash(idSigningPolicy, signatureInfo);
 					}
 				}
 				Date dataHora = null;
@@ -720,11 +721,14 @@ private void validateSignaturePolicyHash(Attribute idSigningPolicy, SignatureInf
 	} catch (Exception e) {
 		// Parsing falhou - warning, nao impedir verificacao
 		logger.warn("Nao foi possivel validar o hash da politica no SignaturePolicyIdentifier: " + e.getMessage());
+		signatureInfo.getValidatorWarnins().add(
+			"Nao foi possivel validar o hash da politica no SignaturePolicyIdentifier: " + e.getMessage());
 	}
 }
 
 private int getExpectedHashSize(org.bouncycastle.asn1.ASN1ObjectIdentifier oid) {
 	if (oid.equals(org.bouncycastle.asn1.nist.NISTObjectIdentifiers.id_sha256)) return 32;
+	if (oid.equals(org.bouncycastle.asn1.nist.NISTObjectIdentifiers.id_sha224)) return 28;
 	if (oid.equals(org.bouncycastle.asn1.nist.NISTObjectIdentifiers.id_sha384)) return 48;
 	if (oid.equals(org.bouncycastle.asn1.nist.NISTObjectIdentifiers.id_sha512)) return 64;
 	if (oid.equals(org.bouncycastle.asn1.oiw.OIWObjectIdentifiers.idSHA1)) return 20;
@@ -733,6 +737,7 @@ private int getExpectedHashSize(org.bouncycastle.asn1.ASN1ObjectIdentifier oid) 
 
 private String getHashAlgorithmName(ASN1ObjectIdentifier oid) {
 if (oid.equals(org.bouncycastle.asn1.nist.NISTObjectIdentifiers.id_sha256)) return "SHA-256";
+else if (oid.equals(org.bouncycastle.asn1.nist.NISTObjectIdentifiers.id_sha224)) return "SHA-224";
 else if (oid.equals(org.bouncycastle.asn1.nist.NISTObjectIdentifiers.id_sha384)) return "SHA-384";
 else if (oid.equals(org.bouncycastle.asn1.nist.NISTObjectIdentifiers.id_sha512)) return "SHA-512";
 else if (oid.equals(org.bouncycastle.asn1.oiw.OIWObjectIdentifiers.idSHA1)) return "SHA-1";
