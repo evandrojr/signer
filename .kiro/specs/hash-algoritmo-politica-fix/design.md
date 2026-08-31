@@ -258,3 +258,207 @@ END FOR
 - Assinar um documento com SHA256withRSA usando política PA_AD_RB_v2_4.der e verificar que `hashAlgorithm` = SHA-256
 - Verificar assinatura gerada contra validador CAdES (se disponível no ambiente de teste)
 - Testar assinatura com todas as políticas AD-RB, AD-RT, AD-RV, AD-RC, AD-RA com SHA512withRSA
+
+---
+
+## Extension: Recálculo e Verificação do Hash da Política
+
+Extensão aditiva e independente da correção descrita acima. Atualmente o valor do `signPolicyHash` usado no atributo `SignaturePolicyIdentifier` é lido diretamente do arquivo .der em `IdSigningPolicy.getValue()` (`signaturePolicy.getSignPolicyHash().getDerOctetString()`), sem recálculo nem verificação. Esta extensão faz `SignaturePolicy` recalcular o hash da política conforme a regra ETSI, compará-lo com o valor do .der, e decidir qual valor entregar ao atributo com fallback seguro e warning.
+
+### Glossário adicional
+
+- **Policy_Der_Bytes**: os bytes/estrutura DER originais da `SignaturePolicy`, capturados durante `parse()`, necessários para reconstruir a SEQUENCE e recalcular o hash
+- **Recomputed_Hash**: o octet string resultante do recálculo do hash da política sobre a SEQUENCE `{ signPolicyHashAlg, signPolicyInfo }` (sem `signPolicyHash`), usando o algoritmo de `signPolicyHashAlg`
+- **Der_Hash**: o valor do `signPolicyHash` presente no arquivo .der (`signaturePolicy.getSignPolicyHash().getDerOctetString()`) — usado como fallback
+- **Validated_Hash**: o octet string efetivamente entregue ao atributo — igual a `Recomputed_Hash` quando bate, ou igual a `Der_Hash` no fallback
+
+### Regra ETSI de cálculo do hash
+
+Conforme o comentário de cabeçalho de `SignaturePolicy` e a estrutura ASN.1:
+
+```
+SignaturePolicy ::= SEQUENCE {
+    signPolicyHashAlg AlgorithmIdentifier,
+    signPolicyInfo    SignPolicyInfo,
+    signPolicyHash    SignPolicyHash OPTIONAL
+}
+```
+
+> "The hash is calculated without the outer type and length fields."
+
+O hash é calculado sobre a estrutura `SignaturePolicy` **excluindo** o campo `signPolicyHash`, ou seja, sobre a SEQUENCE reconstruída contendo apenas `signPolicyHashAlg` + `signPolicyInfo`, e conforme o comentário, sem os campos externos de type/length. O algoritmo de digest é o indicado por `signPolicyHashAlg`.
+
+### Onde guardar os bytes DER no parse()
+
+Hoje `SignaturePolicy.parse(ASN1Primitive derObject)` lê os elementos da SEQUENCE (`getObjectAt(0/1/2)`) mas descarta a estrutura DER. A mudança:
+
+- Em `parse()`, além de popular `signPolicyHashAlg`, `signPolicyInfo` e `signPolicyHash`, guardar referências aos primitivos DER dos dois primeiros elementos (`derSequence.getObjectAt(0)` e `derSequence.getObjectAt(1)`) — suficientes para reconstruir a SEQUENCE sem o `signPolicyHash`. Alternativamente, guardar o próprio `ASN1Sequence`/`ASN1Primitive` original.
+- Adicionar campo(s) privado(s) (ex: `private transient ASN1Encodable signPolicyHashAlgPrimitive;` e `private transient ASN1Encodable signPolicyInfoPrimitive;`, ou `private transient ASN1Primitive originalDer;`).
+
+### Reconstrução da SEQUENCE sem signPolicyHash
+
+No método de cálculo:
+
+```
+FUNCTION buildHashInputSequence()
+  seqToHash := new DERSequence([ signPolicyHashAlgPrimitive, signPolicyInfoPrimitive ])
+  RETURN seqToHash.getEncoded("DER")   // bytes DER da SEQUENCE reconstruída
+END FUNCTION
+```
+
+O conteúdo a passar ao `MessageDigest` deve seguir a regra ETSI ("without the outer type and length fields"). A implementação deve documentar explicitamente se aplica o digest sobre o encoding DER da SEQUENCE reconstruída ou sobre seu conteúdo interno sem os octetos de type/length externos, e validar essa escolha contra políticas ICP-Brasil reais (ver Testing Strategy) — a variante correta é aquela cujo `Recomputed_Hash` bate com o `Der_Hash` das políticas oficiais.
+
+### Mapeamento OID -> MessageDigest
+
+O algoritmo de digest vem de `signPolicyHashAlg.getAlgorithm().getValue()` (OID). É necessário mapear o OID para o nome de algoritmo aceito por `java.security.MessageDigest`:
+
+```
+FUNCTION oidToDigestName(oid)
+  SWITCH oid
+    CASE "2.16.840.1.101.3.4.2.1": RETURN "SHA-256"
+    CASE "2.16.840.1.101.3.4.2.2": RETURN "SHA-384"
+    CASE "2.16.840.1.101.3.4.2.3": RETURN "SHA-512"
+    CASE "1.3.14.3.2.26":          RETURN "SHA-1"
+    DEFAULT: RETURN null   // desconhecido -> aciona fallback
+  END SWITCH
+END FUNCTION
+```
+
+Se o OID não for mapeável ou `MessageDigest.getInstance(name)` lançar `NoSuchAlgorithmException`, aciona o fallback (warning + `Der_Hash`).
+
+### Lógica de comparação / fallback / warning
+
+```
+FUNCTION getValidatedPolicyHashOctetString()
+  OUTPUT: ASN1OctetString
+
+  TRY
+    digestName := oidToDigestName(signPolicyHashAlg.algorithm.value)
+    IF digestName == null THEN
+      LOG.warn("algoritmo de hash da politica desconhecido; usando valor do .der")
+      RETURN signPolicyHash.getDerOctetString()   // fallback
+    END IF
+
+    recomputed := computePolicyHash()              // Recomputed_Hash
+    derValue   := signPolicyHash.getDerOctetString().getOctets()
+
+    IF Arrays.equals(recomputed, derValue) THEN
+      RETURN new DEROctetString(recomputed)         // usa recalculado
+    ELSE
+      LOG.warn("hash recalculado da politica difere do valor do .der; usando valor do .der")
+      RETURN signPolicyHash.getDerOctetString()     // fallback
+    END IF
+  CATCH Exception e
+    LOG.warn("falha ao recalcular hash da politica; usando valor do .der", e)
+    RETURN signPolicyHash.getDerOctetString()       // fallback, nunca lanca
+  END TRY
+END FUNCTION
+```
+
+O `computePolicyHash()` retorna o octet string recalculado (útil também para testes/inspeção); o `getValidatedPolicyHashOctetString()` aplica a lógica completa. Nenhuma exceção do recálculo pode escapar para o fluxo de assinatura.
+
+### Mudança de consumo em IdSigningPolicy
+
+Em `IdSigningPolicy.getValue()`, o segundo atributo passa a consumir o método validado em vez de ler o octet string do .der diretamente:
+
+```java
+// Antes:
+OtherHashAlgAndValue sigPolicyHash = new OtherHashAlgAndValue(
+    new AlgorithmIdentifier(new ASN1ObjectIdentifier(signaturePolicy.getSignPolicyHashAlg().getAlgorithm().getValue())),
+    signaturePolicy.getSignPolicyHash().getDerOctetString());
+
+// Depois:
+OtherHashAlgAndValue sigPolicyHash = new OtherHashAlgAndValue(
+    new AlgorithmIdentifier(new ASN1ObjectIdentifier(signaturePolicy.getSignPolicyHashAlg().getAlgorithm().getValue())),
+    signaturePolicy.getValidatedPolicyHashOctetString());
+```
+
+O `hashAlgorithm` (a partir de `signPolicyHashAlg`), o `sigPolicyId` e os `sigPolicyQualifiers` permanecem inalterados. Apenas o valor do octet string do hash passa pela lógica de recálculo/verificação.
+
+### Correctness Properties (Extensão)
+
+Property 3: Bug Condition - Uso do hash recalculado quando bate
+
+_For any_ política onde o hash recalculado (`Recomputed_Hash`, calculado pela regra ETSI sobre a SEQUENCE `{ signPolicyHashAlg, signPolicyInfo }` com o algoritmo de `signPolicyHashAlg`) for igual ao `signPolicyHash` do .der (`Der_Hash`), `getValidatedPolicyHashOctetString()` SHALL retornar o valor recalculado, e o atributo `SignaturePolicyIdentifier` SHALL usá-lo.
+
+**Validates: Requirements 5.1, 5.2, 5.3, 5.4**
+
+Property 4: Preservation - Fallback seguro com warning em erro/divergência
+
+_For any_ política onde o recálculo falhe (algoritmo desconhecido/indisponível, exceção durante o cálculo) OU onde `Recomputed_Hash` difira de `Der_Hash`, `getValidatedPolicyHashOctetString()` SHALL retornar o valor original do .der (`Der_Hash`), SHALL emitir um WARNING via logger, e SHALL NUNCA lançar exceção nem produzir hash inválido — preservando o comportamento atual do atributo.
+
+**Validates: Requirements 6.1, 6.2, 6.3, 6.4, 6.5**
+
+### Fix Implementation (Extensão)
+
+**Arquivo 1**: `policy-engine/src/main/java/org/demoiselle/signer/policy/engine/asn1/etsi/SignaturePolicy.java`
+
+1. **Guardar DER no parse()**: adicionar campos privados para os primitivos DER de `signPolicyHashAlg` e `signPolicyInfo` (ou o `ASN1Sequence` original), populados em `parse(ASN1Primitive derObject)`.
+2. **`computePolicyHash()`** (público): reconstrói a SEQUENCE `{ signPolicyHashAlg, signPolicyInfo }`, resolve o `MessageDigest` a partir do OID de `signPolicyHashAlg`, e retorna os bytes do digest (`Recomputed_Hash`). Documentar a variante ETSI adotada (com/sem type/length externos) confirmada empiricamente.
+3. **`getValidatedPolicyHashOctetString()`** (público): aplica a lógica compara/fallback/warning descrita acima e retorna o `ASN1OctetString` a usar. Usa logger (SLF4J, padrão do projeto) para o WARNING. Nunca lança exceção.
+4. **Mapeamento OID -> nome do digest**: método auxiliar privado `oidToDigestName(String oid)`.
+
+**Arquivo 2**: `policy-impl-cades/src/main/java/org/demoiselle/signer/policy/impl/cades/pkcs7/attribute/impl/IdSigningPolicy.java`
+
+5. **Consumir o método validado**: substituir `signaturePolicy.getSignPolicyHash().getDerOctetString()` por `signaturePolicy.getValidatedPolicyHashOctetString()` na montagem do `OtherHashAlgAndValue`. Nenhuma outra alteração.
+
+### Testing Strategy (Extensão)
+
+#### Exploratory Bug Condition Checking
+
+**Goal**: Demonstrar/validar que o hash recalculado bate com o `signPolicyHash` do .der para políticas ICP-Brasil reais, confirmando a variante ETSI correta.
+
+**Test Plan**: Carregar políticas oficiais (PA_AD_RB e variantes) via o mesmo caminho de `PolicyFactory.loadPolicy()`, chamar `computePolicyHash()` e comparar com `getSignPolicyHash().getDerOctetString()`. Antes da implementação, esse teste falha porque o método não existe / o recálculo não bate até a variante correta ser adotada.
+
+**Test Cases**:
+1. **PA_AD_RB real**: `computePolicyHash()` deve bater com o `signPolicyHash` do .der (confirma a regra ETSI adotada)
+2. **Demais políticas AD-RB/AD-RT/AD-RV/AD-RC/AD-RA**: mesmo recálculo bate
+3. **Algoritmo desconhecido (simulado)**: com `signPolicyHashAlg` de OID não mapeável, `getValidatedPolicyHashOctetString()` retorna o `Der_Hash` e loga warning (não lança)
+
+**Expected Counterexamples (código não-corrigido)**: método `computePolicyHash()`/`getValidatedPolicyHashOctetString()` inexistente; nenhum recálculo/verificação ocorre.
+
+#### Fix Checking
+
+**Goal**: Para toda política onde `Recomputed_Hash == Der_Hash`, o valor entregue é o recalculado.
+
+```
+FOR ALL policy WHERE recompute(policy) == derHash(policy) DO
+  ASSERT getValidatedPolicyHashOctetString(policy) == recompute(policy)
+END FOR
+```
+
+#### Preservation Checking
+
+**Goal**: Para toda política onde o recálculo falha ou diverge, o valor entregue é o `Der_Hash`, com warning e sem exceção.
+
+```
+FOR ALL policy WHERE recompute(policy) FAILS OR recompute(policy) != derHash(policy) DO
+  result := getValidatedPolicyHashOctetString(policy)
+  ASSERT result == derHash(policy)
+  ASSERT no exception thrown
+  ASSERT warning logged
+END FOR
+```
+
+**Testing Approach**: PBT recomendado — gerar políticas sintéticas com `signPolicyHashAlg` variando (OIDs válidos e inválidos) e `signPolicyHash` alterado/inalterado, verificando a decisão bate/fallback e a ausência de exceção.
+
+#### Unit Tests
+
+- `computePolicyHash()` produz o digest correto para uma política conhecida
+- `oidToDigestName()` mapeia SHA-256/384/512/SHA-1 e retorna null para OID desconhecido
+- `getValidatedPolicyHashOctetString()` retorna recalculado quando bate
+- `getValidatedPolicyHashOctetString()` retorna `Der_Hash` + warning quando diverge
+- `getValidatedPolicyHashOctetString()` retorna `Der_Hash` + warning quando o algoritmo é desconhecido, sem lançar
+- `IdSigningPolicy.getValue()` monta o atributo consumindo o método validado
+
+#### Property-Based Tests
+
+- Para qualquer OID desconhecido/indisponível, o resultado é sempre `Der_Hash` e nenhuma exceção é lançada
+- Para qualquer alteração no `signPolicyHash` que cause divergência, o resultado é `Der_Hash` com warning
+- Para políticas reais onde bate, o resultado é sempre o recalculado
+
+#### Integration Tests
+
+- Assinar documento com política ICP-Brasil real e verificar que o `sigPolicyHash` do atributo corresponde ao valor recalculado (quando bate)
+- Assinar com política cujo `signPolicyHash` foi adulterado e verificar fallback para o valor do .der + warning, sem falha na assinatura
+- Verificar que a correção de `signPolicyHashAlg` (seções 1-3) permanece intacta em conjunto com esta extensão

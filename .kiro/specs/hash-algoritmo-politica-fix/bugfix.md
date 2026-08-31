@@ -39,3 +39,39 @@ Como consequência, o atributo `SignaturePolicyIdentifier` (id-aa-ets-sigPolicyI
 3.4 WHEN o `algorithmConstraintSet` da política é nulo ou não define `signerAlgorithmConstraints` THEN o sistema SHALL CONTINUE TO usar o algoritmo configurado ou o DEFAULT como fallback
 
 3.5 WHEN o atributo SignaturePolicyIdentifier é montado THEN o sistema SHALL CONTINUE TO incluir corretamente o `sigPolicyId` (OID da política), o `sigPolicyHash` (valor do hash) e o `sigPolicyQualifiers` (URI da política)
+
+---
+
+## Extensão: Recálculo e Verificação do Hash da Política
+
+Nova abordagem aditiva, decidida com o usuário, independente da correção de `signPolicyHashAlg` descrita nas seções 1-3. Hoje o valor do `signPolicyHash` usado no atributo `SignaturePolicyIdentifier` vem diretamente do arquivo .der (`signaturePolicy.getSignPolicyHash().getDerOctetString()`), sem qualquer recálculo ou verificação. Conforme a regra ETSI (comentário de cabeçalho da classe `SignaturePolicy`), o hash da política DEVE ser recalculado e checado sempre que a política transita entre emissor e assinante/verificador, calculado sobre a estrutura `SignaturePolicy` excluindo o campo `signPolicyHash` e sem os campos externos de type/length. Esta extensão implementa esse recálculo/verificação com fallback seguro.
+
+### Current Behavior (Defect)
+
+4.1 WHEN o atributo `SignaturePolicyIdentifier` é montado por `IdSigningPolicy.getValue()` THEN o sistema pega o valor do `signPolicyHash` diretamente do arquivo .der (`signaturePolicy.getSignPolicyHash().getDerOctetString()`), sem recalcular
+
+4.2 WHEN a política é carregada e parseada por `SignaturePolicy.parse(ASN1Primitive derObject)` THEN o sistema NÃO guarda os bytes/estrutura DER originais, impossibilitando qualquer recálculo posterior do hash da política
+
+4.3 WHEN o valor do `signPolicyHash` presente no .der estiver divergente do hash real da estrutura da política THEN o sistema NÃO detecta a divergência e usa o valor do .der sem verificação
+
+### Expected Behavior (Correct)
+
+5.1 WHEN o atributo `SignaturePolicyIdentifier` é montado THEN o sistema SHALL recalcular o hash da política sobre a estrutura `SignaturePolicy` reconstruída contendo apenas `signPolicyHashAlg` + `signPolicyInfo` (excluindo `signPolicyHash`), sem os campos externos de type/length, usando o algoritmo de digest indicado por `signPolicyHashAlg`
+
+5.2 WHEN o valor recalculado for igual ao `signPolicyHash` presente no .der THEN o sistema SHALL usar o valor RECALCULADO no atributo `SignaturePolicyIdentifier`
+
+5.3 WHEN `SignaturePolicy.parse()` é executado THEN o sistema SHALL guardar os bytes/estrutura DER originais necessários para o recálculo posterior do hash da política
+
+5.4 WHEN o recálculo é solicitado THEN o sistema SHALL expor um método público na classe `SignaturePolicy` (ex: `computePolicyHash()` que retorna o octet string recalculado e/ou `getValidatedPolicyHashOctetString()` que aplica a lógica compara/fallback/warning) para ser consumido por `IdSigningPolicy`
+
+### Unchanged Behavior (Regression Prevention)
+
+6.1 WHEN o valor recalculado NÃO bater com o `signPolicyHash` do .der THEN o sistema SHALL CONTINUE TO usar como fallback o valor original do .der (`signaturePolicy.getSignPolicyHash().getDerOctetString()`) e SHALL emitir um WARNING via logger
+
+6.2 WHEN o algoritmo indicado por `signPolicyHashAlg` for desconhecido/indisponível para `MessageDigest`, ou quando ocorrer qualquer erro durante o recálculo THEN o sistema SHALL CONTINUE TO usar como fallback o valor original do .der e SHALL emitir um WARNING via logger, sem lançar exceção que quebre a assinatura
+
+6.3 WHEN o recálculo/verificação é executado THEN o sistema SHALL NUNCA produzir hash inválido nem lançar exceção que interrompa a geração da assinatura por causa do recálculo
+
+6.4 WHEN o atributo `SignaturePolicyIdentifier` é montado THEN o sistema SHALL CONTINUE TO montar corretamente o `sigPolicyId` (OID da política), o `hashAlgorithm` do `sigPolicyHash` (a partir de `signPolicyHashAlg`) e os `sigPolicyQualifiers` (URI da política), sem alteração — apenas o valor do octet string do hash passa pela lógica de recálculo/verificação
+
+6.5 WHEN a correção descrita nas seções 1-3 (preservação de `signPolicyHashAlg` em `prepareAlgAndLength`) está aplicada THEN o sistema SHALL CONTINUE TO preservar esse comportamento — esta extensão é aditiva e independente
