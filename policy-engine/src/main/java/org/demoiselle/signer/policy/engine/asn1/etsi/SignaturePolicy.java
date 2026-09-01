@@ -282,6 +282,7 @@ public class SignaturePolicy {
 			byte[] der = this.signPolicyHash.getDerOctetString().getOctets();
 
 			if (Arrays.equals(recomputed, der)) {
+				logger.info("hash recalculado da politica igual ao valor do .der; usando valor recalculado");
 				return new DEROctetString(recomputed);
 			}
 

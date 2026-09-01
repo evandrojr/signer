@@ -37,12 +37,12 @@
         </developer>
     </developers>
 
-    <scm>
+    <!-- <scm>
         <connection>scm:git:git@github.com:demoiselle/signer.git</connection>
         <developerConnection>scm:git:git@github.com:demoiselle/signer.git</developerConnection>
         <url>https://github.com/demoiselle/signer</url>
         <tag>4.6.1</tag>
-    </scm>
+    </scm> -->
 
     <dependencies>
         <dependency>
