@@ -185,6 +185,11 @@ public class ICPBrasilOnLineSerproProviderCA implements ProviderCA {
 			LOGGER.debug(chainMessagesBundle.getString("info.number.certificates.found", getName(), result.size()));
 		} else {
 			LOGGER.info(chainMessagesBundle.getString("info.none.certificates", getName()));
+			// Never return null: honor the ProviderCA contract and stay consistent
+			// with ICPBrasilUserHomeProviderCA, which always returns a (possibly empty)
+			// collection. Returning null here caused NullPointerException on callers
+			// (and tests) whenever the online chain could not be downloaded/parsed.
+			result = new HashSet<>();
 		}
 
 		return result;
