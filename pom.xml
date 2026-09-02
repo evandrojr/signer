@@ -105,6 +105,7 @@
 		<module>chain-iti</module>
 		<module>chain-iti-homolog</module>
 		<module>signer-xmldsig</module>
+		<module>automacao-importador</module>
 	</modules>
 
 	<properties>
