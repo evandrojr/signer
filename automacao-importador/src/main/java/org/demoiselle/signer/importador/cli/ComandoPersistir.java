@@ -13,6 +13,7 @@ import org.demoiselle.signer.importador.dominio.Certificado;
 import org.demoiselle.signer.importador.dominio.DiffKeystore;
 import org.demoiselle.signer.importador.dominio.Manifest;
 import org.demoiselle.signer.importador.dominio.MetodoDedup;
+import org.demoiselle.signer.importador.dominio.Origem;
 import org.demoiselle.signer.importador.dominio.ResultadoDedup;
 import org.demoiselle.signer.importador.dominio.ResultadoExecucao;
 import org.demoiselle.signer.importador.io.ExpansorCertificados;
@@ -75,6 +76,8 @@ public class ComandoPersistir implements Callable<Integer> {
     static final String SENHA_DEFAULT = "serprosigner";
     /** Default sensato para o diretorio de staging (diretorio corrente). */
     static final String STAGING_DEFAULT = "staging";
+    /** Origem gravada por padrao: PRO (keystore de producao), como no fluxo Go antigo. */
+    static final Origem ORIGEM_DEFAULT = Origem.PRO;
 
     @Spec
     CommandSpec spec;
@@ -85,6 +88,13 @@ public class ComandoPersistir implements Callable<Integer> {
      * qualquer gravacao (Req 4.1, 4.2, 4.3).
      */
     private int remocaoDuplicadas = 1;
+
+    /**
+     * Origem selecionada via {@code --origem}: PRO ou HOM. Mantem PRO e HOM em
+     * keystores separados, como era antes (PRO em {@code cadeiasicpbrasil.bks} e
+     * HOM em {@code cadeiasicpbrasil-HOMOLOGACAO.bks}).
+     */
+    private Origem origem = ORIGEM_DEFAULT;
 
     /** Caminho do arquivo BKS de destino (--keystore), com default sensato. */
     @Option(
@@ -122,6 +132,43 @@ public class ComandoPersistir implements Callable<Integer> {
             defaultValue = STAGING_DEFAULT
     )
     private Path staging = Paths.get(STAGING_DEFAULT);
+
+    /**
+     * Setter da flag {@code --origem} com validacao de valores aceitos (PRO|HOM).
+     * A selecao de origem mantem PRO e HOM em keystores separados: rode o
+     * {@code persistir} uma vez com {@code --origem=pro} para o keystore de
+     * producao e outra com {@code --origem=hom} para o de homologacao.
+     */
+    @Option(
+            names = {"--origem"},
+            paramLabel = "<PRO|HOM>",
+            description = {
+                    "Origem das cadeias a persistir nesta execucao.",
+                    "PRO = cadeias de producao (default); HOM = cadeias de homologacao. "
+                            + "PRO e HOM devem ficar em keystores separados.",
+                    "Default: ${DEFAULT-VALUE}."
+            },
+            defaultValue = "PRO"
+    )
+    public void setOrigem(String valor) {
+        if (valor == null) {
+            throw new CommandLine.ParameterException(
+                    spec.commandLine(), "Valor invalido para --origem: nulo.");
+        }
+        try {
+            this.origem = Origem.valueOf(valor.toUpperCase(java.util.Locale.ROOT));
+        } catch (IllegalArgumentException e) {
+            throw new CommandLine.ParameterException(
+                    spec.commandLine(),
+                    "Valor invalido para --origem: " + valor
+                            + ". Valores aceitos: PRO ou HOM.");
+        }
+    }
+
+    /** Origem selecionada via {@code --origem} (PRO ou HOM). */
+    public Origem getOrigem() {
+        return origem;
+    }
 
     /**
      * Setter da flag {@code --remover-duplicadas} com validacao {1,2}.
@@ -211,8 +258,17 @@ public class ComandoPersistir implements Callable<Integer> {
                     "Staging vazia em " + staging + ". Rode 'baixar' primeiro. Keystore nao modificado.");
         }
 
-        // 2) Ler os X.509 reais referenciados no manifest, associando-os aos metadados.
-        List<Certificado> certificados = manifest.certificados();
+        // 2) Filtrar por origem (PRO ou HOM) e ler os X.509 reais referenciados no
+        // manifest, associando-os aos metadados. Se a origem selecionada nao tem
+        // certificados, abortar sem tocar no keystore.
+        List<Certificado> certificados = manifest.certificados().stream()
+                .filter(cert -> cert.origem() == origem)
+                .toList();
+        if (certificados.isEmpty()) {
+            return abortar("persistir",
+                    "Nenhum certificado de origem " + origem + " na staging em "
+                            + staging + ". Keystore nao modificado.");
+        }
         List<CertificadoX509> pares = new ArrayList<>(certificados.size());
         ExpansorCertificados expansor = new ExpansorCertificados();
         try {
@@ -250,7 +306,12 @@ public class ComandoPersistir implements Callable<Integer> {
         List<AtribuicaoAlias> atribuicoes = GeradorAlias.gerarAliases(mantidos);
 
         // 6) Decisao de gravacao apos eventuais falhas de download (Req 7.2-7.5).
-        int nFalhas = manifest.falhas() == null ? 0 : manifest.falhas().size();
+        // Considera apenas as falhas da origem selecionada: uma falha de HOM nao
+        // bloqueia a persistencia de PRO (e vice-versa).
+        int nFalhas = manifest.falhas() == null ? 0
+                : (int) manifest.falhas().stream()
+                        .filter(f -> f.origem() == origem)
+                        .count();
         boolean temTty = System.console() != null;
         String resposta = null;
         if (nFalhas > 0 && temTty) {

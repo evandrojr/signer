@@ -29,7 +29,8 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
  *   <li>O ZIP de produção ({@code ACcompactadox.zip}) é expandido via
  *       {@link java.util.zip.ZipInputStream}; cada entrada {@code .crt}/{@code .cer}
  *       é parseada como {@link X509Certificate} através de
- *       {@link CertificateFactory#getInstance(String)} para {@code "X.509"}.</li>
+ *       {@code CertificateFactory} para {@code "X.509"} no provider BouncyCastle,
+ *       que aceita parâmetros de curva EC explícitos (rejeitados pelo provider Sun).</li>
  *   <li>Arquivos {@code .p7b} (PKCS#7 / CMS) são expandidos via
  *       {@link org.bouncycastle.cms.CMSSignedData}, convertendo cada
  *       {@link X509CertificateHolder} contido em {@link X509Certificate} através de
@@ -91,8 +92,10 @@ public final class ExpansorCertificados {
 	 * Expande um arquivo {@code .p7b} (PKCS#7 / CMS), retornando todos os
 	 * {@link X509Certificate} nele contidos.
 	 *
-	 * <p>Tenta primeiro interpretar os bytes como CMS/DER; se isso falhar, tenta
-	 * decodificá-los como PEM antes de reprocessar como CMS.</p>
+	 * <p>Tenta primeiro interpretar os bytes como CMS/DER; se isso falhar, decodifica
+	 * todos os blocos PEM encontrados (suportando arquivos anotados com linhas
+	 * {@code subject}/{@code issuer} entre certificados) e, para cada bloco, tenta
+	 * interpretá-lo como CMS e, em seguida, como um certificado X.509 avulso.</p>
 	 *
 	 * @param p7bBytes os bytes do arquivo {@code .p7b} (DER ou PEM; não nulo)
 	 * @return a lista de certificados contidos no PKCS#7
@@ -100,23 +103,42 @@ public final class ExpansorCertificados {
 	 */
 	public List<X509Certificate> expandirP7b(byte[] p7bBytes) {
 		Objects.requireNonNull(p7bBytes, "p7bBytes");
-		CMSSignedData cms;
 		try {
-			cms = new CMSSignedData(p7bBytes);
+			return converterP7b(new CMSSignedData(p7bBytes));
 		} catch (CMSException derFalhou) {
-			// Tenta interpretar como PEM (base64 entre cabeçalhos) e reprocessar.
-			byte[] der = decodificarPem(p7bBytes);
-			if (der == null) {
-				throw new ExpansaoException(
-						"Conteúdo p7b inválido: não é PKCS#7 DER nem PEM", derFalhou);
-			}
+			// Fallback: decodifica todos os blocos PEM e tenta cada um como CMS ou
+			// certificado avulso (arquivos .p7b reais podem conter certs PEM anotados).
+			return expandirBlocosPem(p7bBytes, derFalhou);
+		}
+	}
+
+	private List<X509Certificate> expandirBlocosPem(byte[] p7bBytes, CMSException derFalhou) {
+		List<byte[]> blocos = decodificarBlocosPem(p7bBytes);
+		if (blocos.isEmpty()) {
+			throw new ExpansaoException("Conteúdo p7b inválido: não é PKCS#7 DER nem PEM", derFalhou);
+		}
+		List<X509Certificate> certificados = new ArrayList<>();
+		for (int i = 0; i < blocos.size(); i++) {
+			byte[] der = blocos.get(i);
 			try {
-				cms = new CMSSignedData(der);
-			} catch (CMSException pemFalhou) {
-				throw new ExpansaoException("Conteúdo p7b inválido após decodificação PEM", pemFalhou);
+				certificados.addAll(converterP7b(new CMSSignedData(der)));
+			} catch (CMSException naoCms) {
+				try {
+					certificados.add(parsearCertificado(der, "bloco PEM " + (i + 1)));
+				} catch (ExpansaoException naoCert) {
+					// Bloco irreconhecível: ignora e segue para o próximo; se nenhum
+					// bloco produzir certificado, a exceção original é lançada abaixo.
+				}
 			}
 		}
+		if (certificados.isEmpty()) {
+			throw new ExpansaoException("Conteúdo p7b inválido após decodificação PEM", derFalhou);
+		}
+		return certificados;
+	}
 
+	/** Converte os certificados de um {@link CMSSignedData} (PKCS#7) para {@link X509Certificate}. */
+	private static List<X509Certificate> converterP7b(CMSSignedData cms) {
 		JcaX509CertificateConverter converter = new JcaX509CertificateConverter().setProvider(PROVIDER_BC);
 		List<X509Certificate> certificados = new ArrayList<>();
 		try {
@@ -141,9 +163,9 @@ public final class ExpansorCertificados {
 	public X509Certificate parsearCertificado(byte[] bytes, String origem) {
 		Objects.requireNonNull(bytes, "bytes");
 		try {
-			CertificateFactory cf = CertificateFactory.getInstance("X.509");
+			CertificateFactory cf = CertificateFactory.getInstance("X.509", PROVIDER_BC);
 			return (X509Certificate) cf.generateCertificate(new ByteArrayInputStream(bytes));
-		} catch (CertificateException e) {
+		} catch (CertificateException | java.security.NoSuchProviderException e) {
 			throw new ExpansaoException("Falha ao parsear certificado X.509 de '" + origem + "'", e);
 		}
 	}
@@ -164,27 +186,34 @@ public final class ExpansorCertificados {
 	}
 
 	/**
-	 * Decodifica um bloco PEM ({@code -----BEGIN ...-----}) para os bytes DER
-	 * correspondentes. Retorna {@code null} se o conteúdo não parece PEM.
+	 * Decodifica todos os blocos PEM ({@code -----BEGIN ...-----} ... {@code -----END
+	 * ...-----}) para os bytes DER correspondentes, ignorando qualquer texto entre
+	 * blocos (ex.: anotações {@code subject}/{@code issuer} presentes em alguns
+	 * arquivos {@code .p7b}). Retorna uma lista vazia se não houver blocos PEM.
 	 */
-	private static byte[] decodificarPem(byte[] bytes) {
+	private static List<byte[]> decodificarBlocosPem(byte[] bytes) {
 		String texto = new String(bytes, java.nio.charset.StandardCharsets.ISO_8859_1);
-		int inicio = texto.indexOf("-----BEGIN");
-		if (inicio < 0) {
-			return null;
+		List<byte[]> blocos = new ArrayList<>();
+		int posicao = 0;
+		while (true) {
+			int inicio = texto.indexOf("-----BEGIN", posicao);
+			if (inicio < 0) {
+				break;
+			}
+			int fimCabecalho = texto.indexOf('\n', inicio);
+			int fim = texto.indexOf("-----END", fimCabecalho < 0 ? inicio : fimCabecalho);
+			if (fimCabecalho < 0 || fim < 0) {
+				break;
+			}
+			String base64 = texto.substring(fimCabecalho + 1, fim).replaceAll("\\s", "");
+			try {
+				blocos.add(java.util.Base64.getDecoder().decode(base64));
+			} catch (IllegalArgumentException ignorado) {
+				// Bloco PEM corrompido: ignora e tenta o próximo.
+			}
+			posicao = fim + 9;
 		}
-		int fimCabecalho = texto.indexOf('\n', inicio);
-		int fim = texto.indexOf("-----END", fimCabecalho < 0 ? inicio : fimCabecalho);
-		if (fimCabecalho < 0 || fim < 0) {
-			return null;
-		}
-		String base64 = texto.substring(fimCabecalho + 1, fim)
-				.replaceAll("\\s", "");
-		try {
-			return java.util.Base64.getDecoder().decode(base64);
-		} catch (IllegalArgumentException e) {
-			return null;
-		}
+		return blocos;
 	}
 
 	/**

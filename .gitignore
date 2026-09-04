@@ -33,3 +33,6 @@ build_result.log
 output.log
 tests/results/authority_key_id_token_test.txt
 validation.log
+
+# Area de staging gerada em runtime pelo automacao-importador (nao versionar)
+staging/
