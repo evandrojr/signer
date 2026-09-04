@@ -35,7 +35,7 @@ Adicione o módulo desejado ao seu `pom.xml`. Para assinatura CAdES:
 <dependency>
     <groupId>org.demoiselle.signer</groupId>
     <artifactId>policy-impl-cades</artifactId>
-    <version>4.6.1</version>
+    <version>4.6.2</version>
 </dependency>
 ```
 
@@ -45,7 +45,7 @@ A cadeia ICP-Brasil é carregada automaticamente se `chain-icp-brasil` estiver n
 <dependency>
     <groupId>org.demoiselle.signer</groupId>
     <artifactId>chain-icp-brasil</artifactId>
-    <version>4.6.1</version>
+    <version>4.6.2</version>
 </dependency>
 ```
 
@@ -83,7 +83,7 @@ As principais configurações são feitas via variável de ambiente ou system pr
 
 ### Ativação/desativação de cadeias
 
-Desde a versão **4.6.3**, todas as cadeias são carregadas por padrão quando suas dependências estão no classpath — inclusive as de **homologação** (`chain-icp-brasil-homolog`, `chain-iti-homolog`). Cada cadeia pode ser desativada individualmente via variável de ambiente:
+Desde a versão **4.6.2**, todas as cadeias são carregadas por padrão quando suas dependências estão no classpath — inclusive as de **homologação** (`chain-icp-brasil-homolog`, `chain-iti-homolog`). Cada cadeia pode ser desativada individualmente via variável de ambiente:
 
 ```
 SIGNER_DISABLE_CHAIN_<NOME_DA_CADEIA>=true
@@ -195,7 +195,7 @@ O relatório mostra por módulo:
 
 ## Release Notes
 
-- [4.6.1](release-notes/4.6.1.md)
+- [4.6.2](release-notes/4.6.2.md)
 
 ---
 
