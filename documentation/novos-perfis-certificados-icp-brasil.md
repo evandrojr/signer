@@ -2,11 +2,11 @@
 
 ## 1. Contexto
 
-A **Resolução nº 211 da ICP-Brasil** reformulou o leiaute dos certificados digitais emitidos pelas ACs da cadeia ICP-Brasil. Os "novos perfis" mudam **onde** os dados de identificação (CPF, CNPJ, nome do responsável, etc.) ficam gravados no certificado, e também introduzem novos tipos/níveis de certificado — como o **Selo Eletrônico (SE-S/SE-H)** e a **Aplicação Específica (AE-S/AE-H)**.
+A **Resolução nº 211 da ICP-Brasil** reformulou o leiaute dos certificados digitais emitidos pelas ACs da cadeia ICP-Brasil. Os "novos perfis" mudam **onde** os dados de identificação (CPF, CNPJ, nome do responsável, etc.) ficam gravados no certificado, e também introduzem novos tipos de certificado — como o **Selo Eletrônico (SE-S/SE-H)** e a **Aplicação Específica (AE-S/AE-H)**.
 
-Durante o período de transição, o mercado convive com **dois formatos simultaneamente**: os certificados emitidos no perfil antigo (ainda na validade) e os emitidos no perfil novo. Logo, se o seu sistema lê dados do certificado, ele precisa continuar funcionando com os dois formatos **sem exigir que o usuário troque de certificado**.
+Durante o período de transição, convivem **dois formatos simultaneamente**: os certificados emitidos no perfil antigo (ainda na validade) e os emitidos no perfil novo. Logo, se o seu sistema lê dados do certificado, ele precisa continuar funcionando com os dois formatos **sem exigir que o usuário troque de certificado**.
 
-O **Demoiselle Signer resolve esse problema de forma transparente**: você não precisa saber "se o certificado é do perfil antigo ou novo" — a biblioteca detecta o formato sozinha e expõe uma API única.
+O **Demoiselle Signer resolve esse problema de forma transparente**: você não precisa saber "se o certificado é do perfil antigo ou novo" — a biblioteca detecta o formato e expõe uma API única.
 
 ---
 
@@ -18,10 +18,8 @@ O **Demoiselle Signer resolve esse problema de forma transparente**: você não 
 | CPF (PF) | SAN `OtherName` `2.16.76.1.3.1` (`dados-pf`) | atributo `serialNumber` (`2.5.4.5`) do *Subject DN* |
 | CNPJ (PJ) | SAN `OtherName` `2.16.76.1.3.3` (CNPJ) ou `2.16.76.1.3.7` (CEI) | atributo `serialNumber` (`2.5.4.5`) do *Subject DN* |
 | CNPJ do responsável (PJ) / nome do responsável | SAN `OtherName` `2.16.76.1.3.2`, `2.16.76.1.3.4` | não obrigatório; campos de responsável retornam `null` |
-| CNPJ da Autoridade de Registro (AR) | não previsto | SAN `OtherName` `2.16.76.1.4.5.1` |
+| CNPJ da Autoridade de Registro (AR) | não previsto | Exclusivamente para certificados de governo o CNPJ da AR é encontrado na extensão SAN `OtherName` `2.16.76.1.4.5.1` |
 | Dados de Equipamento | SAN `OtherName` `2.16.76.1.3.8` | mantido na SAN |
-
-> **Regra de detecção usada pelo Demoiselle:** no perfil novo, o CPF/CNPJ sai do `serialNumber` (11 dígitos → PF, 14 dígitos → PJ). O **Selo Eletrônico só é identificável pela policy** (`2.16.76.1.2.201/202`), pois na SAN ele usa os mesmos OIDs de PJ.
 
 ---
 
@@ -178,5 +176,5 @@ Se você usa as cadeias ICP-Brasil:
 | `org.demoiselle.signer.core.extension.ICPBRSubjectAlternativeNames` | Orquestra a detecção (SAN + serialNumber + policy) |
 | `org.demoiselle.signer.core.extension.CertificateExtra` | Acesso cru aos OIDs da SAN (perfil antigo, `getOID_2_16_76_1_4_5_1()`) |
 | `org.demoiselle.signer.core.extension.ICPBRCertificatePF/PJ/SE` | DTOs tipados com `getCPF()/getCNPJ()/getCnpjAR()` |
-| `org.demoiselle.signer.core.oid.OID_2_16_76_1_4_5_1` | OID `2.16.76.1.4.5.1` — CNPJ da AR (novo perfil) |
+| `org.demoiselle.signer.core.oid.OID_2_16_76_1_4_5_1` | OID `2.16.76.1.4.5.1` — CNPJ da AR (novo perfil e exclusivo para certificados de governo) |
 
