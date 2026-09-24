@@ -124,7 +124,7 @@ System.out.println("CNPJ AR   : " +
 |---|---|
 | Suporte inicial aos novos perfis (Resolução 211, Selo Eletrônico) | **4.6.0** (jun/2026) |
 | **Versão recomendada** — última release publicada no Maven Central | **4.6.2** (set/2026) |
-| Versão em desenvolvimento (não é release) | 4.6.3-SNAPSHOT |
+
 
 > A **4.6.2 é a versão mínima recomendada** para produção: além do suporte da 4.6.0, ela traz correções na detecção de Selo Eletrônico e de OIDs em `getCertificateLevel()`, além das cadeias ICP-Brasil v12 (compatíveis com a nova raiz).
 
@@ -180,4 +180,3 @@ Se você usa as cadeias ICP-Brasil:
 | `org.demoiselle.signer.core.extension.ICPBRCertificatePF/PJ/SE` | DTOs tipados com `getCPF()/getCNPJ()/getCnpjAR()` |
 | `org.demoiselle.signer.core.oid.OID_2_16_76_1_4_5_1` | OID `2.16.76.1.4.5.1` — CNPJ da AR (novo perfil) |
 
-Fonte: branch de desenvolvimento `4.6.3-SNAPSHOT` do repositório oficial (SERPRO).
