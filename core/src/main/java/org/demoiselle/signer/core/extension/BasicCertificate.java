@@ -501,7 +501,7 @@ public class BasicCertificate {
         }
 
         /**
-         * Returns the ICP-BRASIL Certificate Type (A, S, SE).<br>
+         * Returns the ICP-BRASIL Certificate Type (A, S, SE, AE).<br>
          *
          * @return String Certificate type
          */
