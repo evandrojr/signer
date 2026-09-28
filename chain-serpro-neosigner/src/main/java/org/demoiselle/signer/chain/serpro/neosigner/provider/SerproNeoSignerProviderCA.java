@@ -81,18 +81,18 @@ public class SerproNeoSignerProviderCA implements ProviderCA {
                         String env = DisablingUtil.getEnvironment();
                         boolean isHomEnv = "hom".equalsIgnoreCase(env) || "homolog".equalsIgnoreCase(env);
 
-                        if (isHomologDisabled || !isHomEnv) {
+                        // if (isHomologDisabled || !isHomEnv) {
                                 logger.info("Ambiente de producao. Carregando cadeias de producao do SERPRO (NeoSigner).");
                                 loadCert(result, factory, "trustedca/AutoridadeCertificadoraAssinadorSERPRORaiz.crt");
                                 loadCert(result, factory, "trustedca/AutoridadeCertificadoraAssinadorSERPROFinal.crt");
-                        } else {
+                        // } else {
                                 logger.info("Ambiente de homologacao detectado. Carregando cadeias de homologacao do SERPRO (NeoSigner).");
                                 loadCert(result, factory, "trustedca/AutoridadeCertificadoraRaizdoSERPRO.crt");
                                 loadCert(result, factory, "trustedca/AutoridadeCertificadoraFinaldoSERPRO.crt");
                                 loadCert(result, factory, "trustedca/AutoridadeCertificadoraRaizdoSERPROSoftware.crt");
                                 loadCert(result, factory, "trustedca/AutoridadeCertificadoraFinaldoSERPROSoftware.crt");
                                 loadCert(result, factory, "trustedca/NeoSignerSERPRO.crt");
-                        }
+                        // }
                 } catch (Throwable error) {
                         logger.error("Erro ao carregar CAs do NeoSigner: " + error.getMessage());
                 } finally {
