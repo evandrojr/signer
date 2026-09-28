@@ -1,6 +1,7 @@
 package main
 
 import (
+	"crypto/tls"
 	"encoding/xml"
 	"fmt"
 	"net/http"
@@ -31,8 +32,8 @@ type MavenMetadata struct {
 }
 
 var modules = []ModuleDef{
-	{dir: "bom", artifact: "bom"},
-	{dir: "parent", artifact: "parent"},
+	{dir: "bom", artifact: "bom", pomOnly: true},
+	{dir: "parent", artifact: "parent", pomOnly: true},
 	{dir: "core", artifact: "signer-core"},
 	{dir: "cryptography", artifact: "signer-cryptography"},
 	{dir: "chain-icp-brasil", artifact: "chain-icp-brasil"},
@@ -51,6 +52,7 @@ var modules = []ModuleDef{
 type ModuleDef struct {
 	dir      string
 	artifact string
+	pomOnly  bool
 }
 
 type ModuleReport struct {
@@ -114,15 +116,23 @@ func readVersion(wd string) string {
 		return ""
 	}
 	v := strings.TrimSpace(s[:j])
-	if v == "4.6.2-SNAPSHOT" {
-		return "4.6.2"
-	}
 	v = strings.TrimSuffix(v, "-SNAPSHOT")
 	return v
 }
 
+var httpClient = &http.Client{
+	Transport: &http.Transport{
+		TLSNextProto: make(map[string]func(authority string, c *tls.Conn) http.RoundTripper),
+	},
+}
+
 func checkFile(url string) string {
-	resp, err := http.Get(url)
+	req, err := http.NewRequest(http.MethodGet, url, nil)
+	if err != nil {
+		return fmt.Sprintf("erro: %v", err)
+	}
+	req.Header.Set("User-Agent", "Demoiselle-Signer-Publisher/1.0")
+	resp, err := httpClient.Do(req)
 	if err != nil {
 		return fmt.Sprintf("erro: %v", err)
 	}
@@ -133,13 +143,13 @@ func checkFile(url string) string {
 	return fmt.Sprintf("HTTP %d", resp.StatusCode)
 }
 
-func verifyModule(artifact, version string, isRelease bool) ModuleReport {
-	r := ModuleReport{Module: ModuleDef{artifact: artifact}}
+func verifyModule(mod ModuleDef, version string, isRelease bool) ModuleReport {
+	r := ModuleReport{Module: mod}
 
 	if isRelease {
-		r = checkRelease(artifact, version)
+		r = checkRelease(mod, version)
 	} else {
-		r = checkSnapshot(artifact, version)
+		r = checkSnapshot(mod.artifact, version)
 	}
 	return r
 }
@@ -149,7 +159,13 @@ func checkSnapshot(artifact, version string) ModuleReport {
 	r.Module = ModuleDef{artifact: artifact}
 
 	metaURL := fmt.Sprintf("%s/org/demoiselle/signer/%s/%s-SNAPSHOT/maven-metadata.xml", snapshotsBase, artifact, version)
-	resp, err := http.Get(metaURL)
+	req, err := http.NewRequest(http.MethodGet, metaURL, nil)
+	if err != nil {
+		r.Error = fmt.Sprintf("erro ao montar requisição: %v", err)
+		return r
+	}
+	req.Header.Set("User-Agent", "Demoiselle-Signer-Publisher/1.0")
+	resp, err := httpClient.Do(req)
 	if err != nil {
 		r.Error = fmt.Sprintf("erro ao acessar repositório: %v", err)
 		return r
@@ -198,22 +214,37 @@ func checkSnapshot(artifact, version string) ModuleReport {
 	return r
 }
 
-func checkRelease(artifact, version string) ModuleReport {
+func checkRelease(mod ModuleDef, version string) ModuleReport {
 	r := ModuleReport{}
-	r.Module = ModuleDef{artifact: artifact}
+	r.Module = mod
+	artifact := mod.artifact
 
 	baseURL := fmt.Sprintf("%s/org/demoiselle/signer/%s/%s", centralBase, artifact, version)
 
-	suffixes := []struct {
+	var suffixes []struct {
 		path string
 		name string
-	}{
-		{fmt.Sprintf("/%s-%s.pom", artifact, version), "pom"},
-		{fmt.Sprintf("/%s-%s.jar", artifact, version), "jar"},
-		{fmt.Sprintf("/%s-%s-sources.jar", artifact, version), "sources.jar"},
-		{fmt.Sprintf("/%s-%s.pom.asc", artifact, version), "pom.asc"},
-		{fmt.Sprintf("/%s-%s.jar.asc", artifact, version), "jar.asc"},
-		{fmt.Sprintf("/%s-%s-sources.jar.asc", artifact, version), "sources.jar.asc"},
+	}
+	if mod.pomOnly {
+		suffixes = []struct {
+			path string
+			name string
+		}{
+			{fmt.Sprintf("/%s-%s.pom", artifact, version), "pom"},
+			{fmt.Sprintf("/%s-%s.pom.asc", artifact, version), "pom.asc"},
+		}
+	} else {
+		suffixes = []struct {
+			path string
+			name string
+		}{
+			{fmt.Sprintf("/%s-%s.pom", artifact, version), "pom"},
+			{fmt.Sprintf("/%s-%s.jar", artifact, version), "jar"},
+			{fmt.Sprintf("/%s-%s-sources.jar", artifact, version), "sources.jar"},
+			{fmt.Sprintf("/%s-%s.pom.asc", artifact, version), "pom.asc"},
+			{fmt.Sprintf("/%s-%s.jar.asc", artifact, version), "jar.asc"},
+			{fmt.Sprintf("/%s-%s-sources.jar.asc", artifact, version), "sources.jar.asc"},
+		}
 	}
 
 	allOk := true
@@ -329,6 +360,9 @@ func main() {
 	validar := false
 	snapshot := false
 
+	validarRelease := false
+	validarSnapshot := false
+
 	for _, arg := range os.Args[1:] {
 		switch arg {
 		case "-release", "--release":
@@ -337,22 +371,38 @@ func main() {
 			snapshot = true
 		case "-validar", "--validar":
 			validar = true
+		case "-validar-release", "--validar-release":
+			validarRelease = true
+		case "-validar-snapshot", "--validar-snapshot":
+			validarSnapshot = true
 		}
 	}
 
-	if !snapshot && !isRelease && !validar {
+	if !snapshot && !isRelease && !validar && !validarRelease && !validarSnapshot {
 		fmt.Println("Uso: go run publicador.go [flag]")
 		fmt.Println()
 		fmt.Println("Flags:")
-		fmt.Println("  -snapshot            Publica SNAPSHOT no Sonatype")
-		fmt.Println("  -release             Publica RELEASE no Maven Central")
-		fmt.Println("  -validar             Valida a publicação no repositório")
+		fmt.Println("  -snapshot               Publica SNAPSHOT no Sonatype")
+		fmt.Println("  -release                Publica RELEASE no Maven Central")
+		fmt.Println("  -validar                Valida a publicação no repositório (SNAPSHOT)")
+		fmt.Println("  -validar-snapshot       Valida a publicação de SNAPSHOTs")
+		fmt.Println("  -validar-release        Valida a publicação de RELEASE no Maven Central")
 		fmt.Println()
 		fmt.Println("Exemplos:")
 		fmt.Println("  go run publicador.go -snapshot")
 		fmt.Println("  go run publicador.go -release")
 		fmt.Println("  go run publicador.go -validar")
+		fmt.Println("  go run publicador.go -validar-snapshot")
+		fmt.Println("  go run publicador.go -validar-release")
 		os.Exit(0)
+	}
+
+	if validarRelease {
+		isRelease = true
+		validar = true
+	}
+	if validarSnapshot {
+		validar = true
 	}
 
 	if validar {
@@ -383,7 +433,7 @@ func main() {
 			}
 
 			fmt.Printf("\n📦 Verificando %s...\n", mod.artifact)
-			r := verifyModule(mod.artifact, version, isRelease)
+			r := verifyModule(mod, version, isRelease)
 			reports = append(reports, r)
 		}
 
@@ -401,7 +451,7 @@ func main() {
 	fmt.Printf("🚀 Publicando Demoiselle Signer (%s)\n", mode)
 	fmt.Println(strings.Repeat("-", 50))
 
-	args := []string{"clean", "deploy", "-Dmaven.test.skip=true", "-Dmaven.javadoc.skip=true", "-B",
+	args := []string{"clean", "deploy", "-Dmaven.test.skip=true", "-B",
 		"-Dmaven.wagon.http.retryHandler.count=5",
 		"-Dmaven.wagon.http.connectionTimeout=600000",
 		"-Dmaven.wagon.http.readTimeout=600000",
@@ -409,7 +459,10 @@ func main() {
 	}
 
 	if isRelease {
+		// Maven Central exige o artifact de javadoc para publicacao.
 		args = append(args, "-P", "release")
+	} else {
+		args = append(args, "-Dmaven.javadoc.skip=true")
 	}
 
 	maxRetries := 20
@@ -459,7 +512,7 @@ func main() {
 			}
 
 			fmt.Printf("\n📦 Verificando %s...\n", mod.artifact)
-			r := verifyModule(mod.artifact, version, false)
+			r := verifyModule(mod, version, false)
 			reports = append(reports, r)
 			if !r.Exists || r.Error != "" {
 				fmt.Printf("   ⚠️  %s não encontrado no repositório\n", mod.artifact)
