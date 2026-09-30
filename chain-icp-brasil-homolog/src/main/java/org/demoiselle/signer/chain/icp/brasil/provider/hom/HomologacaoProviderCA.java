@@ -53,11 +53,13 @@ import org.slf4j.LoggerFactory;
 /**
  * Provides homologation Certificate Authority chain of the ICP-BRAZIL.
  * <p>
- * By default, this chain is loaded when the dependency is present.
- * To disable it, set the environment variable: {@code SIGNER_DISABLE_CHAIN_ICP_BRASIL_HOMOLOG=true}
- * <p>
- * The global environment variable {@code SIGNER_ENV} is also respected when
- * the disable variable is not explicitly set.
+ * <strong>This homologation chain is disabled by default (opt-in) for security reasons.</strong>
+ * Homologation certificates are issued by test authorities and must not be trusted in
+ * production. To enable it, explicitly opt in with either:
+ * <ul>
+ *   <li>{@code SIGNER_ENV=hom} (or {@code homolog}), or {@code SIGNER_ENV=both}, or</li>
+ *   <li>{@code SIGNER_ENABLE_CHAIN_ICP_BRASIL_HOMOLOG=true}</li>
+ * </ul>
  */
 public class HomologacaoProviderCA implements ProviderCA {
 

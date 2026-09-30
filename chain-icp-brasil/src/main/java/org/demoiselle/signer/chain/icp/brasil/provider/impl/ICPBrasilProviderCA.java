@@ -62,11 +62,11 @@ import org.slf4j.LoggerFactory;
  * Provides trusted Certificate Authority chain of the ICP-BRAZIL's digital signature policies
  * from Keystore (icpbrasil.jks) stored in resources library.
  * <p>
- * By default, this chain is loaded when the dependency is present.
- * To disable it, set the environment variable: {@code SIGNER_DISABLE_CHAIN_ICP_BRASIL=true}
+ * By default, this production chain is loaded. To skip it, set
+ * {@code SIGNER_ENABLE_CHAIN_ICP_BRASIL=false} (or select another profile via {@code SIGNER_ENV}).
  * <p>
- * The global environment variable {@code SIGNER_ENV} is also respected when
- * the disable variable is not explicitly set.
+ * The global environment variable {@code SIGNER_ENV} (prod / hom / both) is also respected
+ * when the per-chain override is not set.
  */
 public class ICPBrasilProviderCA implements ProviderCA {
 

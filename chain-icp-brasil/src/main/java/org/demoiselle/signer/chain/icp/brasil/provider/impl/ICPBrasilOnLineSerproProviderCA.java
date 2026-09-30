@@ -74,6 +74,12 @@ import org.slf4j.LoggerFactory;
  * Get/Download the ICP-BRASIL's Trusted Certificate Authority Chain
  * (<a href="http://repositorio.serpro.gov.br/icp-brasil/ACcompactado.zip">ACcompactado.zip</a>)
  * from SERPRO's mirror URL.
+ * <p>
+ * Por padrao, esta cadeia de producao e carregada. Para desliga-la, defina:
+ * {@code SIGNER_ENABLE_CHAIN_ICP_BRASIL=false} (ou selecione outro perfil via {@code SIGNER_ENV}).
+ * <p>
+ * A variavel de ambiente global {@code SIGNER_ENV} (prod / hom / both) tambem e respeitada
+ * quando o override especifico da cadeia nao esta definido.
  */
 public class ICPBrasilOnLineSerproProviderCA implements ProviderCA {
 

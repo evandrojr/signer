@@ -46,6 +46,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Tests for {@link DisablingUtil}.
+ * <p>
+ * Configuration model under test (positive/enable-based):
+ * <ul>
+ *   <li>{@code SIGNER_ENABLE_CHAIN_<NAME>} — per-chain override (final word, both directions)</li>
+ *   <li>{@code SIGNER_ENV} — profile: prod (default) / hom / both (alias pro,hom)</li>
+ *   <li>secure default — production loaded, homologation opt-in (skipped)</li>
+ * </ul>
  */
 class DisablingUtilTest {
 
@@ -59,35 +66,115 @@ class DisablingUtilTest {
         return map;
     }
 
+    // --- Secure defaults (nothing set) ---
+
     @Test
-    void testDefaultBehavior_noVariableSet_chainEnabled() {
-        // Without any environment variable, chains should be enabled (not disabled)
-        assertFalse(DisablingUtil.isChainDisabled("test-chain", env()));
+    void testDefault_productionChainEnabled() {
+        assertFalse(DisablingUtil.isChainDisabled("icp-brasil", env()));
     }
 
     @Test
-    void testExplicitDisable_true_chainDisabled() {
-        assertTrue(DisablingUtil.isChainDisabled("test-chain", env("SIGNER_DISABLE_CHAIN_TEST_CHAIN", "true")));
+    void testDefault_homologationChainDisabled() {
+        // Security default: homologation chains are opt-in, disabled when nothing is set.
+        assertTrue(DisablingUtil.isChainDisabled("icp-brasil-homolog", env()));
+    }
+
+    // --- Per-chain enable override ---
+
+    @Test
+    void testEnableOverride_true_loadsChain() {
+        assertFalse(DisablingUtil.isChainDisabled("icp-brasil-homolog",
+                env("SIGNER_ENABLE_CHAIN_ICP_BRASIL_HOMOLOG", "true")));
     }
 
     @Test
-    void testExplicitDisable_false_chainEnabled() {
-        assertFalse(DisablingUtil.isChainDisabled("test-chain", env("SIGNER_DISABLE_CHAIN_TEST_CHAIN", "false")));
+    void testEnableOverride_false_skipsChain() {
+        assertTrue(DisablingUtil.isChainDisabled("icp-brasil",
+                env("SIGNER_ENABLE_CHAIN_ICP_BRASIL", "false")));
     }
 
     @Test
-    void testExplicitDisable_emptyString_chainEnabled() {
-        assertFalse(DisablingUtil.isChainDisabled("test-chain", env("SIGNER_DISABLE_CHAIN_TEST_CHAIN", "")));
+    void testEnableOverride_emptyValue_fallsBackToProfileDefault() {
+        // Empty override is ignored; falls back to secure default (homolog opt-in).
+        assertTrue(DisablingUtil.isChainDisabled("icp-brasil-homolog",
+                env("SIGNER_ENABLE_CHAIN_ICP_BRASIL_HOMOLOG", "")));
     }
 
     @Test
-    void testToDisableVariableName() {
-        assertEquals("SIGNER_DISABLE_CHAIN_ICP_BRASIL_HOMOLOG",
-                DisablingUtil.toDisableVariableName("icp-brasil-homolog"));
-        assertEquals("SIGNER_DISABLE_CHAIN_ITI_HOMOLOG",
-                DisablingUtil.toDisableVariableName("iti-homolog"));
-        assertEquals("SIGNER_DISABLE_CHAIN_SERPRO_NEOSIGNER_HOMOLOG",
-                DisablingUtil.toDisableVariableName("serpro-neosigner-homolog"));
+    void testEnableOverride_beatsProfile_enableHomInProd() {
+        // Production profile, but a specific homologation chain is explicitly enabled.
+        Map<String, String> e = env();
+        e.put("SIGNER_ENV", "prod");
+        e.put("SIGNER_ENABLE_CHAIN_ICP_BRASIL_HOMOLOG", "true");
+        assertFalse(DisablingUtil.isChainDisabled("icp-brasil-homolog", e));
+    }
+
+    @Test
+    void testEnableOverride_beatsProfile_enableProInHom() {
+        // Homologation profile, but a specific production chain is explicitly enabled.
+        Map<String, String> e = env();
+        e.put("SIGNER_ENV", "hom");
+        e.put("SIGNER_ENABLE_CHAIN_ICP_BRASIL", "true");
+        assertFalse(DisablingUtil.isChainDisabled("icp-brasil", e));
+    }
+
+    @Test
+    void testEnableOverride_beatsProfile_disableProInProd() {
+        // Production profile, but one production chain is explicitly disabled.
+        Map<String, String> e = env();
+        e.put("SIGNER_ENV", "prod");
+        e.put("SIGNER_ENABLE_CHAIN_ICP_BRASIL", "false");
+        assertTrue(DisablingUtil.isChainDisabled("icp-brasil", e));
+    }
+
+    // --- SIGNER_ENV=prod ---
+
+    @Test
+    void testEnvProd_productionEnabled_homologationDisabled() {
+        assertFalse(DisablingUtil.isChainDisabled("icp-brasil", env("SIGNER_ENV", "prod")));
+        assertTrue(DisablingUtil.isChainDisabled("icp-brasil-homolog", env("SIGNER_ENV", "production")));
+    }
+
+    // --- SIGNER_ENV=hom ---
+
+    @Test
+    void testEnvHom_homologationEnabled_productionDisabled() {
+        assertFalse(DisablingUtil.isChainDisabled("icp-brasil-homolog", env("SIGNER_ENV", "hom")));
+        assertTrue(DisablingUtil.isChainDisabled("icp-brasil", env("SIGNER_ENV", "homolog")));
+    }
+
+    // --- SIGNER_ENV=both ---
+
+    @Test
+    void testEnvBoth_loadsProductionAndHomologation() {
+        assertFalse(DisablingUtil.isChainDisabled("icp-brasil", env("SIGNER_ENV", "both")));
+        assertFalse(DisablingUtil.isChainDisabled("icp-brasil-homolog", env("SIGNER_ENV", "both")));
+    }
+
+    @Test
+    void testEnvBoth_commaListAlias() {
+        assertFalse(DisablingUtil.isChainDisabled("icp-brasil", env("SIGNER_ENV", "pro,hom")));
+        assertFalse(DisablingUtil.isChainDisabled("icp-brasil-homolog", env("SIGNER_ENV", "hom,pro")));
+        // spaces tolerated
+        assertFalse(DisablingUtil.isChainDisabled("icp-brasil-homolog", env("SIGNER_ENV", "pro, hom")));
+    }
+
+    // --- helpers ---
+
+    @Test
+    void testIsChainEnabled_isInverseOfIsChainDisabled() {
+        assertTrue(DisablingUtil.isChainEnabled("icp-brasil"));
+        assertFalse(DisablingUtil.isChainEnabled("icp-brasil-homolog"));
+    }
+
+    @Test
+    void testToEnableVariableName() {
+        assertEquals("SIGNER_ENABLE_CHAIN_ICP_BRASIL_HOMOLOG",
+                DisablingUtil.toEnableVariableName("icp-brasil-homolog"));
+        assertEquals("SIGNER_ENABLE_CHAIN_ITI_HOMOLOG",
+                DisablingUtil.toEnableVariableName("iti-homolog"));
+        assertEquals("SIGNER_ENABLE_CHAIN_SERPRO_NEOSIGNER_HOMOLOG",
+                DisablingUtil.toEnableVariableName("serpro-neosigner-homolog"));
     }
 
     @Test
@@ -98,44 +185,5 @@ class DisablingUtilTest {
     @Test
     void testGetEnvironment_withValue() {
         assertEquals("hom", DisablingUtil.getEnvironment(env("SIGNER_ENV", "hom")));
-    }
-
-    @Test
-    void testHomologationChainDisabledByEnv_prod() {
-        Map<String, String> e = env("SIGNER_ENV", "production");
-        assertTrue(DisablingUtil.isChainDisabled("icp-brasil-homolog", e));
-    }
-
-    @Test
-    void testHomologationChainDisabledByEnv_hom() {
-        Map<String, String> e = env("SIGNER_ENV", "hom");
-        assertFalse(DisablingUtil.isChainDisabled("icp-brasil-homolog", e));
-    }
-
-    @Test
-    void testProductionChainDisabledByEnv_hom() {
-        Map<String, String> e = env("SIGNER_ENV", "hom");
-        assertTrue(DisablingUtil.isChainDisabled("icp-brasil", e));
-    }
-
-    @Test
-    void testProductionChainEnabledByDefault() {
-        assertFalse(DisablingUtil.isChainDisabled("icp-brasil", env()));
-    }
-
-    @Test
-    void testExplicitDisableTakesPrecedence() {
-        Map<String, String> e = new HashMap<>();
-        e.put("SIGNER_ENV", "hom");
-        e.put("SIGNER_DISABLE_CHAIN_ICP_BRASIL", "true");
-        assertTrue(DisablingUtil.isChainDisabled("icp-brasil", e));
-    }
-
-    @Test
-    void testExplicitDisableHomologTakesPrecedence() {
-        Map<String, String> e = new HashMap<>();
-        e.put("SIGNER_ENV", "production");
-        e.put("SIGNER_DISABLE_CHAIN_ICP_BRASIL_HOMOLOG", "false");
-        assertFalse(DisablingUtil.isChainDisabled("icp-brasil-homolog", e));
     }
 }

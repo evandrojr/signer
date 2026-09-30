@@ -68,6 +68,12 @@ import org.slf4j.LoggerFactory;
  * (ACcompactado.zip) stored on user home folder, that was previous
  * downloaded by {@link ICPBrasilOnLineSerproProviderCA} or
  * {@link ICPBrasilOnLineITIProviderCA}.
+ * <p>
+ * Por padrao, esta cadeia de producao e carregada. Para desliga-la, defina:
+ * {@code SIGNER_ENABLE_CHAIN_ICP_BRASIL=false} (ou selecione outro perfil via {@code SIGNER_ENV}).
+ * <p>
+ * A variavel de ambiente global {@code SIGNER_ENV} (prod / hom / both) tambem e respeitada
+ * quando o override especifico da cadeia nao esta definido.
  */
 public class ICPBrasilUserHomeProviderCA implements ProviderCA {
 

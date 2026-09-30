@@ -43,6 +43,12 @@ import org.demoiselle.signer.chain.icp.brasil.provider.ChainICPBrasilConfig;
  * Get/Download the ICP-BRASIL's Trusted Certificate Authority Chain
  * (<a href="http://acraiz.icpbrasil.gov.br/credenciadas/CertificadosAC-ICP-Brasil/ACcompactado.zip">
  *     ACcompactado.zip</a>) from ITI.
+ * <p>
+ * Por padrao, esta cadeia de producao e carregada. Para desliga-la, defina:
+ * {@code SIGNER_ENABLE_CHAIN_ICP_BRASIL=false} (ou selecione outro perfil via {@code SIGNER_ENV}).
+ * <p>
+ * A variavel de ambiente global {@code SIGNER_ENV} (prod / hom / both) tambem e respeitada
+ * quando o override especifico da cadeia nao esta definido.
  */
 public class ICPBrasilOnLineITIProviderCA extends ICPBrasilOnLineSerproProviderCA {
 
