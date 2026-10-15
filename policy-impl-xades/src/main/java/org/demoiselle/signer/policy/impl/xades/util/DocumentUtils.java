@@ -63,6 +63,7 @@ import org.apache.xml.security.c14n.Canonicalizer;
 import org.apache.xml.security.c14n.InvalidCanonicalizerException;
 import org.demoiselle.signer.core.util.MessagesBundle;
 import org.demoiselle.signer.policy.impl.xades.XMLSignerException;
+import org.demoiselle.signer.core.util.SecureXmlParserFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -117,7 +118,7 @@ public class DocumentUtils {
 			InputStream inputStream = new BOMInputStream(new FileInputStream(xmlFile));
 			BufferedReader in = new BufferedReader(new java.io.InputStreamReader(inputStream));
 			InputSource source = new InputSource(in);
-			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+			DocumentBuilderFactory dbf = SecureXmlParserFactory.newDocumentBuilderFactory();
 			dbf.setNamespaceAware(true);
 			//return dbf.newDocumentBuilder().parse(new InputSource(new InputStreamReader(new FileInputStream(xmlFile), "UTF-8")));
 			Document docRet = dbf.newDocumentBuilder().parse(source);
@@ -150,7 +151,7 @@ public class DocumentUtils {
 	 */
 	public static Document loadXMLDocument(byte[] xmlContent) throws XMLSignerException {
 		try {
-			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilderFactory dbFactory = SecureXmlParserFactory.newDocumentBuilderFactory();
 			dbFactory.setNamespaceAware(true);
 			Document retDoc = dbFactory.newDocumentBuilder().parse(new BOMInputStream(new ByteArrayInputStream(xmlContent)));
 			retDoc.setXmlStandalone(true);
@@ -178,7 +179,7 @@ public class DocumentUtils {
 	public static Document loadXMLDocument(InputStream is) throws XMLSignerException {
 
 		try {
-			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+			DocumentBuilderFactory dbf = SecureXmlParserFactory.newDocumentBuilderFactory();
 			dbf.setNamespaceAware(true);
 			Document retDoc = dbf.newDocumentBuilder().parse(new InputSource(new BOMInputStream(is)));
 			retDoc.setXmlStandalone(true);
@@ -205,7 +206,7 @@ public class DocumentUtils {
 	public static Document loadXMLDocumentFromString(String xmlString) throws XMLSignerException {
 		//return loadXMLDocument(xmlString.getBytes());
 		try {
-			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+			DocumentBuilderFactory dbf = SecureXmlParserFactory.newDocumentBuilderFactory();
 			dbf.setNamespaceAware(true);
 			Document retDoc = dbf.newDocumentBuilder().parse(new InputSource(new StringReader(xmlString)));
 			retDoc.setXmlStandalone(true);
@@ -231,7 +232,7 @@ public class DocumentUtils {
 	public static Element getDocumentData(Document doc) throws XMLSignerException {
 
 		try {
-			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+			DocumentBuilderFactory dbf = SecureXmlParserFactory.newDocumentBuilderFactory();
 			dbf.setNamespaceAware(true);
 			DocumentBuilder builder;
 			Document bodyDoc = null;

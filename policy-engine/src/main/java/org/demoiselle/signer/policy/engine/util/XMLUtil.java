@@ -44,6 +44,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.io.input.BOMInputStream;
+import org.demoiselle.signer.core.util.SecureXmlParserFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -58,10 +59,10 @@ public class XMLUtil {
 
 	public static Document loadXMLDocument(InputStream parmIS) throws RuntimeException {
 
-		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder dBuilder = null;
 		Document docReturn = null;
 		try {
+			DocumentBuilderFactory dbFactory = SecureXmlParserFactory.newDocumentBuilderFactory();
 			dBuilder = dbFactory.newDocumentBuilder();
 		} catch (ParserConfigurationException e) {
 			LOGGER.error(policyMessagesBundle.getString("error.xml.parser.notfound", e.getMessage()));

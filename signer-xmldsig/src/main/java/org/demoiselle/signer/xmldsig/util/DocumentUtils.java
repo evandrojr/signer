@@ -53,6 +53,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.apache.commons.io.input.BOMInputStream;
 import org.demoiselle.signer.core.util.MessagesBundle;
 import org.demoiselle.signer.xmldsig.XMLSignerException;
+import org.demoiselle.signer.core.util.SecureXmlParserFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Attr;
@@ -85,7 +86,7 @@ public class DocumentUtils {
 		try {
 			BufferedReader in = new BufferedReader(new FileReader(xmlFile));
 			InputSource source = new InputSource(in);
-			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+			DocumentBuilderFactory dbf = SecureXmlParserFactory.newDocumentBuilderFactory();
 			dbf.setNamespaceAware(true);
 			Document docRet = dbf.newDocumentBuilder().parse(new BOMInputStream(new FileInputStream(xmlFile)));
 			docRet.setXmlStandalone(true);
@@ -121,7 +122,7 @@ public class DocumentUtils {
 	 */
 	public static Document loadXMLDocumentFromString(String xmlString, boolean setElementId) throws XMLSignerException {
 		try {
-			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+			DocumentBuilderFactory dbf = SecureXmlParserFactory.newDocumentBuilderFactory();
 			dbf.setNamespaceAware(true);
 			Document retDoc = dbf.newDocumentBuilder().parse(new InputSource(new StringReader(xmlString)));
 			retDoc.setXmlStandalone(true);
@@ -151,7 +152,7 @@ public class DocumentUtils {
 	 */
 	public static Document loadXMLDocument(byte[] xmlContent, boolean setElementId) throws XMLSignerException {
 		try {
-			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilderFactory dbFactory = SecureXmlParserFactory.newDocumentBuilderFactory();
 			dbFactory.setNamespaceAware(true);
 			Document retDoc = dbFactory.newDocumentBuilder().parse(new BOMInputStream(new ByteArrayInputStream(xmlContent)));
 			retDoc.setXmlStandalone(true);
