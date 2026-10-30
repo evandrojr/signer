@@ -242,6 +242,8 @@ mvn -pl core,chain-icp-brasil -am test -Dmaven.compiler.release=8 -Dmaven.javado
 
 Revisão feita sobre o HEAD `07a55602` (pós `60e06078`). Três itens novos foram confirmados e corrigidos, com uma mudança de decisão de design para o tratamento de falha parcial.
 
+> **Status**: correções e documentação aplicadas no commit **`93e3ce97`** (`fix(core): corrige falha parcial e epoch do cache de CAs (R2-1, R2-2, R2-3)`), em 2026-10-30. Árvore limpa; sem push realizado.
+
 ### 12.1 Achados
 
 - **R2-1 (provider engole falha → B2 inócuo)**: `ICPBrasilOnLineSerproProviderCA` devolvia `HashSet` vazio quando o download/parse online falhava, e `SerproNeoSignerProviderCA` tinha `finally { return result; }`, podendo devolver conjunto parcial sem lançar. Como `ProviderCACache` só detecta falha via exceção, a proteção do B2 nunca disparava nesses casos.
