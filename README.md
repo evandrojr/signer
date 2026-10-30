@@ -80,6 +80,8 @@ As principais configurações são feitas via variável de ambiente ou system pr
 | `SIGNER_REPOSITORY_ONLINE` | `signer.repository.online` | `true` | Habilita/desabilita consulta online de CRLs e das cadeias CA online (hash remoto / download do ZIP) |
 | `SIGNER_CAMANAGER_CACHED` | `signer.camanager.cached` | `true` | Habilita o cache do `CAManager` (cadeia por certificado e conjunto de CAs) |
 | `SIGNER_CAMANAGER_CA_TTL_MILLIS` | `signer.camanager.ca.ttl.millis` | `3600000` | Validade (ms) do cache do conjunto de CAs dos providers. `0` ou negativo desliga a expiração por tempo |
+| `SIGNER_CAMANAGER_CA_MAX_STALE_MILLIS` | `signer.camanager.ca.max.stale.millis` | `3600000` | Janela máxima (ms) em que um snapshot expirado ainda pode ser servido enquanto as recargas falham; depois disso, falha fechado |
+| `SIGNER_CAMANAGER_CA_DEGRADED_TTL_MILLIS` | `signer.camanager.ca.degraded.ttl.millis` | `60000` | TTL curto (ms) de um snapshot **degradado** (algum provider falhou): mantém disponibilidade sem cachear conjunto parcial por todo o TTL normal |
 | `SIGNER_PROXY_HOST` | `signer.proxy.host` | — | Host do proxy |
 | `SIGNER_PROXY_PORT` | `signer.proxy.port` | — | Porta do proxy |
 
@@ -154,6 +156,10 @@ O `CAManager` mantém **dois níveis de cache independentes**, ambos ativos quan
 **Por que dois níveis**: antes existia apenas o cache de cadeia. Cada certificado inédito recarregava `getCAs()` de todos os providers (I/O de disco e de rede). Em um ambiente com muitos signatários distintos, isso provocava recargas recorrentes dos repositórios de CAs. Com o cache de CAs, a carga ocorre uma vez por *snapshot* e é reaproveitada por todos os signatários.
 
 **Validade (TTL)**: o *snapshot* de CAs expira pelo TTL configurável em `SIGNER_CAMANAGER_CA_TTL_MILLIS` / `signer.camanager.ca.ttl.millis` (padrão **1 hora**). Ao expirar, a próxima consulta recarrega e republica o conjunto. `0` ou negativo desliga a expiração por tempo (atualização só por mudança de escopo ou invalidação explícita).
+
+**Falha parcial (snapshot degradado)**: se algum provider falhar, as CAs dos providers que responderam continuam sendo usadas (disponibilidade), mas o snapshot é marcado como *degradado* e passa a valer pelo TTL curto de `SIGNER_CAMANAGER_CA_DEGRADED_TTL_MILLIS` (padrão **1 minuto**), em vez de ficar cacheado por 1 hora. Quando todos os providers voltam a responder, um snapshot normal é publicado na próxima recarga.
+
+**Falha total e janela de stale**: se nenhum provider entregar CAs, o snapshot anterior pode ser mantido por no máximo `SIGNER_CAMANAGER_CA_MAX_STALE_MILLIS` (padrão **1 hora**) após o TTL. Passada essa janela, o sistema falha fechado (`CAManagerException`) em vez de servir indefinidamente um conjunto possivelmente obsoleto.
 
 > **Janela de confiança**: enquanto o *snapshot* é válido, uma CA que tenha sido removida/deixado de ser confiável ainda pode ser usada até o TTL expirar (ou até invalidação explícita). O padrão de 1 hora limita essa janela. Isso **não** afeta a validação de revogação (CRL/OCSP), que continua independente.
 

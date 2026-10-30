@@ -87,9 +87,44 @@ public final class ProviderCACache {
 	public static final String ENV_CA_TTL_MILLIS = "SIGNER_CAMANAGER_CA_TTL_MILLIS";
 
 	/**
+	 * System key to set the maximum stale window (in ms) after the TTL expires while
+	 * provider reloads keep failing. Bounds how long an expired snapshot may still be
+	 * served before failing closed. See R2-2 in the review.
+	 */
+	public static final String CA_MAX_STALE_MILLIS = "signer.camanager.ca.max.stale.millis";
+
+	/**
+	 * System environment key to set the maximum stale window in milliseconds.
+	 */
+	public static final String ENV_CA_MAX_STALE_MILLIS = "SIGNER_CAMANAGER_CA_MAX_STALE_MILLIS";
+
+	/**
 	 * Default TTL: 1 hour.
 	 */
 	public static final long DEFAULT_TTL_MILLIS = 3_600_000L;
+
+	/**
+	 * Default maximum stale window after TTL expiry: 1 hour (so the absolute trust
+	 * window is at most TTL + max stale = 2 hours under a sustained provider outage).
+	 */
+	public static final long DEFAULT_MAX_STALE_MILLIS = 3_600_000L;
+
+	/**
+	 * System key to set the short TTL (in ms) used for a <em>degraded</em> snapshot, i.e.
+	 * one built while some provider failed. It keeps availability (using the CAs that
+	 * did load) without caching a partial set for the whole normal TTL. See R2-1.
+	 */
+	public static final String CA_DEGRADED_TTL_MILLIS = "signer.camanager.ca.degraded.ttl.millis";
+
+	/**
+	 * System environment key to set the degraded snapshot TTL in milliseconds.
+	 */
+	public static final String ENV_CA_DEGRADED_TTL_MILLIS = "SIGNER_CAMANAGER_CA_DEGRADED_TTL_MILLIS";
+
+	/**
+	 * Default degraded TTL: 1 minute (partial results are retried quickly).
+	 */
+	public static final long DEFAULT_DEGRADED_TTL_MILLIS = 60_000L;
 
 	/**
 	 * Known chain names whose enable/disable state (via {@code SIGNER_ENABLE_CHAIN_*}
@@ -113,7 +148,13 @@ public final class ProviderCACache {
 	private final AtomicReference<CaSnapshot> snapshotRef = new AtomicReference<>();
 	private final ReentrantLock loadLock = new ReentrantLock();
 
+	// Monitor shared by epoch invariants: publication/invalidation and the guarded
+	// chain-cache write must be atomic with respect to each other (see I1/R2-3).
+	private final Object epochMonitor = new Object();
+
 	private volatile long ttlMillis = resolveTtlFromConfig();
+	private volatile long maxStaleMillis = resolveMaxStaleFromConfig();
+	private volatile long degradedTtlMillis = resolveDegradedTtlFromConfig();
 
 	// Epoch incrementado a cada publicacao/invalidacao do snapshot de CAs.
 	// Usado para detectar que o conjunto de CAs mudou entre a leitura das CAs
@@ -162,12 +203,15 @@ public final class ProviderCACache {
 		private final String scopeKey;
 		private final long loadedAtMillis;
 		private final long epoch;
+		private final boolean degraded;
 
-		CaSnapshot(List<X509Certificate> cas, String scopeKey, long loadedAtMillis, long epoch) {
+		CaSnapshot(List<X509Certificate> cas, String scopeKey, long loadedAtMillis, long epoch,
+				boolean degraded) {
 			this.cas = cas;
 			this.scopeKey = scopeKey;
 			this.loadedAtMillis = loadedAtMillis;
 			this.epoch = epoch;
+			this.degraded = degraded;
 		}
 	}
 
@@ -178,10 +222,12 @@ public final class ProviderCACache {
 	private static final class LoadResult {
 		private final List<X509Certificate> cas;
 		private final boolean usable;
+		private final boolean anyFailed;
 
-		LoadResult(List<X509Certificate> cas, boolean usable) {
+		LoadResult(List<X509Certificate> cas, boolean usable, boolean anyFailed) {
 			this.cas = cas;
 			this.usable = usable;
+			this.anyFailed = anyFailed;
 		}
 	}
 
@@ -228,31 +274,51 @@ public final class ProviderCACache {
 
 			LoadResult loaded = collectFromProviders();
 			if (loaded.usable) {
-				long newEpoch = epoch.incrementAndGet();
-				CaSnapshot fresh = new CaSnapshot(
-						Collections.unmodifiableList(new ArrayList<>(loaded.cas)),
-						scope,
-						System.currentTimeMillis(),
-						newEpoch);
-				snapshotRef.set(fresh); // atomic publication
+				long newEpoch;
+				CaSnapshot fresh;
+				synchronized (epochMonitor) {
+					newEpoch = epoch.incrementAndGet();
+					fresh = new CaSnapshot(
+							Collections.unmodifiableList(new ArrayList<>(loaded.cas)),
+							scope,
+							System.currentTimeMillis(),
+							newEpoch,
+							loaded.anyFailed);
+					snapshotRef.set(fresh); // atomic publication
 
-				// When the CA set is (re)loaded, chains previously built over the old
-				// set must not be reused (a CA may have been removed / is no longer
-				// trusted). Invalidate the per-certificate chain cache in all cases:
-				// first load (no-op in practice), scope change, or TTL refresh.
-				CAManagerCache.getInstance().invalidate();
+					// When the CA set is (re)loaded, chains previously built over the old
+					// set must not be reused (a CA may have been removed / is no longer
+					// trusted). Invalidate the per-certificate chain cache in all cases:
+					// first load (no-op in practice), scope change, or TTL refresh.
+					CAManagerCache.getInstance().invalidate();
+				}
 
-				LOGGER.debug("CA snapshot published: {} CA(s), scope={}, scopeChanged={}, epoch={}",
-						fresh.cas.size(), scope, scopeChanged, newEpoch);
+				if (fresh.degraded) {
+					LOGGER.warn("Snapshot de CAs publicado em modo DEGRADADO ({} CA(s)): ao menos um provider "
+							+ "falhou; nova tentativa em ate {} ms.", fresh.cas.size(), degradedTtlMillis);
+				}
+				LOGGER.debug("CA snapshot published: {} CA(s), scope={}, scopeChanged={}, epoch={}, degraded={}",
+						fresh.cas.size(), scope, scopeChanged, newEpoch, fresh.degraded);
 				return new CaSet(fresh.cas, newEpoch);
 			}
 
 			// Load failed (partial or total): do not publish a failed/partial result
-			// as a valid set. Keep the previous snapshot if any; otherwise fail.
+			// as a valid set. Keep the previous snapshot only while it is within the
+			// bounded stale window; after that, fail closed instead of serving a
+			// possibly-stale trust set forever (see R2-2 in the review).
 			if (current != null) {
-				LOGGER.warn("Falha/parcial ao atualizar CAs; mantendo snapshot anterior ({} CA(s)).",
-						current.cas.size());
-				return new CaSet(current.cas, current.epoch);
+				long age = System.currentTimeMillis() - current.loadedAtMillis;
+				if (ttlMillis <= 0 || age <= ttlMillis + maxStaleMillis) {
+					LOGGER.warn("Falha/parcial ao atualizar CAs; mantendo snapshot anterior ({} CA(s), idade {} ms).",
+							current.cas.size(), age);
+					return new CaSet(current.cas, current.epoch);
+				}
+				LOGGER.error("Falha ao atualizar CAs e snapshot anterior excedeu a janela de stale ({} ms); "
+						+ "descartando para nao servir conjunto potencialmente obsoleto.", age);
+				synchronized (epochMonitor) {
+					epoch.incrementAndGet();
+					snapshotRef.compareAndSet(current, null);
+				}
 			}
 			LOGGER.error(coreMessagesBundle.getString("error.get.chain"));
 			throw new CAManagerException(coreMessagesBundle.getString("error.get.chain"));
@@ -262,10 +328,13 @@ public final class ProviderCACache {
 	}
 
 	/**
-	 * Collects the CAs from all enabled providers. A failure in one provider is logged.
-	 * The result is only {@code usable} when at least one CA was collected AND no
-	 * provider failed, so a partial set (some provider threw) is never published and
-	 * cached for the whole TTL (see B2 in the review).
+	 * Collects the CAs from all enabled providers. A failure in one provider is logged
+	 * and flagged in the result.
+	 * <p>
+	 * A non-empty union is still publishable when some provider failed (availability:
+	 * the CAs that did load are used), but it is marked as <em>degraded</em> and gets a
+	 * short TTL so the partial set is retried soon instead of being cached for the whole
+	 * normal TTL (see B2/R2-1 in the review). An empty union is never publishable.
 	 */
 	private LoadResult collectFromProviders() {
 		List<X509Certificate> allCAs = new ArrayList<>();
@@ -274,31 +343,32 @@ public final class ProviderCACache {
 			long before = System.currentTimeMillis();
 			try {
 				Collection<X509Certificate> cas = provider.getCAs();
-				if (cas != null) {
-					allCAs.addAll(cas);
+				if (cas == null) {
+					anyProviderFailed = true;
+					LOGGER.warn("Provider '{}' retornou null; tratado como falha.", provider.getName());
+					continue;
 				}
+				allCAs.addAll(cas);
 				LOGGER.debug("Provider '{}' carregou {} CA(s) em {} ms",
-						provider.getName(), cas == null ? 0 : cas.size(),
-						System.currentTimeMillis() - before);
+						provider.getName(), cas.size(), System.currentTimeMillis() - before);
 			} catch (Exception e) {
 				anyProviderFailed = true;
 				LOGGER.warn(coreMessagesBundle.getString("error.no.ca", provider.getName()));
 			}
 		}
 
-		// Publishable only when no provider failed and there is at least one CA.
-		// A partial set (one provider threw, another returned CAs) is NOT usable:
-		// publishing it would cache a broken set for the whole TTL and make chains
-		// that depend on the failed provider fail until expiration.
-		boolean usable = !allCAs.isEmpty() && !anyProviderFailed;
-		if (!usable) {
-			if (anyProviderFailed) {
-				LOGGER.warn("Falha em ao menos um provider; snapshot NAO sera publicado (mantem anterior se houver).");
+		boolean usable = !allCAs.isEmpty();
+		if (anyProviderFailed) {
+			if (usable) {
+				LOGGER.warn("Falha em ao menos um provider; publicando snapshot DEGRADADO com {} CA(s) "
+						+ "dos providers que responderam.", allCAs.size());
 			} else {
-				LOGGER.warn("Nenhuma CA carregada; snapshot nao sera publicado.");
+				LOGGER.warn("Falha em ao menos um provider e nenhuma CA carregada; snapshot nao sera publicado.");
 			}
+		} else if (!usable) {
+			LOGGER.warn("Nenhuma CA carregada; snapshot nao sera publicado.");
 		}
-		return new LoadResult(allCAs, usable);
+		return new LoadResult(allCAs, usable, anyProviderFailed);
 	}
 
 	/**
@@ -306,8 +376,31 @@ public final class ProviderCACache {
 	 * Also bumps the epoch so in-flight chain builds over the old set are not persisted.
 	 */
 	public void invalidate() {
-		epoch.incrementAndGet();
-		snapshotRef.set(null);
+		synchronized (epochMonitor) {
+			epoch.incrementAndGet();
+			snapshotRef.set(null);
+		}
+	}
+
+	/**
+	 * Runs {@code action} atomically only if the current epoch still equals
+	 * {@code expectedEpoch}. Because publication/invalidation also mutate the epoch
+	 * and the chain cache under the same monitor, this closes the check-then-act race
+	 * window that could otherwise re-insert a stale chain after a concurrent refresh
+	 * (see I1 / R2-3 in the review).
+	 *
+	 * @param expectedEpoch epoch observed when the work was derived from the CA set
+	 * @param action        work to run (e.g., persist the built chain)
+	 * @return {@code true} if the action ran, {@code false} if the epoch changed
+	 */
+	public boolean runIfEpochUnchanged(long expectedEpoch, Runnable action) {
+		synchronized (epochMonitor) {
+			if (epoch.get() != expectedEpoch) {
+				return false;
+			}
+			action.run();
+			return true;
+		}
 	}
 
 	/**
@@ -336,14 +429,51 @@ public final class ProviderCACache {
 		this.ttlMillis = ttlMillis;
 	}
 
+	/**
+	 * @return the maximum stale window (ms) after the TTL expires while reloads fail
+	 */
+	public long getMaxStaleMillis() {
+		return maxStaleMillis;
+	}
+
+	/**
+	 * Overrides the maximum stale window at runtime (mainly for tests / explicit policy).
+	 *
+	 * @param maxStaleMillis new window; 0 means fail closed immediately after the TTL
+	 */
+	public void setMaxStaleMillis(long maxStaleMillis) {
+		this.maxStaleMillis = maxStaleMillis;
+	}
+
+	/**
+	 * @return the short TTL (ms) used while a snapshot is degraded by provider failures
+	 */
+	public long getDegradedTtlMillis() {
+		return degradedTtlMillis;
+	}
+
+	/**
+	 * Overrides the degraded snapshot TTL at runtime (mainly for tests).
+	 *
+	 * @param degradedTtlMillis new TTL; values &lt;= 0 fall back to the default
+	 */
+	public void setDegradedTtlMillis(long degradedTtlMillis) {
+		this.degradedTtlMillis = degradedTtlMillis;
+	}
+
 	private boolean isValid(CaSnapshot snapshot, String scope) {
 		if (snapshot == null || !snapshot.scopeKey.equals(scope)) {
 			return false;
 		}
-		if (ttlMillis <= 0) {
+		long effectiveTtl = snapshot.degraded ? degradedTtlMillis : ttlMillis;
+		if (snapshot.degraded && effectiveTtl <= 0) {
+			// A degraded (partial) snapshot must never be cached indefinitely.
+			effectiveTtl = DEFAULT_DEGRADED_TTL_MILLIS;
+		}
+		if (effectiveTtl <= 0) {
 			return true;
 		}
-		return (System.currentTimeMillis() - snapshot.loadedAtMillis) < ttlMillis;
+		return (System.currentTimeMillis() - snapshot.loadedAtMillis) < effectiveTtl;
 	}
 
 	/**
@@ -398,19 +528,32 @@ public final class ProviderCACache {
 	}
 
 	private static long resolveTtlFromConfig() {
-		String value = System.getenv(ENV_CA_TTL_MILLIS);
+		return resolveMillisFromConfig(ENV_CA_TTL_MILLIS, CA_TTL_MILLIS, DEFAULT_TTL_MILLIS);
+	}
+
+	private static long resolveMaxStaleFromConfig() {
+		return resolveMillisFromConfig(ENV_CA_MAX_STALE_MILLIS, CA_MAX_STALE_MILLIS, DEFAULT_MAX_STALE_MILLIS);
+	}
+
+	private static long resolveDegradedTtlFromConfig() {
+		return resolveMillisFromConfig(ENV_CA_DEGRADED_TTL_MILLIS, CA_DEGRADED_TTL_MILLIS,
+				DEFAULT_DEGRADED_TTL_MILLIS);
+	}
+
+	private static long resolveMillisFromConfig(String envKey, String sysKey, long defaultValue) {
+		String value = System.getenv(envKey);
 		if (value == null || value.isEmpty()) {
-			value = System.getProperty(CA_TTL_MILLIS);
+			value = System.getProperty(sysKey);
 		}
 		if (value == null || value.isEmpty()) {
-			return DEFAULT_TTL_MILLIS;
+			return defaultValue;
 		}
 		try {
 			return Long.parseLong(value.trim());
 		} catch (NumberFormatException e) {
 			LOGGER.warn("Valor invalido para {} / {} ('{}'); usando default {} ms.",
-					ENV_CA_TTL_MILLIS, CA_TTL_MILLIS, value, DEFAULT_TTL_MILLIS);
-			return DEFAULT_TTL_MILLIS;
+					envKey, sysKey, value, defaultValue);
+			return defaultValue;
 		}
 	}
 }

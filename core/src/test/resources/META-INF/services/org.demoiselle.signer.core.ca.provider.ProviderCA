@@ -1,1 +1,2 @@
 org.demoiselle.signer.core.ca.manager.CountingTestProviderCA
+org.demoiselle.signer.core.ca.manager.SecondaryTestProviderCA

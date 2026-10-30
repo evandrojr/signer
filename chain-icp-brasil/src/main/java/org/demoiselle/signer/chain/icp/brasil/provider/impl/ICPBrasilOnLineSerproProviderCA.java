@@ -220,17 +220,16 @@ public class ICPBrasilOnLineSerproProviderCA implements ProviderCA {
 			LOGGER.warn(chainMessagesBundle.getString("error.exception.recorver.chain") + e.getMessage());
 		}
 
-		if (result != null) {
-			LOGGER.debug(chainMessagesBundle.getString("info.number.certificates.found", getName(), result.size()));
-		} else {
+		if (result == null || result.isEmpty()) {
+			// Online, mas nada foi obtido: sinaliza falha para o cache (R2-1) em vez de
+			// devolver vazio como se fosse um conjunto legitimo. Assim o ProviderCACache
+			// marca o snapshot como degradado (retry curto), em vez de cachear por 1h um
+			// conjunto sem as CAs que este provider deveria fornecer.
 			LOGGER.info(chainMessagesBundle.getString("info.none.certificates", getName()));
-			// Never return null: honor the ProviderCA contract and stay consistent
-			// with ICPBrasilUserHomeProviderCA, which always returns a (possibly empty)
-			// collection. Returning null here caused NullPointerException on callers
-			// (and tests) whenever the online chain could not be downloaded/parsed.
-			result = new HashSet<>();
+			throw new IllegalStateException("Nenhuma CA obtida do repositorio online: " + getName());
 		}
 
+		LOGGER.debug(chainMessagesBundle.getString("info.number.certificates.found", getName(), result.size()));
 		return result;
 	}
 

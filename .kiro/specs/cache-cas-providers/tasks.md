@@ -44,3 +44,11 @@
 - [x] 7.2 `mvn install` dos módulos de chain afetados.
 - [x] 7.3 Apontar `teste-eprocesso-signer` para `4.6.3-SNAPSHOT` e rodar `FluxoEprocessoTest`, confirmando 1 carga por provider (mensagem do NeoSigner uma única vez) no loop de 100 alternando dois assinantes.
 - _Requisitos: 5.3_
+
+## 8. Correções da 2ª rodada de revisão (R2)
+- [x] 8.1 Providers reais sinalizam falha real: `SerproNeoSignerProviderCA` e `ICPBrasilOnLineSerproProviderCA` (online) lançam em falha/parcial/vazio.
+- [x] 8.2 Falha parcial publica snapshot **degradado** com TTL curto (`SIGNER_CAMANAGER_CA_DEGRADED_TTL_MILLIS`, padrão 60s), preservando disponibilidade sem cachear parcial por 1h.
+- [x] 8.3 Falha total mantém o snapshot anterior apenas até `TTL + SIGNER_CAMANAGER_CA_MAX_STALE_MILLIS` (padrão 1h); depois falha fechado.
+- [x] 8.4 Escrita da cadeia atômica em relação a publish/invalidate via `ProviderCACache.runIfEpochUnchanged(...)` (fecha o TOCTOU do epoch).
+- [x] 8.5 Testes: segundo provider de teste, cenário parcial/degradado, janela de stale e guarda de epoch (`ProviderCACacheTest` 12/12; core 58/58).
+- _Requisitos: 1.4, 1.5, 2.2, 2.5, 4.1_

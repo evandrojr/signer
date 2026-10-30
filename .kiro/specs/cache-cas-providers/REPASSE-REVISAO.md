@@ -237,3 +237,54 @@ mvn -pl core,chain-icp-brasil -am test -Dmaven.compiler.release=8 -Dmaven.javado
 # cenário real (requer VPN/Nexus Serpro): apontar teste-eprocesso-signer para 4.6.3-SNAPSHOT
 #   e rodar FluxoEprocessoTest; esperado: NeoSigner 1x.
 ```
+
+## 12. Resultado da 2ª rodada de revisão e correções (2026-10-30)
+
+Revisão feita sobre o HEAD `07a55602` (pós `60e06078`). Três itens novos foram confirmados e corrigidos, com uma mudança de decisão de design para o tratamento de falha parcial.
+
+### 12.1 Achados
+
+- **R2-1 (provider engole falha → B2 inócuo)**: `ICPBrasilOnLineSerproProviderCA` devolvia `HashSet` vazio quando o download/parse online falhava, e `SerproNeoSignerProviderCA` tinha `finally { return result; }`, podendo devolver conjunto parcial sem lançar. Como `ProviderCACache` só detecta falha via exceção, a proteção do B2 nunca disparava nesses casos.
+- **R2-2 (all-or-nothing mantém stale indefinidamente)**: publicar somente quando `!anyProviderFailed` significava que, com um provider cronicamente falho, o snapshot anterior nunca era substituído — quebrando a garantia de "janela máxima = TTL" (o conteúdo podia ficar válido por tempo ilimitado).
+- **R2-3 (TOCTOU no epoch)**: `getEpoch() == caEpoch` seguido de `addCertificate` não era atômico; uma publicação/invalidação concorrente entre o teste e a escrita ainda podia regravar uma cadeia obsoleta.
+
+### 12.2 Decisão de design (revisa o B2)
+
+A política all-or-nothing foi **substituída** por *snapshot degradado*:
+
+- Providers reais agora **lançam** em falha real (não devolvem vazio/parcial silenciosamente).
+- Se a união de CAs for **não vazia**, ela é publicada mesmo com falha de algum provider — disponibilidade preservada — porém marcada como `degraded`, com TTL curto de retry.
+- Se a união for **vazia**, mantém-se o snapshot anterior apenas dentro de `ttl + maxStale`; passada a janela, falha fechado (`CAManagerException`).
+
+Justificativa: os providers são redundantes (`ICPBrasilProviderCA` embarcado já traz a cadeia completa), então derrubar a carga inteira por um provider online fora do ar piorava a disponibilidade sem ganho de segurança. O TTL curto do degradado limita a janela de um conjunto parcial.
+
+### 12.3 Correções aplicadas
+
+- **`ProviderCACache`**
+  - Novas constantes: `CA_DEGRADED_TTL_MILLIS` / `ENV_CA_DEGRADED_TTL_MILLIS` (`SIGNER_CAMANAGER_CA_DEGRADED_TTL_MILLIS`), default `60000`; `CA_MAX_STALE_MILLIS` / `ENV_CA_MAX_STALE_MILLIS` (`SIGNER_CAMANAGER_CA_MAX_STALE_MILLIS`), default `3600000`.
+  - `LoadResult` ganhou `anyFailed`; `CaSnapshot` ganhou `degraded`.
+  - `collectFromProviders()` publica união não vazia (mesmo com falha) e marca `anyFailed`; `null` de provider agora conta como falha.
+  - `isValid()` usa TTL efetivo: `degraded ? degradedTtl : ttl`; degradado nunca fica válido indefinidamente (fallback para o default quando `<= 0`).
+  - Branch de falha total mantém o anterior só até `ttl + maxStale` e então limpa o snapshot e falha fechado.
+  - `runIfEpochUnchanged(expectedEpoch, action)` executa a escrita sob o mesmo monitor de publish/invalidate (fecha R2-3).
+  - `get/setDegradedTtlMillis`, `get/setMaxStaleMillis` e resolução por env/system.
+- **`CAManager`**: gravação da cadeia via `ProviderCACache.runIfEpochUnchanged(caEpoch, ...)`.
+- **`SerproNeoSignerProviderCA`**: `getCAs()` lança `IllegalStateException` em falha/parcial/vazio quando habilitado; `loadCert` retorna `boolean` (sem `finally return`).
+- **`ICPBrasilOnLineSerproProviderCA`**: no caminho online, lança `IllegalStateException` quando o resultado é `null`/vazio. No caminho offline, mantém retorno vazio (ausência explícita do ZIP local não é falha transitória).
+- **Docs**: `README.md` com as duas novas variáveis e as seções "Falha parcial (snapshot degradado)" / "Falha total e janela de stale".
+- **Nota**: a descrição do B2 na seção 10 (all-or-nothing) fica **superseded** por esta seção.
+
+### 12.4 Verificação
+
+- `core`: **58/58** testes (inclui `ProviderCACacheTest` **12/12**).
+- Novos testes: `partialFailure_publishesDegradedAndRetriesQuickly` (R2-1/R2-2 lato), `totalFailure_afterMaxStale_failsClosed` (R2-2) e `epochGuard_rejectsStaleAction` (R2-3).
+- Novo `SecondaryTestProviderCA` registrado no `META-INF/services` de teste, permitindo cenário real de dois providers (fecha a limitação da seção 10).
+- `chain-icp-brasil`: `ICPBrasilOnLineSerproProviderCATest#offline_naoVaiAhRede` **1/1**.
+- `chain-serpro-neosigner` compila; módulo não possui testes próprios.
+- Suíte online completa de `chain-icp-brasil` (10 testes) **não** executada nesta rodada (requer rede/VPN).
+
+### 12.5 Pendências / observações
+
+- `KNOWN_CHAINS` continua hardcoded (coberto e correto hoje, mas exige atualização manual ao adicionar módulos).
+- Ainda não há teste automatizado de mudança de escopo (B1) por env var em runtime.
+- O TTL separado embarcado vs online (seção 11.1) permanece não implementado; o TTL degradado mitiga o caso parcial.

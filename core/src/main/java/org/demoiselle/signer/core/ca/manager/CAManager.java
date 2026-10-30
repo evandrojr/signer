@@ -316,13 +316,13 @@ public class CAManager {
 		}
 
 		if (config.isCached() && !result.isEmpty()) {
-			// I1: so grava a cadeia se o conjunto de CAs nao mudou entre a leitura das
-			// CAs e agora. Se outra thread publicou/invalidou o snapshot (epoch diferente),
-			// a cadeia pode ter sido construida sobre CAs que ja nao valem; descarta a
-			// gravacao para nao reintroduzir cadeia obsoleta no cache apos o clear.
-			if (ProviderCACache.getInstance().getEpoch() == caEpoch) {
-				CAManagerCache.getInstance().addCertificate(certificate, result);
-			} else {
+			// I1/R2-3: so grava a cadeia se o conjunto de CAs nao mudou entre a leitura
+			// das CAs e a gravacao. O check e o add sao atomicos em relacao a
+			// publicacao/invalidacao (mesmo monitor), evitando a janela TOCTOU que
+			// reintroduziria uma cadeia obsoleta apos um refresh concorrente.
+			boolean cached = ProviderCACache.getInstance().runIfEpochUnchanged(caEpoch,
+					() -> CAManagerCache.getInstance().addCertificate(certificate, result));
+			if (!cached) {
 				LOGGER.debug("Conjunto de CAs mudou durante a construcao da cadeia (epoch {} -> {}); "
 						+ "cadeia nao sera cacheada.", caEpoch, ProviderCACache.getInstance().getEpoch());
 			}

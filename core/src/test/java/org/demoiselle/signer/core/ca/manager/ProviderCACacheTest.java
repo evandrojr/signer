@@ -67,8 +67,11 @@ public class ProviderCACacheTest {
 	public void setUp() {
 		CountingTestProviderCA.reset();
 		CountingTestProviderCA.cas = new ArrayList<>(Arrays.asList(rootCa));
+		SecondaryTestProviderCA.reset();
 		CAManagerConfiguration.getInstance().setCached(true);
 		ProviderCACache.getInstance().setTtlMillis(ProviderCACache.DEFAULT_TTL_MILLIS);
+		ProviderCACache.getInstance().setMaxStaleMillis(ProviderCACache.DEFAULT_MAX_STALE_MILLIS);
+		ProviderCACache.getInstance().setDegradedTtlMillis(ProviderCACache.DEFAULT_DEGRADED_TTL_MILLIS);
 		ProviderCACache.getInstance().resetProvidersForTest();
 		ProviderCACache.getInstance().invalidate();
 		CAManagerCache.getInstance().invalidate();
@@ -226,6 +229,59 @@ public class ProviderCACacheTest {
 		CAManager.getInstance().getCertificateChain(leafB);
 		assertTrue("epoch deve avancar apos invalidate + recarga",
 				ProviderCACache.getInstance().getEpoch() != epochBefore);
+	}
+
+	@Test
+	public void partialFailure_publishesDegradedAndRetriesQuickly() throws Exception {
+		// Um provider entrega a CA, o outro falha: o conjunto nao-vazio e publicado
+		// em modo degradado (disponibilidade) com TTL curto, e nao por 1h (R2-1).
+		SecondaryTestProviderCA.throwOnLoad = true;
+		ProviderCACache.getInstance().setDegradedTtlMillis(1L);
+
+		Collection<X509Certificate> chainA = CAManager.getInstance().getCertificateChain(leafA);
+		assertTrue(chainA.contains(rootCa));
+		assertEquals(1, CountingTestProviderCA.CALL_COUNT.get());
+
+		// TTL degradado expira rapido; a proxima consulta tenta recarregar.
+		Thread.sleep(5);
+		CAManager.getInstance().getCertificateChain(leafB);
+		assertEquals("snapshot degradado deve ser re-tentado apos o TTL curto", 2,
+				CountingTestProviderCA.CALL_COUNT.get());
+	}
+
+	@Test
+	public void totalFailure_afterMaxStale_failsClosed() throws Exception {
+		CAManager.getInstance().getCertificateChain(leafA);
+		assertEquals(1, CountingTestProviderCA.CALL_COUNT.get());
+
+		// TTL expira, recarga falha e o snapshot anterior ultrapassa a janela de stale:
+		// nao serve mais o conjunto antigo (R2-2).
+		ProviderCACache.getInstance().setTtlMillis(1L);
+		ProviderCACache.getInstance().setMaxStaleMillis(0L);
+		Thread.sleep(5);
+		CountingTestProviderCA.throwOnLoad = true;
+
+		try {
+			CAManager.getInstance().getCertificateChain(leafB);
+			fail("esperava CAManagerException apos exceder a janela de stale");
+		} catch (CAManagerException expected) {
+			// ok
+		}
+	}
+
+	@Test
+	public void epochGuard_rejectsStaleAction() {
+		long staleEpoch = ProviderCACache.getInstance().getCASet().getEpoch();
+		ProviderCACache.getInstance().invalidate();
+
+		boolean ran = ProviderCACache.getInstance().runIfEpochUnchanged(staleEpoch,
+				() -> fail("acao nao deveria rodar com epoch obsoleto"));
+		assertFalse("epoch mudou, acao deve ser rejeitada", ran);
+
+		long currentEpoch = ProviderCACache.getInstance().getEpoch();
+		boolean ranCurrent = ProviderCACache.getInstance().runIfEpochUnchanged(currentEpoch, () -> {
+		});
+		assertTrue("epoch atual, acao deve rodar", ranCurrent);
 	}
 
 	// ---- helpers ----

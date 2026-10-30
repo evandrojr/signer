@@ -74,7 +74,6 @@ public class SerproNeoSignerProviderCA implements ProviderCA {
         protected static MessagesBundle chainMessagesBundle = new MessagesBundle();
         private static final Logger logger = LoggerFactory.getLogger(SerproNeoSignerProviderCA.class);
 
-        @SuppressWarnings("finally")
         public Collection<X509Certificate> getCAs() {
                 if (DisablingUtil.isChainDisabled("serpro-neosigner")) {
                         logger.info("Provider 'serpro-neosigner' is disabled. Skipping CA loading.");
@@ -91,35 +90,54 @@ public class SerproNeoSignerProviderCA implements ProviderCA {
                         boolean loadProduction = DisablingUtil.isChainEnabled("serpro-neosigner-prod");
                         boolean loadHomologation = DisablingUtil.isChainEnabled("serpro-neosigner-homolog");
 
+                        // Nenhuma sub-cadeia habilitada: vazio e um resultado legitimo.
+                        if (!loadProduction && !loadHomologation) {
+                                return result;
+                        }
+
+                        boolean failed = false;
                         if (loadProduction) {
                                 logger.info("Carregando cadeias de producao do SERPRO (NeoSigner).");
-                                loadCert(result, factory, "trustedca/AutoridadeCertificadoraAssinadorSERPRORaiz.crt");
-                                loadCert(result, factory, "trustedca/AutoridadeCertificadoraAssinadorSERPROFinal.crt");
+                                failed |= !loadCert(result, factory, "trustedca/AutoridadeCertificadoraAssinadorSERPRORaiz.crt");
+                                failed |= !loadCert(result, factory, "trustedca/AutoridadeCertificadoraAssinadorSERPROFinal.crt");
                         }
 
                         if (loadHomologation) {
                                 logger.info("Carregando cadeias de homologacao do SERPRO (NeoSigner).");
-                                loadCert(result, factory, "trustedca/AutoridadeCertificadoraRaizdoSERPRO.crt");
-                                loadCert(result, factory, "trustedca/AutoridadeCertificadoraFinaldoSERPRO.crt");
-                                loadCert(result, factory, "trustedca/AutoridadeCertificadoraRaizdoSERPROSoftware.crt");
-                                loadCert(result, factory, "trustedca/AutoridadeCertificadoraFinaldoSERPROSoftware.crt");
-                                loadCert(result, factory, "trustedca/NeoSignerSERPRO.crt");
+                                failed |= !loadCert(result, factory, "trustedca/AutoridadeCertificadoraRaizdoSERPRO.crt");
+                                failed |= !loadCert(result, factory, "trustedca/AutoridadeCertificadoraFinaldoSERPRO.crt");
+                                failed |= !loadCert(result, factory, "trustedca/AutoridadeCertificadoraRaizdoSERPROSoftware.crt");
+                                failed |= !loadCert(result, factory, "trustedca/AutoridadeCertificadoraFinaldoSERPROSoftware.crt");
+                                failed |= !loadCert(result, factory, "trustedca/NeoSignerSERPRO.crt");
                         }
+
+                        // Sinaliza falha (total ou parcial) para que o cache nao publique
+                        // um conjunto incompleto como valido (ver R2-1 no repasse).
+                        if (failed || result.isEmpty()) {
+                                throw new IllegalStateException("Falha ao carregar CAs do NeoSigner"
+                                        + (failed ? " (carga parcial)" : " (nenhuma CA carregada)"));
+                        }
+                        return result;
+                } catch (IllegalStateException error) {
+                        logger.error(error.getMessage());
+                        throw error;
                 } catch (Throwable error) {
                         logger.error("Erro ao carregar CAs do NeoSigner: " + error.getMessage());
-                } finally {
-                        return result;
+                        throw new IllegalStateException("Erro ao carregar CAs do NeoSigner: " + error.getMessage(), error);
                 }
         }
 
-        private void loadCert(List<X509Certificate> result, CertificateFactory factory, String path) {
-                try {
-                        InputStream is = SerproNeoSignerProviderCA.class.getClassLoader().getResourceAsStream(path);
-                        if (is != null) {
-                                result.add((X509Certificate) factory.generateCertificate(is));
+        private boolean loadCert(List<X509Certificate> result, CertificateFactory factory, String path) {
+                try (InputStream is = SerproNeoSignerProviderCA.class.getClassLoader().getResourceAsStream(path)) {
+                        if (is == null) {
+                                logger.error("Recurso de certificado nao encontrado: " + path);
+                                return false;
                         }
+                        result.add((X509Certificate) factory.generateCertificate(is));
+                        return true;
                 } catch (Exception e) {
                         logger.error("Erro ao carregar certificado " + path + ": " + e.getMessage());
+                        return false;
                 }
         }
 
