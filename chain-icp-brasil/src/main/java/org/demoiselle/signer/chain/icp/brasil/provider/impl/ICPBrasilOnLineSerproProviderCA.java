@@ -154,6 +154,8 @@ public class ICPBrasilOnLineSerproProviderCA implements ProviderCA {
 			if (Files.exists(pathZip)) {
 
 				// Baixa o hash do endereço online
+				LOGGER.debug("Consulta de hash remoto (ZIP local existe): {}", getURLHash());
+				long hashBefore = System.currentTimeMillis();
 				int caChainTimeOut = ConfigurationRepo.getInstance().getCaChainTimeOut();
 				InputStream inputStreamHash = Downloads.getInputStreamFromURL(getURLHash(), caChainTimeOut, caChainTimeOut);
 
@@ -162,6 +164,7 @@ public class ICPBrasilOnLineSerproProviderCA implements ProviderCA {
 				scannerOnlineHash.useDelimiter("\\A");
 				String onlineHash = scannerOnlineHash.hasNext() ? scannerOnlineHash.next() : "";
 				scannerOnlineHash.close();
+				LOGGER.debug("Consulta de hash remoto concluida em {} ms", System.currentTimeMillis() - hashBefore);
 
 				if (!onlineHash.equals("")) {
 
@@ -174,10 +177,17 @@ public class ICPBrasilOnLineSerproProviderCA implements ProviderCA {
 						.replaceAll(" ", "").replaceAll("\n", "");
 
 					useCache = onlineHashWithouFilename.equalsIgnoreCase(localZipHash);
+					if (useCache) {
+						LOGGER.debug("Hash remoto confere com o ZIP local; download dispensado (cache valido).");
+					} else {
+						LOGGER.debug("Hash remoto difere do ZIP local; sera feito novo download.");
+					}
 
 				} else {
 					LOGGER.warn(chainMessagesBundle.getString("error.hash.empty"));
 				}
+			} else {
+				LOGGER.debug("ZIP local inexistente ({}); sera feito download inicial.", pathZip);
 			}
 
 			// Se não é para pegar do cache os certificados ele baixa o novo e
@@ -185,12 +195,15 @@ public class ICPBrasilOnLineSerproProviderCA implements ProviderCA {
 			if (!useCache) {
 				// Baixa um novo arquivo
 			LOGGER.debug(chainMessagesBundle.getString("info.file.downloading", getURLZIP()));
+				long zipBefore = System.currentTimeMillis();
 				int caChainTimeOut = ConfigurationRepo.getInstance().getCaChainTimeOut();
 				InputStream inputStreamZip = Downloads.getInputStreamFromURL(getURLZIP(), caChainTimeOut, caChainTimeOut);
 
 				// FIXME fails if directory does not exist
-				Files.copy(inputStreamZip, pathZip, StandardCopyOption.REPLACE_EXISTING);
+				long downloadedBytes = Files.copy(inputStreamZip, pathZip, StandardCopyOption.REPLACE_EXISTING);
 				inputStreamZip.close();
+				LOGGER.debug("Download do ZIP concluido: {} bytes em {} ms",
+						downloadedBytes, System.currentTimeMillis() - zipBefore);
 				LOGGER.debug(chainMessagesBundle.getString("info.sucess"));
 			}
 

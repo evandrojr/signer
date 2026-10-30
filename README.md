@@ -77,7 +77,9 @@ As principais configurações são feitas via variável de ambiente ou system pr
 |---|---|---|---|
 | `SIGNER_CA_CHAIN_CONNECTION_TIMEOUT` | `signer.ca.chain.connection.timeout` | `30000` | Timeout (ms) para download de cadeias CA |
 | `SIGNER_CRL_CONNECTION_TIMEOUT` | `signer.crl.connection.timeout` | `5000` | Timeout (ms) para download de CRLs |
-| `SIGNER_REPOSITORY_ONLINE` | `signer.repository.online` | `true` | Habilita/desabilita consulta online de CRLs |
+| `SIGNER_REPOSITORY_ONLINE` | `signer.repository.online` | `true` | Habilita/desabilita consulta online de CRLs e das cadeias CA online (hash remoto / download do ZIP) |
+| `SIGNER_CAMANAGER_CACHED` | `signer.camanager.cached` | `true` | Habilita o cache do `CAManager` (cadeia por certificado e conjunto de CAs) |
+| `SIGNER_CAMANAGER_CA_TTL_MILLIS` | `signer.camanager.ca.ttl.millis` | `3600000` | Validade (ms) do cache do conjunto de CAs dos providers. `0` ou negativo desliga a expiração por tempo |
 | `SIGNER_PROXY_HOST` | `signer.proxy.host` | — | Host do proxy |
 | `SIGNER_PROXY_PORT` | `signer.proxy.port` | — | Porta do proxy |
 
@@ -141,6 +143,37 @@ export SIGNER_ENABLE_CHAIN_ICP_BRASIL=false
 > **Nota**: variáveis de ambiente são lidas no momento do carregamento das cadeias e não podem ser alteradas em tempo de execução pelo código Java — defina-as antes de iniciar a JVM.
 
 > ⚠️ **Atenção**: as cadeias de homologação são opt-in justamente por conterem ACs de teste que podem validar certificados falsos. Só as habilite em ambientes de teste/homologação, nunca em produção.
+
+### Cache de cadeias e de CAs
+
+O `CAManager` mantém **dois níveis de cache independentes**, ambos ativos quando `SIGNER_CAMANAGER_CACHED=true` (padrão):
+
+1. **Cache de cadeia por certificado** (`CAManagerCache`): guarda a cadeia já construída para cada certificado final (chave: Subject DN + número de série) e o resultado das verificações de assinatura entre certificados. Evita reconstruir a cadeia do mesmo signatário repetidamente.
+2. **Cache do conjunto de CAs dos providers** (`ProviderCACache`): guarda a união das CAs retornadas por `getCAs()` de **todos os providers habilitados** em um único *snapshot*. Assim, validar um certificado **novo** cuja cadeia já seja atendida pelas CAs disponíveis **não** dispara nova leitura/consulta a todos os providers (sem ler ZIP do disco nem consultar hash/baixar os repositórios online a cada novo signatário).
+
+**Por que dois níveis**: antes existia apenas o cache de cadeia. Cada certificado inédito recarregava `getCAs()` de todos os providers (I/O de disco e de rede). Em um ambiente com muitos signatários distintos, isso provocava recargas recorrentes dos repositórios de CAs. Com o cache de CAs, a carga ocorre uma vez por *snapshot* e é reaproveitada por todos os signatários.
+
+**Validade (TTL)**: o *snapshot* de CAs expira pelo TTL configurável em `SIGNER_CAMANAGER_CA_TTL_MILLIS` / `signer.camanager.ca.ttl.millis` (padrão **1 hora**). Ao expirar, a próxima consulta recarrega e republica o conjunto. `0` ou negativo desliga a expiração por tempo (atualização só por mudança de escopo ou invalidação explícita).
+
+> **Janela de confiança**: enquanto o *snapshot* é válido, uma CA que tenha sido removida/deixado de ser confiável ainda pode ser usada até o TTL expirar (ou até invalidação explícita). O padrão de 1 hora limita essa janela. Isso **não** afeta a validação de revogação (CRL/OCSP), que continua independente.
+
+**Escopo**: o *snapshot* é vinculado ao ambiente (`SIGNER_ENV`) e ao conjunto de providers habilitados. Mudar o perfil ou habilitar/desabilitar uma cadeia força a recarga, evitando misturar CAs de produção e de homologação.
+
+**Concorrência**: a leitura do *snapshot* é lock-free; apenas a (re)carga é serializada (uma carga por vez, sem downloads duplicados). As operações de rede/ZIP ocorrem fora do bloqueio compartilhado pelas consultas de cadeia.
+
+**Invalidação explícita** (por exemplo, após atualizar manualmente os repositórios de CAs):
+
+```java
+// invalida o conjunto de CAs (força recarga na próxima consulta)
+org.demoiselle.signer.core.ca.manager.ProviderCACache.getInstance().invalidate();
+
+// invalida o cache de cadeia por certificado
+org.demoiselle.signer.core.ca.manager.CAManagerCache.getInstance().invalidate();
+```
+
+> A invalidação do conjunto de CAs também limpa o cache de cadeia por certificado automaticamente a cada (re)publicação, para não reaproveitar cadeias construídas sobre CAs que deixaram de existir.
+
+**Modo offline**: com `SIGNER_REPOSITORY_ONLINE=false` (`ConfigurationRepo.setOnline(false)`), os providers online (`ICPBrasilOnLineSerproProviderCA`, `ICPBrasilOnLineITIProviderCA`) não consultam o hash remoto nem baixam o ZIP — usam apenas o artefato local já presente no *user home*.
 
 ---
 
