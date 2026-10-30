@@ -39,18 +39,18 @@ package org.demoiselle.signer.core.ca.manager;
 
 import java.security.cert.X509Certificate;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class CAManagerCache {
 	private static CAManagerCache instance;
-	private Map<String, Collection<X509Certificate>> cachedCertificates = new HashMap<>();
-	private Map<String, Boolean> isCAofCertificate = new HashMap<>();
+	private Map<String, Collection<X509Certificate>> cachedCertificates = new ConcurrentHashMap<>();
+	private Map<String, Boolean> isCAofCertificate = new ConcurrentHashMap<>();
 
 	private CAManagerCache() {
 	}
 
-	public static CAManagerCache getInstance() {
+	public static synchronized CAManagerCache getInstance() {
 		if (instance == null) {
 			instance = new CAManagerCache();
 		}
@@ -61,7 +61,7 @@ public class CAManagerCache {
 		return cachedCertificates.get(getCertificateIdentificator(certificate));
 	}
 
-	synchronized void addCertificate(X509Certificate certificate, Collection<X509Certificate> certificates) {
+	void addCertificate(X509Certificate certificate, Collection<X509Certificate> certificates) {
 		cachedCertificates.put(getCertificateIdentificator(certificate), certificates);
 	}
 
@@ -70,12 +70,12 @@ public class CAManagerCache {
 		return isCAofCertificate.containsKey(key) ? isCAofCertificate.get(key) : null;
 	}
 
-	synchronized void setIsCAofCertificate(X509Certificate ca, X509Certificate certificate, boolean value) {
+	void setIsCAofCertificate(X509Certificate ca, X509Certificate certificate, boolean value) {
 		String key = getCertificateIdentificator(ca) + "|" + getCertificateIdentificator(certificate);
 		isCAofCertificate.put(key, value);
 	}
 
-	public synchronized void invalidate() {
+	public void invalidate() {
 		cachedCertificates.clear();
 		isCAofCertificate.clear();
 	}

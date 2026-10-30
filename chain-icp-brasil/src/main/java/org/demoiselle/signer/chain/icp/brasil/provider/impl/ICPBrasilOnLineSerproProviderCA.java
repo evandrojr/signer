@@ -125,6 +125,26 @@ public class ICPBrasilOnLineSerproProviderCA implements ProviderCA {
 		Collection<X509Certificate> result = null;
 		boolean useCache = false;
 
+		// Respeita o modo offline: quando ConfigurationRepo.isOnline() == false,
+		// nao consulta hash remoto nem baixa o ZIP; usa apenas o artefato local.
+		if (!ConfigurationRepo.getInstance().isOnline()) {
+			LOGGER.debug("Modo offline (isOnline=false): usando ZIP local sem consulta remota.");
+			Path pathZipOffline = ICPBrasilUserHomeProviderCA.FULL_PATH_ZIP;
+			if (Files.exists(pathZipOffline)) {
+				try (InputStream in = new FileInputStream(pathZipOffline.toString())) {
+					result = getFromZip(in);
+				} catch (IOException e) {
+					LOGGER.warn(chainMessagesBundle.getString("error.recover.file") + e.getMessage());
+				}
+			} else {
+				LOGGER.warn(chainMessagesBundle.getString("error.filenotfound.userhome", pathZipOffline.toString()));
+			}
+			if (result == null) {
+				result = new HashSet<>();
+			}
+			return result;
+		}
+
 		try {
 
 			// Faz o hash do checksum do arquivo, e não usa o arquivo local de propósito,

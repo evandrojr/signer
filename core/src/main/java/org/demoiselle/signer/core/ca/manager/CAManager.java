@@ -37,7 +37,6 @@
 
 package org.demoiselle.signer.core.ca.manager;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import java.security.InvalidKeyException;
@@ -54,8 +53,6 @@ import java.util.Collection;
 import java.util.LinkedList;
 import javax.security.auth.x500.X500Principal;
 
-import org.demoiselle.signer.core.ca.provider.ProviderCA;
-import org.demoiselle.signer.core.ca.provider.ProviderCAFactory;
 import org.demoiselle.signer.core.util.DisablingUtil;
 import org.demoiselle.signer.core.util.MessagesBundle;
 import org.slf4j.Logger;
@@ -221,7 +218,7 @@ public class CAManager {
 	 * @param certificate final certificate in the desired chain
 	 * @return list of certificates
 	 */
-	public synchronized Collection<X509Certificate> getCertificateChain(X509Certificate certificate) {
+	public Collection<X509Certificate> getCertificateChain(X509Certificate certificate) {
 		CAManagerConfiguration config = CAManagerConfiguration.getInstance();
 		
 		// Tentando obter cadeia de certificados do cache
@@ -230,8 +227,10 @@ public class CAManager {
 			CAManagerCache managerCache = CAManagerCache.getInstance();
 			Collection<X509Certificate> certificates = managerCache.getCachedCertificatesFor(certificate);
 			if (certificates != null) {
+				LOGGER.debug("Cache de cadeia: HIT para {}", certificate.getSubjectX500Principal());
 				return certificates;
 			}
+			LOGGER.debug("Cache de cadeia: MISS para {}", certificate.getSubjectX500Principal());
 		}
 
 		LinkedList<X509Certificate> result = new LinkedList<>();
@@ -240,17 +239,13 @@ public class CAManager {
 			return result;
 		}
 
-		// Coleta TODAS as CAs de TODOS os providers primeiro
-		// Isso resolve o problema de cadeias espalhadas entre providers (ex: Intermediária no Provedor A e Raiz no B)
-		List<X509Certificate> allCAs = new ArrayList<>();
-		Collection<ProviderCA> providers = ProviderCAFactory.getInstance().factory();
-		for (ProviderCA provider : providers) {
-			try {
-				allCAs.addAll(provider.getCAs());
-			} catch (Exception e) {
-				LOGGER.warn(coreMessagesBundle.getString("error.no.ca", provider.getName()));
-			}
-		}
+		// Coleta TODAS as CAs de TODOS os providers.
+		// O conjunto consolidado e cacheado por ProviderCACache (snapshot com TTL),
+		// de modo que validar um novo certificado cuja cadeia ja seja atendida pelas
+		// CAs disponiveis NAO dispara nova leitura/consulta a todos os providers.
+		// Isso resolve o problema de cadeias espalhadas entre providers (ex: Intermediaria
+		// no Provedor A e Raiz no B) sem recarregar os repositorios a cada certificado.
+		List<X509Certificate> allCAs = ProviderCACache.getInstance().getCAs();
 
 		boolean ok = false;
 		X509Certificate current = certificate;
