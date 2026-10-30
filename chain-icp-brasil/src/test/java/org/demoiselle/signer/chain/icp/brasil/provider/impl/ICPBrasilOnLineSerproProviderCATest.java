@@ -37,12 +37,14 @@
 
 package org.demoiselle.signer.chain.icp.brasil.provider.impl;
 
+import org.demoiselle.signer.core.repository.ConfigurationRepo;
 import org.junit.Test;
 
 import java.security.cert.X509Certificate;
 import java.util.Collection;
 
 import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.assertNotNull;
 
 public class ICPBrasilOnLineSerproProviderCATest {
 
@@ -58,5 +60,30 @@ public class ICPBrasilOnLineSerproProviderCATest {
 	public void obtemCertificados() {
 		Collection<X509Certificate> cas = provider.getCAs();
 		assertTrue(cas.size() > 100);
+	}
+
+	/**
+	 * Req 2.5 / B? — Em modo offline (isOnline=false) o provider NAO deve consultar
+	 * hash remoto nem baixar o ZIP: usa apenas o artefato local. O teste confirma que
+	 * a chamada retorna uma colecao nao-nula sem lancar e sem incorrer na latencia de
+	 * rede (bem abaixo do timeout de download de cadeia).
+	 */
+	@Test
+	public void offline_naoVaiAhRede() {
+		ConfigurationRepo repo = ConfigurationRepo.getInstance();
+		boolean onlineAnterior = repo.isOnline();
+		repo.setOnline(false);
+		try {
+			long before = System.currentTimeMillis();
+			Collection<X509Certificate> cas = provider.getCAs();
+			long elapsed = System.currentTimeMillis() - before;
+
+			assertNotNull("getCAs() nunca retorna null", cas);
+			// Sem rede: deve completar muito antes do timeout de download de cadeia.
+			assertTrue("modo offline nao deve pagar latencia de rede (levou " + elapsed + " ms)",
+					elapsed < repo.getCaChainTimeOut());
+		} finally {
+			repo.setOnline(onlineAnterior);
+		}
 	}
 }

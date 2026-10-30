@@ -1,5 +1,26 @@
 # Cache de CAs dos Providers - Design
 
+> **Nota de alinhamento (pós-revisão 2026-10-30).** Os trechos de código abaixo são
+> ilustrativos. A implementação final diverge do pseudocódigo nestes pontos (ver
+> `REPASSE-REVISAO.md` §9):
+> - **Java 8**: usa `Collections.unmodifiableList(new ArrayList<>(...))` em vez de
+>   `List.copyOf`; `CaSnapshot` é classe estática imutável, não `record`.
+> - **Escopo (B1)**: `currentScopeKey()` usa `DisablingUtil.getEnvironment()` **e** o
+>   estado `isChainDisabled(<cadeia>)` de cada cadeia conhecida (não existe
+>   `isProviderDisabled`/`currentEnvLabel`). Assim overrides `SIGNER_ENABLE_CHAIN_*`
+>   mudam o escopo e forçam recarga.
+> - **Falha parcial (B2)**: `usable = !allCAs.isEmpty() && !anyProviderFailed` — se
+>   qualquer provider falha, o snapshot **não** é publicado (mantém o anterior).
+> - **`isCached()==false` (B3)**: o `ProviderCACache` só é usado quando o cache está
+>   habilitado; sem cache, `CAManager` coleta os providers diretamente a cada chamada.
+> - **Invalidação do cache de cadeia**: ocorre em **toda** (re)publicação do snapshot
+>   (primeira carga, mudança de escopo ou refresh por TTL), não só em `scopeChanged`.
+> - **Epoch (I1)**: `getCASet()` devolve as CAs + um `epoch`; `CAManager` só grava a
+>   cadeia se o epoch não mudou entre a leitura das CAs e a gravação, evitando
+>   reintroduzir cadeia obsoleta após um refresh concorrente.
+> - **Providers resolvidos uma vez (I2)**: `ServiceLoader` é chamado uma única vez e o
+>   resultado é memoizado (`getProviders()`), não a cada `getCAs()`.
+
 ## Overview
 
 Hoje `CAManager.getCertificateChain()` só reaproveita trabalho via cache por certificado (`CAManagerCache`). Em todo *miss* de cadeia, o método coleta o conjunto de CAs chamando `getCAs()` de todos os providers:

@@ -37,6 +37,7 @@
 
 package org.demoiselle.signer.core.ca.manager;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import java.security.InvalidKeyException;
@@ -53,6 +54,8 @@ import java.util.Collection;
 import java.util.LinkedList;
 import javax.security.auth.x500.X500Principal;
 
+import org.demoiselle.signer.core.ca.provider.ProviderCA;
+import org.demoiselle.signer.core.ca.provider.ProviderCAFactory;
 import org.demoiselle.signer.core.util.DisablingUtil;
 import org.demoiselle.signer.core.util.MessagesBundle;
 import org.slf4j.Logger;
@@ -240,12 +243,23 @@ public class CAManager {
 		}
 
 		// Coleta TODAS as CAs de TODOS os providers.
-		// O conjunto consolidado e cacheado por ProviderCACache (snapshot com TTL),
-		// de modo que validar um novo certificado cuja cadeia ja seja atendida pelas
-		// CAs disponiveis NAO dispara nova leitura/consulta a todos os providers.
+		// Quando o cache esta habilitado, o conjunto consolidado e servido por
+		// ProviderCACache (snapshot com TTL), de modo que validar um novo certificado
+		// cuja cadeia ja seja atendida pelas CAs disponiveis NAO dispara nova
+		// leitura/consulta a todos os providers. Quando o cache esta desabilitado
+		// (isCached()==false), os providers sao consultados diretamente a cada chamada,
+		// preservando a semantica historica de "sem cache algum" (B3).
 		// Isso resolve o problema de cadeias espalhadas entre providers (ex: Intermediaria
 		// no Provedor A e Raiz no B) sem recarregar os repositorios a cada certificado.
-		List<X509Certificate> allCAs = ProviderCACache.getInstance().getCAs();
+		List<X509Certificate> allCAs;
+		long caEpoch = -1L;
+		if (config.isCached()) {
+			ProviderCACache.CaSet caSet = ProviderCACache.getInstance().getCASet();
+			allCAs = caSet.getCAs();
+			caEpoch = caSet.getEpoch();
+		} else {
+			allCAs = collectCAsDirectly();
+		}
 
 		boolean ok = false;
 		X509Certificate current = certificate;
@@ -302,10 +316,41 @@ public class CAManager {
 		}
 
 		if (config.isCached() && !result.isEmpty()) {
-			CAManagerCache.getInstance().addCertificate(certificate, result);
+			// I1: so grava a cadeia se o conjunto de CAs nao mudou entre a leitura das
+			// CAs e agora. Se outra thread publicou/invalidou o snapshot (epoch diferente),
+			// a cadeia pode ter sido construida sobre CAs que ja nao valem; descarta a
+			// gravacao para nao reintroduzir cadeia obsoleta no cache apos o clear.
+			if (ProviderCACache.getInstance().getEpoch() == caEpoch) {
+				CAManagerCache.getInstance().addCertificate(certificate, result);
+			} else {
+				LOGGER.debug("Conjunto de CAs mudou durante a construcao da cadeia (epoch {} -> {}); "
+						+ "cadeia nao sera cacheada.", caEpoch, ProviderCACache.getInstance().getEpoch());
+			}
 		}
 
 		return result;
+	}
+
+	/**
+	 * Coleta direta das CAs de todos os providers, sem cache. Usado quando
+	 * {@link CAManagerConfiguration#isCached()} e {@code false}, preservando a
+	 * semantica historica de recarregar os providers a cada chamada.
+	 *
+	 * @return lista consolidada das CAs dos providers
+	 */
+	private List<X509Certificate> collectCAsDirectly() {
+		List<X509Certificate> allCAs = new ArrayList<>();
+		for (ProviderCA provider : ProviderCAFactory.getInstance().factory()) {
+			try {
+				Collection<X509Certificate> cas = provider.getCAs();
+				if (cas != null) {
+					allCAs.addAll(cas);
+				}
+			} catch (Exception e) {
+				LOGGER.warn(coreMessagesBundle.getString("error.no.ca", provider.getName()));
+			}
+		}
+		return allCAs;
 	}
 
 	@SuppressWarnings("unused")

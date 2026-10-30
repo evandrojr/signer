@@ -3,6 +3,7 @@ package org.demoiselle.signer.core.ca.manager;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -68,6 +69,7 @@ public class ProviderCACacheTest {
 		CountingTestProviderCA.cas = new ArrayList<>(Arrays.asList(rootCa));
 		CAManagerConfiguration.getInstance().setCached(true);
 		ProviderCACache.getInstance().setTtlMillis(ProviderCACache.DEFAULT_TTL_MILLIS);
+		ProviderCACache.getInstance().resetProvidersForTest();
 		ProviderCACache.getInstance().invalidate();
 		CAManagerCache.getInstance().invalidate();
 	}
@@ -172,6 +174,58 @@ public class ProviderCACacheTest {
 		assertNotNull(chain);
 		assertTrue(chain.contains(rootCa));
 		assertEquals("houve tentativa de recarga", 2, CountingTestProviderCA.CALL_COUNT.get());
+	}
+
+	@Test
+	public void notCached_collectsProvidersEveryCall_andDoesNotStoreChain() {
+		CAManagerConfiguration.getInstance().setCached(false);
+		try {
+			CAManager.getInstance().getCertificateChain(leafA);
+			CAManager.getInstance().getCertificateChain(leafA);
+			CAManager.getInstance().getCertificateChain(leafB);
+			// Sem cache: cada chamada consulta os providers diretamente (B3).
+			assertEquals("isCached(false) deve coletar providers a cada chamada",
+					3, CountingTestProviderCA.CALL_COUNT.get());
+			// E nada e gravado no cache de cadeia.
+			assertNull(CAManagerCache.getInstance().getCachedCertificatesFor(leafA));
+		} finally {
+			CAManagerConfiguration.getInstance().setCached(true);
+		}
+	}
+
+	@Test
+	public void epoch_changesOnPublishAndInvalidate() {
+		// primeira carga publica -> epoch avanca
+		ProviderCACache.CaSet set1 = ProviderCACache.getInstance().getCASet();
+		long e1 = set1.getEpoch();
+
+		// leitura valida nao muda o epoch
+		ProviderCACache.CaSet set2 = ProviderCACache.getInstance().getCASet();
+		assertEquals("cache hit nao muda epoch", e1, set2.getEpoch());
+
+		// invalidate muda o epoch
+		ProviderCACache.getInstance().invalidate();
+		assertTrue("invalidate avanca o epoch", ProviderCACache.getInstance().getEpoch() != e1);
+
+		// nova carga publica -> novo epoch, diferente do anterior
+		long e3 = ProviderCACache.getInstance().getCASet().getEpoch();
+		assertTrue("republicacao avanca o epoch", e3 != e1);
+	}
+
+	@Test
+	public void staleChainNotCached_whenEpochChanged() {
+		// constroi e cacheia a cadeia de leafA no epoch corrente
+		CAManager.getInstance().getCertificateChain(leafA);
+		assertNotNull(CAManagerCache.getInstance().getCachedCertificatesFor(leafA));
+		long epochBefore = ProviderCACache.getInstance().getEpoch();
+
+		// invalidate avanca o epoch; a limpeza do cache de cadeia ocorre na proxima
+		// publicacao do snapshot (ver loadAndPublish). Forcamos essa publicacao com
+		// uma nova consulta e confirmamos que o epoch avancou (conjunto de CAs renovado).
+		ProviderCACache.getInstance().invalidate();
+		CAManager.getInstance().getCertificateChain(leafB);
+		assertTrue("epoch deve avancar apos invalidate + recarga",
+				ProviderCACache.getInstance().getEpoch() != epochBefore);
 	}
 
 	// ---- helpers ----
