@@ -1,0 +1,27 @@
+# Pipeline do Demoiselle Signer (fase 1: somente Dependency-Track)
+# Demais jobs (build, testes, sonar) serão adicionados depois.
+
+include:
+  - remote: 'https://git.serpro/devops/automacao/gitlab-ci/raw/master/.dependency-track-rules.yml'
+
+stages:
+  - compile
+
+variables:
+  GIT_STRATEGY: clone
+  GIT_SSL_NO_VERIFY: 'true'
+
+# Gera o BOM do reactor (pom.xml raiz agrega todos os módulos) e envia ao Dependency-Track
+dependency-track:
+  extends: .dependency-track-maven-plugin-3-jdk-8
+  stage: compile
+  variables:
+    DT_MAVEN_PLUGIN_PROJECT_PATH: pom.xml
+  artifacts:
+    paths:
+      - target/bom.xml
+    when: always
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule" && $SCHEDULE_TYPE == "dependency-track"
+      when: always
+    - when: on_success
