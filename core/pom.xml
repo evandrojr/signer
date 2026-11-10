@@ -8,7 +8,7 @@
     <parent>
         <groupId>org.demoiselle.signer</groupId>
         <artifactId>parent</artifactId>
-        <version>4.6.3-SNAPSHOT</version>
+        <version>4.6.4-SNAPSHOT</version>
         <relativePath>../parent/pom.xml</relativePath>
     </parent>
 
@@ -41,7 +41,7 @@
         <connection>scm:git:git@github.com:demoiselle/signer.git</connection>
         <developerConnection>scm:git:git@github.com:demoiselle/signer.git</developerConnection>
         <url>https://github.com/demoiselle/signer</url>
-        <tag>4.6.3</tag>
+        <tag>4.6.4</tag>
     </scm>
 
     <dependencies>

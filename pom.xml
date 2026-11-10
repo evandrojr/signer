@@ -7,7 +7,7 @@
 	<groupId>org.demoiselle.signer</groupId>
 	<artifactId>build</artifactId>
 	<packaging>pom</packaging>
-	<version>4.6.3-SNAPSHOT</version>
+	<version>4.6.4-SNAPSHOT</version>
 
 	<name>Demoiselle Signer Build</name>
 	<description>Demoiselle Framework's component for specifications of
@@ -343,7 +343,7 @@
 			scm:git:git@github.com:demoiselle/${project.alias}.git</developerConnection>
 		<url>https://github.com/demoiselle/${project.alias}</url>
 
-		<tag>4.6.3</tag>
+		<tag>4.6.4</tag>
 	</scm>
 
 

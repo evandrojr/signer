@@ -102,6 +102,7 @@ import org.demoiselle.signer.policy.impl.cades.SignerAlgorithmEnum;
 import org.demoiselle.signer.policy.impl.cades.SignerException;
 import org.demoiselle.signer.policy.impl.cades.ValidationMessageCode;
 import org.demoiselle.signer.policy.impl.cades.pkcs7.PKCS7Checker;
+import org.demoiselle.signer.policy.impl.cades.util.PKCS7Utils;
 import org.demoiselle.signer.timestamp.Timestamp;
 import org.demoiselle.signer.timestamp.connector.TimeStampOperator;
 import org.slf4j.Logger;
@@ -144,6 +145,8 @@ public class CAdESChecker implements PKCS7Checker {
 	    if(Security.getProvider("BC") == null)
 			Security.addProvider(new BouncyCastleProvider());
 		CMSSignedData cmsSignedData = null;
+		// BC 1.85+ rejeita bytes excedentes (ex.: zeros de /Contents de PDF)
+		signedData = PKCS7Utils.removerPreenchimento(signedData);
 		try {
 			if (content == null) {
 				if (this.checkHash) {
@@ -493,7 +496,7 @@ validateMandatedAttributeContent(oi, signedAtt, varCert, signatureInfo);
 
 		CMSSignedData signedData = null;
 		try {
-			signedData = new CMSSignedData(signed);
+			signedData = new CMSSignedData(PKCS7Utils.removerPreenchimento(signed));
 		} catch (CMSException exception) {
 			logger.error(cadesMessagesBundle.getString("error.invalid.bytes.pkcs7") + exception.getMessage());
 			throw new SignerException(cadesMessagesBundle.getString("error.invalid.bytes.pkcs7"), exception);

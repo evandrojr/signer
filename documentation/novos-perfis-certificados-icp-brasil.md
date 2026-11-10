@@ -149,7 +149,7 @@ Se você usa as cadeias ICP-Brasil:
 ### Requisitos de runtime
 
 - **Java 8+** (build oficial). Para apps em **Java 25+**, a 4.6.x já faz o parsing da SAN `OtherName` direto via BouncyCastle (sem depender de `sun.security.*`), então o novo perfil continua sendo lido normalmente.
-- **BouncyCastle 1.80 (`jdk18on`)** — trazido como dependência transitiva pelo Signer; não precisa adicionar manualmente.
+- **BouncyCastle 1.86 (`jdk18on`)** — trazido como dependência transitiva pelo Signer; não precisa adicionar manualmente.
 - A lib é **retrocompatível**: o código que hoje lê perfil antigo continua funcionando sem alteração; os novos métodos convivem com os antigos.
 
 ---

@@ -122,15 +122,26 @@ func readVersion(wd string) string {
 }
 
 func checkFile(url string) string {
-	resp, err := http.Get(url)
-	if err != nil {
-		return fmt.Sprintf("erro: %v", err)
+	const maxAttempts = 4
+	for attempt := 1; attempt <= maxAttempts; attempt++ {
+		resp, err := http.Get(url)
+		if err != nil {
+			return fmt.Sprintf("erro: %v", err)
+		}
+		status := resp.StatusCode
+		resp.Body.Close()
+
+		if status == http.StatusOK {
+			time.Sleep(time.Second)
+			return "ok"
+		}
+		if status == http.StatusTooManyRequests && attempt < maxAttempts {
+			time.Sleep(time.Duration(5*attempt) * time.Second)
+			continue
+		}
+		return fmt.Sprintf("HTTP %d", status)
 	}
-	defer resp.Body.Close()
-	if resp.StatusCode == 200 {
-		return "ok"
-	}
-	return fmt.Sprintf("HTTP %d", resp.StatusCode)
+	return "HTTP 429"
 }
 
 func verifyModule(artifact, version string, isRelease bool) ModuleReport {
@@ -401,7 +412,7 @@ func main() {
 	fmt.Printf("🚀 Publicando Demoiselle Signer (%s)\n", mode)
 	fmt.Println(strings.Repeat("-", 50))
 
-	args := []string{"clean", "deploy", "-Dmaven.test.skip=true", "-Dmaven.javadoc.skip=true", "-B",
+	args := []string{"clean", "deploy", "-Dmaven.test.skip=true", "-B",
 		"-Dmaven.wagon.http.retryHandler.count=5",
 		"-Dmaven.wagon.http.connectionTimeout=600000",
 		"-Dmaven.wagon.http.readTimeout=600000",
@@ -409,7 +420,9 @@ func main() {
 	}
 
 	if isRelease {
-		args = append(args, "-P", "release")
+		args = append(args, "-P", "release", "-pl", "!automacao-importador")
+	} else {
+		args = append(args, "-Dmaven.javadoc.skip=true")
 	}
 
 	maxRetries := 20
