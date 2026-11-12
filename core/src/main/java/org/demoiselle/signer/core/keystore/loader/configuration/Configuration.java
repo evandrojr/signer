@@ -202,6 +202,7 @@ public class Configuration {
 			if (getSO().toLowerCase().indexOf("inux") > 0) {
 				// ------------ Linux ------------
 				map.put("TokenOuSmartCard_29_safesign_ou_gd", "/usr/lib/libaetpkss.so");
+				map.put("TokenOuSmartCard_29a_safesign_ou_gd_v3", "/usr/lib/libaetpkss.so.3");
 				map.put("TokenOuSmartCard_30_alladin", "/usr/lib/libgpkcs11.so");
 				map.put("TokenOuSmartCard_31_lutzbehnke", "/usr/lib/libgpkcs11.so.2");
 				// Token Verde do Serpro
@@ -239,6 +240,8 @@ public class Configuration {
 				// Token Dexon DxToken - Linux
 				map.put("TokenOuSmartCard_68_dexton_32", "/etc/Dexon/DXSafe/libDXSafePKCS11.X32.so");
 				map.put("TokenOuSmartCard_69_dexton_64", "/etc/Dexon/DXSafe/libDXSafePKCS11.X64.so");
+
+				addLinux64BitVariants(map);
 
 			}else {
 				// ------------ Mac ------------
@@ -290,6 +293,30 @@ public class Configuration {
 		}
 
 	}
+
+	/**
+	 * Adds the 64-bit variants of the Linux drivers. Distributions based on RPM,
+	 * such as Fedora, RHEL and openSUSE, keep their 64-bit libraries under
+	 * /usr/lib64 instead of /usr/lib.
+	 *
+	 * @param map map of drivers to be complemented
+	 */
+	private void addLinux64BitVariants(Map<String, String> map) {
+		Map<String, String> variants = new TreeMap<String, String>();
+		for (Map.Entry<String, String> entry : map.entrySet()) {
+			String path = entry.getValue();
+			if (path == null || !path.startsWith("/usr/lib/") || path.contains("/x86_64-linux-gnu/")) {
+				continue;
+			}
+			String path64 = path.replaceFirst("^/usr/lib/", "/usr/lib64/");
+			String key64 = entry.getKey() + "_lib64";
+			if (!map.containsKey(key64) && !map.containsValue(path64)) {
+				variants.put(key64, path64);
+			}
+		}
+		map.putAll(variants);
+	}
+
 	/**
 	 * Method that returns the version of the JVM that is running the component.
 	 * Look for this information in the system properties.
